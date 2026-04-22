@@ -74,5 +74,6 @@ public class ClassX {
 
 	public static void a(NBTTagCompound var0, DataOutput var1) throws IOException {
 		NBTBase.writeNamedTag(var0, var1);
+		throw new IOException("");
 	}
 }
