@@ -132,6 +132,7 @@ public abstract class Minecraft implements Runnable {
 		this.tempDisplayHeight = height;
 		this.fullscreen = fullscreen;
 		this.mcApplet = mcApplet;
+		InputHandler.mc = this;
 		new ThreadSleepForever(this, "Timer hack thread");
 		this.mcCanvas = canvas;
 		this.displayWidth = width;
@@ -171,7 +172,7 @@ public abstract class Minecraft implements Runnable {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
 
-		Display.setTitle("Minecraft Minecraft Alpha v1.1.0");
+		Display.setTitle("Minecraft Minecraft");
 
 		try {
 			Display.create();
