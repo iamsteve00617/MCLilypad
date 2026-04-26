@@ -20,9 +20,9 @@ public class ItemTool extends Item {
 		this.damageVsEntity = damage + toolMaterial;
 	}
 
-	public float getStrVsBlock(ItemStack itemStack1, Block block2) {
+	public float getStrVsBlock(ItemStack stack, Block block) {
 		for(int i3 = 0; i3 < this.blocksEffectiveAgainst.length; ++i3) {
-			if(this.blocksEffectiveAgainst[i3] == block2) {
+			if(this.blocksEffectiveAgainst[i3] == block) {
 				return this.efficiencyOnProperMaterial;
 			}
 		}

@@ -46,41 +46,41 @@ public class BlockFire extends Block {
 		return 10;
 	}
 
-	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
-		int i6 = worldObj.getBlockMetadata(x, y, z);
+	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+		int i6 = world1.getBlockMetadata(i2, i3, i4);
 		if(i6 < 15) {
-			worldObj.setBlockMetadataWithNotify(x, y, z, i6 + 1);
-			worldObj.scheduleBlockUpdate(x, y, z, this.blockID);
+			world1.setBlockMetadataWithNotify(i2, i3, i4, i6 + 1);
+			world1.scheduleBlockUpdate(i2, i3, i4, this.blockID);
 		}
 
-		if(!this.canNeighborBurn(worldObj, x, y, z)) {
-			if(!worldObj.isBlockNormalCube(x, y - 1, z) || i6 > 3) {
-				worldObj.setBlockWithNotify(x, y, z, 0);
+		if(!this.canNeighborBurn(world1, i2, i3, i4)) {
+			if(!world1.isBlockNormalCube(i2, i3 - 1, i4) || i6 > 3) {
+				world1.setBlockWithNotify(i2, i3, i4, 0);
 			}
 
-		} else if(!this.canBlockCatchFire(worldObj, x, y - 1, z) && i6 == 15 && rand.nextInt(4) == 0) {
-			worldObj.setBlockWithNotify(x, y, z, 0);
+		} else if(!this.canBlockCatchFire(world1, i2, i3 - 1, i4) && i6 == 15 && random5.nextInt(4) == 0) {
+			world1.setBlockWithNotify(i2, i3, i4, 0);
 		} else {
 			if(i6 % 2 == 0 && i6 > 2) {
-				this.tryToCatchBlockOnFire(worldObj, x + 1, y, z, 300, rand);
-				this.tryToCatchBlockOnFire(worldObj, x - 1, y, z, 300, rand);
-				this.tryToCatchBlockOnFire(worldObj, x, y - 1, z, 200, rand);
-				this.tryToCatchBlockOnFire(worldObj, x, y + 1, z, 250, rand);
-				this.tryToCatchBlockOnFire(worldObj, x, y, z - 1, 300, rand);
-				this.tryToCatchBlockOnFire(worldObj, x, y, z + 1, 300, rand);
+				this.tryToCatchBlockOnFire(world1, i2 + 1, i3, i4, 300, random5);
+				this.tryToCatchBlockOnFire(world1, i2 - 1, i3, i4, 300, random5);
+				this.tryToCatchBlockOnFire(world1, i2, i3 - 1, i4, 200, random5);
+				this.tryToCatchBlockOnFire(world1, i2, i3 + 1, i4, 250, random5);
+				this.tryToCatchBlockOnFire(world1, i2, i3, i4 - 1, 300, random5);
+				this.tryToCatchBlockOnFire(world1, i2, i3, i4 + 1, 300, random5);
 
-				for(int i7 = x - 1; i7 <= x + 1; ++i7) {
-					for(int i8 = z - 1; i8 <= z + 1; ++i8) {
-						for(int i9 = y - 1; i9 <= y + 4; ++i9) {
-							if(i7 != x || i9 != y || i8 != z) {
+				for(int i7 = i2 - 1; i7 <= i2 + 1; ++i7) {
+					for(int i8 = i4 - 1; i8 <= i4 + 1; ++i8) {
+						for(int i9 = i3 - 1; i9 <= i3 + 4; ++i9) {
+							if(i7 != i2 || i9 != i3 || i8 != i4) {
 								int i10 = 100;
-								if(i9 > y + 1) {
-									i10 += (i9 - (y + 1)) * 100;
+								if(i9 > i3 + 1) {
+									i10 += (i9 - (i3 + 1)) * 100;
 								}
 
-								int i11 = this.getChanceOfNeighborsEncouragingFire(worldObj, i7, i9, i8);
-								if(i11 > 0 && rand.nextInt(i10) <= i11) {
-									worldObj.setBlockWithNotify(i7, i9, i8, this.blockID);
+								int i11 = this.getChanceOfNeighborsEncouragingFire(world1, i7, i9, i8);
+								if(i11 > 0 && random5.nextInt(i10) <= i11) {
+									world1.setBlockWithNotify(i7, i9, i8, this.blockID);
 								}
 							}
 						}

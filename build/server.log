@@ -1,0 +1,15 @@
+2026-04-26 12:38:57 [INFO] Starting minecraft server version 0.2.0_01, ext16.05_13
+2026-04-26 12:38:57 [INFO] Loading properties
+2026-04-26 12:38:57 [INFO] Starting Minecraft server on 192.168.0.164:25565
+2026-04-26 12:38:57 [WARNING] **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+2026-04-26 12:38:57 [WARNING] The server will make no attempt to authenticate usernames. Beware.
+2026-04-26 12:38:57 [WARNING] While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+2026-04-26 12:38:57 [WARNING] To change this, set "online-mode" to "true" in the server.settings file.
+2026-04-26 12:38:57 [INFO] Preparing level "world"
+2026-04-26 12:38:57 [INFO] Preparing start region
+2026-04-26 12:38:58 [INFO] Done! For help, type "help" or "?"
+2026-04-26 12:39:08 [INFO] Player646 [/192.168.0.164:52593] logged in
+2026-04-26 12:39:27 [INFO] Player646 lost connection: Internal exception: java.net.SocketException: Connection reset
+2026-04-26 12:39:34 [INFO] CONSOLE: Stopping the server..
+2026-04-26 12:39:34 [INFO] Stopping server
+2026-04-26 12:39:34 [INFO] Saving chunks

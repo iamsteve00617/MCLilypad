@@ -150,8 +150,8 @@ public class EntityPlayer extends EntityLiving {
 		this.yOffset = 0.1F;
 	}
 
-	public void addToPlayerScore(Entity entity1, int i2) {
-		this.score += i2;
+	public void addToPlayerScore(Entity entity, int score) {
+		this.score += score;
 	}
 
 	public void dropPlayerItem(ItemStack itemStack) {

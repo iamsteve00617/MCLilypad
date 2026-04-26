@@ -496,14 +496,14 @@ public class EntityMinecart extends Entity implements IInventory {
 
 	}
 
-	public void applyEntityCollision(Entity entity1) {
-		if(entity1 != this.riddenByEntity) {
-			if(entity1 instanceof EntityLiving && !(entity1 instanceof EntityPlayer) && this.minecartType == 0 && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01D && this.riddenByEntity == null && entity1.ridingEntity == null) {
-				entity1.mountEntity(this);
+	public void applyEntityCollision(Entity entity) {
+		if(entity != this.riddenByEntity) {
+			if(entity instanceof EntityLiving && !(entity instanceof EntityPlayer) && this.minecartType == 0 && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01D && this.riddenByEntity == null && entity.ridingEntity == null) {
+				entity.mountEntity(this);
 			}
 
-			double d2 = entity1.posX - this.posX;
-			double d4 = entity1.posZ - this.posZ;
+			double d2 = entity.posX - this.posX;
+			double d4 = entity.posZ - this.posZ;
 			double d6 = d2 * d2 + d4 * d4;
 			if(d6 >= 9.999999747378752E-5D) {
 				d6 = (double)MathHelper.sqrt_double(d6);
@@ -522,19 +522,19 @@ public class EntityMinecart extends Entity implements IInventory {
 				d4 *= (double)(1.0F - this.entityCollisionReduction);
 				d2 *= 0.5D;
 				d4 *= 0.5D;
-				if(entity1 instanceof EntityMinecart) {
-					double d10 = entity1.motionX + this.motionX;
-					double d12 = entity1.motionZ + this.motionZ;
-					if(((EntityMinecart)entity1).minecartType == 2 && this.minecartType != 2) {
+				if(entity instanceof EntityMinecart) {
+					double d10 = entity.motionX + this.motionX;
+					double d12 = entity.motionZ + this.motionZ;
+					if(((EntityMinecart)entity).minecartType == 2 && this.minecartType != 2) {
 						this.motionX *= (double)0.2F;
 						this.motionZ *= (double)0.2F;
-						this.addVelocity(entity1.motionX - d2, 0.0D, entity1.motionZ - d4);
-						entity1.motionX *= (double)0.7F;
-						entity1.motionZ *= (double)0.7F;
-					} else if(((EntityMinecart)entity1).minecartType != 2 && this.minecartType == 2) {
-						entity1.motionX *= (double)0.2F;
-						entity1.motionZ *= (double)0.2F;
-						entity1.addVelocity(this.motionX + d2, 0.0D, this.motionZ + d4);
+						this.addVelocity(entity.motionX - d2, 0.0D, entity.motionZ - d4);
+						entity.motionX *= (double)0.7F;
+						entity.motionZ *= (double)0.7F;
+					} else if(((EntityMinecart)entity).minecartType != 2 && this.minecartType == 2) {
+						entity.motionX *= (double)0.2F;
+						entity.motionZ *= (double)0.2F;
+						entity.addVelocity(this.motionX + d2, 0.0D, this.motionZ + d4);
 						this.motionX *= (double)0.7F;
 						this.motionZ *= (double)0.7F;
 					} else {
@@ -543,13 +543,13 @@ public class EntityMinecart extends Entity implements IInventory {
 						this.motionX *= (double)0.2F;
 						this.motionZ *= (double)0.2F;
 						this.addVelocity(d10 - d2, 0.0D, d12 - d4);
-						entity1.motionX *= (double)0.2F;
-						entity1.motionZ *= (double)0.2F;
-						entity1.addVelocity(d10 + d2, 0.0D, d12 + d4);
+						entity.motionX *= (double)0.2F;
+						entity.motionZ *= (double)0.2F;
+						entity.addVelocity(d10 + d2, 0.0D, d12 + d4);
 					}
 				} else {
 					this.addVelocity(-d2, 0.0D, -d4);
-					entity1.addVelocity(d2 / 4.0D, 0.0D, d4 / 4.0D);
+					entity.addVelocity(d2 / 4.0D, 0.0D, d4 / 4.0D);
 				}
 			}
 

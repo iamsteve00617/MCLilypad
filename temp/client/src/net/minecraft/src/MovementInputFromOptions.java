@@ -10,30 +10,30 @@ public class MovementInputFromOptions extends MovementInput {
 		this.gameSettings = gameSettings;
 	}
 
-	public void checkKeyForMovementInput(int key, boolean state) {
+	public void checkKeyForMovementInput(int i1, boolean z2) {
 		byte b3 = -1;
-		if(key == this.gameSettings.keyBindForward.keyCode) {
+		if(i1 == this.gameSettings.keyBindForward.keyCode) {
 			b3 = 0;
 		}
 
-		if(key == this.gameSettings.keyBindBack.keyCode) {
+		if(i1 == this.gameSettings.keyBindBack.keyCode) {
 			b3 = 1;
 		}
 
-		if(key == this.gameSettings.keyBindLeft.keyCode) {
+		if(i1 == this.gameSettings.keyBindLeft.keyCode) {
 			b3 = 2;
 		}
 
-		if(key == this.gameSettings.keyBindRight.keyCode) {
+		if(i1 == this.gameSettings.keyBindRight.keyCode) {
 			b3 = 3;
 		}
 
-		if(key == this.gameSettings.keyBindJump.keyCode) {
+		if(i1 == this.gameSettings.keyBindJump.keyCode) {
 			b3 = 4;
 		}
 
 		if(b3 >= 0) {
-			this.movementKeyStates[b3] = state;
+			this.movementKeyStates[b3] = z2;
 		}
 
 	}

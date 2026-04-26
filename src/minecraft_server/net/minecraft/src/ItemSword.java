@@ -14,7 +14,7 @@ public class ItemSword extends Item {
 		this.weaponDamage = 4 + maxDamage * 2;
 	}
 
-	public float getStrVsBlock(ItemStack itemStack1, Block block2) {
+	public float getStrVsBlock(ItemStack stack, Block block) {
 		return 1.5F;
 	}
 

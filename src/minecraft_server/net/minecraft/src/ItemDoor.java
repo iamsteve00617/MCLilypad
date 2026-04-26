@@ -10,11 +10,11 @@ public class ItemDoor extends Item {
 		this.maxStackSize = 1;
 	}
 
-	public boolean onItemUse(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int i7) {
+	public boolean onItemUse(ItemStack itemStack1, EntityPlayer entityPlayer2, World world3, int i4, int i5, int i6, int i7) {
 		if(i7 != 1) {
 			return false;
 		} else {
-			++y;
+			++i5;
 			Block block8;
 			if(this.material == Material.wood) {
 				block8 = Block.doorWood;
@@ -22,10 +22,10 @@ public class ItemDoor extends Item {
 				block8 = Block.doorSteel;
 			}
 
-			if(!block8.canPlaceBlockAt(world, x, y, z)) {
+			if(!block8.canPlaceBlockAt(world3, i4, i5, i6)) {
 				return false;
 			} else {
-				int i9 = MathHelper.floor_double((double)((entityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
+				int i9 = MathHelper.floor_double((double)((entityPlayer2.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
 				byte b10 = 0;
 				byte b11 = 0;
 				if(i9 == 0) {
@@ -44,10 +44,10 @@ public class ItemDoor extends Item {
 					b10 = 1;
 				}
 
-				int i12 = (world.isBlockNormalCube(x - b10, y, z - b11) ? 1 : 0) + (world.isBlockNormalCube(x - b10, y + 1, z - b11) ? 1 : 0);
-				int i13 = (world.isBlockNormalCube(x + b10, y, z + b11) ? 1 : 0) + (world.isBlockNormalCube(x + b10, y + 1, z + b11) ? 1 : 0);
-				boolean z14 = world.getBlockId(x - b10, y, z - b11) == block8.blockID || world.getBlockId(x - b10, y + 1, z - b11) == block8.blockID;
-				boolean z15 = world.getBlockId(x + b10, y, z + b11) == block8.blockID || world.getBlockId(x + b10, y + 1, z + b11) == block8.blockID;
+				int i12 = (world3.isBlockNormalCube(i4 - b10, i5, i6 - b11) ? 1 : 0) + (world3.isBlockNormalCube(i4 - b10, i5 + 1, i6 - b11) ? 1 : 0);
+				int i13 = (world3.isBlockNormalCube(i4 + b10, i5, i6 + b11) ? 1 : 0) + (world3.isBlockNormalCube(i4 + b10, i5 + 1, i6 + b11) ? 1 : 0);
+				boolean z14 = world3.getBlockId(i4 - b10, i5, i6 - b11) == block8.blockID || world3.getBlockId(i4 - b10, i5 + 1, i6 - b11) == block8.blockID;
+				boolean z15 = world3.getBlockId(i4 + b10, i5, i6 + b11) == block8.blockID || world3.getBlockId(i4 + b10, i5 + 1, i6 + b11) == block8.blockID;
 				boolean z16 = false;
 				if(z14 && !z15) {
 					z16 = true;
@@ -60,11 +60,11 @@ public class ItemDoor extends Item {
 					i9 += 4;
 				}
 
-				world.setBlockWithNotify(x, y, z, block8.blockID);
-				world.setBlockMetadataWithNotify(x, y, z, i9);
-				world.setBlockWithNotify(x, y + 1, z, block8.blockID);
-				world.setBlockMetadataWithNotify(x, y + 1, z, i9 + 8);
-				--stack.stackSize;
+				world3.setBlockWithNotify(i4, i5, i6, block8.blockID);
+				world3.setBlockMetadataWithNotify(i4, i5, i6, i9);
+				world3.setBlockWithNotify(i4, i5 + 1, i6, block8.blockID);
+				world3.setBlockMetadataWithNotify(i4, i5 + 1, i6, i9 + 8);
+				--itemStack1.stackSize;
 				return true;
 			}
 		}

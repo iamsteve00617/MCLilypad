@@ -41,11 +41,11 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		this.connectionClosed = true;
 	}
 
-	public void handleFlying(Packet10Flying packet) {
+	public void handleFlying(Packet10Flying packet10Flying1) {
 		double d2;
 		if(!this.hasMoved) {
-			d2 = packet.yPosition - this.lastPosY;
-			if(packet.xPosition == this.lastPosX && d2 * d2 < 0.01D && packet.zPosition == this.lastPosZ) {
+			d2 = packet10Flying1.yPosition - this.lastPosY;
+			if(packet10Flying1.xPosition == this.lastPosX && d2 * d2 < 0.01D && packet10Flying1.zPosition == this.lastPosZ) {
 				this.hasMoved = true;
 			}
 		}
@@ -60,22 +60,22 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 			float f8 = this.playerEntity.rotationYaw;
 			float f9 = this.playerEntity.rotationPitch;
 			double d10;
-			if(packet.moving) {
-				d2 = packet.xPosition;
-				d4 = packet.yPosition;
-				d6 = packet.zPosition;
-				d10 = packet.stance - packet.yPosition;
+			if(packet10Flying1.moving) {
+				d2 = packet10Flying1.xPosition;
+				d4 = packet10Flying1.yPosition;
+				d6 = packet10Flying1.zPosition;
+				d10 = packet10Flying1.stance - packet10Flying1.yPosition;
 				if(d10 > 1.65D || d10 < 0.1D) {
 					this.kickPlayer("Illegal stance");
 					logger.warning(this.playerEntity.username + " had an illegal stance: " + d10);
 				}
 
-				this.playerEntity.managedPosY = packet.stance;
+				this.playerEntity.managedPosY = packet10Flying1.stance;
 			}
 
-			if(packet.rotating) {
-				f8 = packet.yaw;
-				f9 = packet.pitch;
+			if(packet10Flying1.rotating) {
+				f8 = packet10Flying1.yaw;
+				f9 = packet10Flying1.pitch;
 			}
 
 			this.playerEntity.onUpdateEntity();
@@ -108,7 +108,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 				return;
 			}
 
-			this.playerEntity.onGround = packet.onGround;
+			this.playerEntity.onGround = packet10Flying1.onGround;
 			this.mcServer.configManager.serverUpdateMountedMovingPlayer(this.playerEntity);
 		}
 
@@ -218,8 +218,8 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		this.netManager.addToSendQueue(packet1);
 	}
 
-	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet16BlockItemSwitch1) {
-		int i2 = packet16BlockItemSwitch1.id;
+	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet) {
+		int i2 = packet.id;
 		this.playerEntity.inventory.currentItem = this.playerEntity.inventory.mainInventory.length - 1;
 		if(i2 == 0) {
 			this.heldItem = null;
@@ -336,7 +336,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
 	}
 
-	public void handleKickDisconnect(Packet255KickDisconnect packet) {
+	public void handleKickDisconnect(Packet255KickDisconnect packet255KickDisconnect1) {
 		this.netManager.networkShutdown("Quitting");
 	}
 
@@ -352,17 +352,17 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		return this.playerEntity.username;
 	}
 
-	public void handlePlayerInventory(Packet5PlayerInventory packet5PlayerInventory1) {
-		if(packet5PlayerInventory1.inventoryType == -1) {
-			this.playerEntity.inventory.mainInventory = packet5PlayerInventory1.inventory;
+	public void handlePlayerInventory(Packet5PlayerInventory packet) {
+		if(packet.inventoryType == -1) {
+			this.playerEntity.inventory.mainInventory = packet.inventory;
 		}
 
-		if(packet5PlayerInventory1.inventoryType == -2) {
-			this.playerEntity.inventory.craftingInventory = packet5PlayerInventory1.inventory;
+		if(packet.inventoryType == -2) {
+			this.playerEntity.inventory.craftingInventory = packet.inventory;
 		}
 
-		if(packet5PlayerInventory1.inventoryType == -3) {
-			this.playerEntity.inventory.armorInventory = packet5PlayerInventory1.inventory;
+		if(packet.inventoryType == -3) {
+			this.playerEntity.inventory.armorInventory = packet.inventory;
 		}
 
 	}

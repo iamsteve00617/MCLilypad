@@ -55,8 +55,8 @@ public class EntityChicken extends EntityAnimal {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		super.readEntityFromNBT(compoundTag);
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		super.readEntityFromNBT(nBTTagCompound1);
 	}
 
 	protected String getLivingSound() {

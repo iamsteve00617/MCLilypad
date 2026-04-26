@@ -197,13 +197,13 @@ public class EntityArrow extends Entity {
 		nBTTagCompound1.setByte("inGround", (byte)(this.inData ? 1 : 0));
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		this.xTile = compoundTag.getShort("xTile");
-		this.yTile = compoundTag.getShort("yTile");
-		this.zTile = compoundTag.getShort("zTile");
-		this.inTile = compoundTag.getByte("inTile") & 255;
-		this.arrowShake = compoundTag.getByte("shake") & 255;
-		this.inData = compoundTag.getByte("inGround") == 1;
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		this.xTile = nBTTagCompound1.getShort("xTile");
+		this.yTile = nBTTagCompound1.getShort("yTile");
+		this.zTile = nBTTagCompound1.getShort("zTile");
+		this.inTile = nBTTagCompound1.getByte("inTile") & 255;
+		this.arrowShake = nBTTagCompound1.getByte("shake") & 255;
+		this.inData = nBTTagCompound1.getByte("inGround") == 1;
 	}
 
 	public void onCollideWithPlayer(EntityPlayer entityPlayer1) {

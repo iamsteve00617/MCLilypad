@@ -217,15 +217,15 @@ public class EntityBoat extends Entity {
 	protected void writeEntityToNBT(NBTTagCompound nBTTagCompound1) {
 	}
 
-	protected void readEntityFromNBT(NBTTagCompound compoundTag) {
+	protected void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
 	}
 
 	public float getShadowSize() {
 		return 0.0F;
 	}
 
-	public boolean interact(EntityPlayer entityPlayer1) {
-		entityPlayer1.mountEntity(this);
+	public boolean interact(EntityPlayer entityPlayer) {
+		entityPlayer.mountEntity(this);
 		return true;
 	}
 }

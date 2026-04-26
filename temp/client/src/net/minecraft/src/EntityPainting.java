@@ -187,12 +187,12 @@ public class EntityPainting extends Entity {
 		nBTTagCompound1.setInteger("TileZ", this.zPosition);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		this.direction = compoundTag.getByte("Dir");
-		this.xPosition = compoundTag.getInteger("TileX");
-		this.yPosition = compoundTag.getInteger("TileY");
-		this.zPosition = compoundTag.getInteger("TileZ");
-		String string2 = compoundTag.getString("Motive");
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		this.direction = nBTTagCompound1.getByte("Dir");
+		this.xPosition = nBTTagCompound1.getInteger("TileX");
+		this.yPosition = nBTTagCompound1.getInteger("TileY");
+		this.zPosition = nBTTagCompound1.getInteger("TileZ");
+		String string2 = nBTTagCompound1.getString("Motive");
 		EnumArt[] enumArt3 = EnumArt.values();
 		int i4 = enumArt3.length;
 

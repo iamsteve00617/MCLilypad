@@ -7,8 +7,8 @@ public class BlockFence extends Block {
 		super(blockID, tex, Material.wood);
 	}
 
-	public void getCollidingBoundingBoxes(World world1, int i2, int i3, int i4, AxisAlignedBB axisAlignedBB5, ArrayList arrayList6) {
-		arrayList6.add(AxisAlignedBB.getBoundingBoxFromPool((double)i2, (double)i3, (double)i4, (double)(i2 + 1), (double)i3 + 1.5D, (double)(i4 + 1)));
+	public void getCollidingBoundingBoxes(World worldObj, int x, int y, int z, AxisAlignedBB aabb, ArrayList collidingBoundingBoxes) {
+		collidingBoundingBoxes.add(AxisAlignedBB.getBoundingBoxFromPool((double)x, (double)y, (double)z, (double)(x + 1), (double)y + 1.5D, (double)(z + 1)));
 	}
 
 	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {

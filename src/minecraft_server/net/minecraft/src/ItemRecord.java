@@ -9,11 +9,11 @@ public class ItemRecord extends Item {
 		this.maxStackSize = 1;
 	}
 
-	public boolean onItemUse(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int i7) {
-		if(world.getBlockId(x, y, z) == Block.jukebox.blockID && world.getBlockMetadata(x, y, z) == 0) {
-			world.setBlockMetadataWithNotify(x, y, z, this.shiftedIndex - Item.record13.shiftedIndex + 1);
-			world.playRecord(this.recordName, x, y, z);
-			--stack.stackSize;
+	public boolean onItemUse(ItemStack itemStack1, EntityPlayer entityPlayer2, World world3, int i4, int i5, int i6, int i7) {
+		if(world3.getBlockId(i4, i5, i6) == Block.jukebox.blockID && world3.getBlockMetadata(i4, i5, i6) == 0) {
+			world3.setBlockMetadataWithNotify(i4, i5, i6, this.shiftedIndex - Item.record13.shiftedIndex + 1);
+			world3.playRecord(this.recordName, i4, i5, i6);
+			--itemStack1.stackSize;
 			return true;
 		} else {
 			return false;

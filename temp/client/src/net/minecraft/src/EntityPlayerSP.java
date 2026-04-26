@@ -112,9 +112,9 @@ public class EntityPlayerSP extends EntityPlayer {
 		nBTTagCompound1.setInteger("Score", this.score);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		super.readEntityFromNBT(compoundTag);
-		this.score = compoundTag.getInteger("Score");
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		super.readEntityFromNBT(nBTTagCompound1);
+		this.score = nBTTagCompound1.getInteger("Score");
 	}
 
 	public void displayGUIChest(IInventory iInventory1) {
@@ -157,11 +157,11 @@ public class EntityPlayerSP extends EntityPlayer {
 		return this.inventory.getTotalArmorValue();
 	}
 
-	public void interactWithEntity(Entity entity1) {
-		if(!entity1.interact(this)) {
+	public void interactWithEntity(Entity entity) {
+		if(!entity.interact(this)) {
 			ItemStack itemStack2 = this.getCurrentEquippedItem();
-			if(itemStack2 != null && entity1 instanceof EntityLiving) {
-				itemStack2.useItemOnEntity((EntityLiving)entity1);
+			if(itemStack2 != null && entity instanceof EntityLiving) {
+				itemStack2.useItemOnEntity((EntityLiving)entity);
 				if(itemStack2.stackSize <= 0) {
 					itemStack2.onItemDestroyedByUse(this);
 					this.destroyCurrentEquippedItem();

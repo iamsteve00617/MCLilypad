@@ -7,8 +7,8 @@ public class BlockLadder extends Block {
 		super(id, blockIndex, Material.circuits);
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		int i5 = world.getBlockMetadata(x, y, z);
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world1, int i2, int i3, int i4) {
+		int i5 = world1.getBlockMetadata(i2, i3, i4);
 		float f6 = 0.125F;
 		if(i5 == 2) {
 			this.setBlockBounds(0.0F, 0.0F, 1.0F - f6, 1.0F, 1.0F, 1.0F);
@@ -26,7 +26,7 @@ public class BlockLadder extends Block {
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, f6, 1.0F, 1.0F);
 		}
 
-		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+		return super.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
 	public boolean isOpaqueCube() {

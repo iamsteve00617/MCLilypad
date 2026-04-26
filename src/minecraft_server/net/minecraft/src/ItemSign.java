@@ -7,43 +7,43 @@ public class ItemSign extends Item {
 		this.maxStackSize = 1;
 	}
 
-	public boolean onItemUse(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int i7) {
+	public boolean onItemUse(ItemStack itemStack1, EntityPlayer entityPlayer2, World world3, int i4, int i5, int i6, int i7) {
 		if(i7 == 0) {
 			return false;
-		} else if(!world.getBlockMaterial(x, y, z).isSolid()) {
+		} else if(!world3.getBlockMaterial(i4, i5, i6).isSolid()) {
 			return false;
 		} else {
 			if(i7 == 1) {
-				++y;
+				++i5;
 			}
 
 			if(i7 == 2) {
-				--z;
+				--i6;
 			}
 
 			if(i7 == 3) {
-				++z;
+				++i6;
 			}
 
 			if(i7 == 4) {
-				--x;
+				--i4;
 			}
 
 			if(i7 == 5) {
-				++x;
+				++i4;
 			}
 
-			if(!Block.signStanding.canPlaceBlockAt(world, x, y, z)) {
+			if(!Block.signStanding.canPlaceBlockAt(world3, i4, i5, i6)) {
 				return false;
 			} else {
 				if(i7 == 1) {
-					world.setBlockAndMetadataWithNotify(x, y, z, Block.signStanding.blockID, MathHelper.floor_double((double)((entityPlayer.rotationYaw + 180.0F) * 16.0F / 360.0F) + 0.5D) & 15);
+					world3.setBlockAndMetadataWithNotify(i4, i5, i6, Block.signStanding.blockID, MathHelper.floor_double((double)((entityPlayer2.rotationYaw + 180.0F) * 16.0F / 360.0F) + 0.5D) & 15);
 				} else {
-					world.setBlockAndMetadataWithNotify(x, y, z, Block.signWall.blockID, i7);
+					world3.setBlockAndMetadataWithNotify(i4, i5, i6, Block.signWall.blockID, i7);
 				}
 
-				--stack.stackSize;
-				entityPlayer.displayGUIEditSign((TileEntitySign)world.getBlockTileEntity(x, y, z));
+				--itemStack1.stackSize;
+				entityPlayer2.displayGUIEditSign((TileEntitySign)world3.getBlockTileEntity(i4, i5, i6));
 				return true;
 			}
 		}

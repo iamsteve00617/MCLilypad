@@ -510,14 +510,14 @@ public class EntityMinecart extends Entity implements IInventory {
 
 	}
 
-	protected void readEntityFromNBT(NBTTagCompound compoundTag) {
-		this.minecartType = compoundTag.getInteger("Type");
+	protected void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		this.minecartType = nBTTagCompound1.getInteger("Type");
 		if(this.minecartType == 2) {
-			this.pushX = compoundTag.getDouble("PushX");
-			this.pushZ = compoundTag.getDouble("PushZ");
-			this.fuel = compoundTag.getShort("Fuel");
+			this.pushX = nBTTagCompound1.getDouble("PushX");
+			this.pushZ = nBTTagCompound1.getDouble("PushZ");
+			this.fuel = nBTTagCompound1.getShort("Fuel");
 		} else if(this.minecartType == 1) {
-			NBTTagList nBTTagList2 = compoundTag.getTagList("Items");
+			NBTTagList nBTTagList2 = nBTTagCompound1.getTagList("Items");
 			this.cargoItems = new ItemStack[this.getSizeInventory()];
 
 			for(int i3 = 0; i3 < nBTTagList2.tagCount(); ++i3) {
@@ -642,23 +642,23 @@ public class EntityMinecart extends Entity implements IInventory {
 	public void onInventoryChanged() {
 	}
 
-	public boolean interact(EntityPlayer entityPlayer1) {
+	public boolean interact(EntityPlayer entityPlayer) {
 		if(this.minecartType == 0) {
-			entityPlayer1.mountEntity(this);
+			entityPlayer.mountEntity(this);
 		} else if(this.minecartType == 1) {
-			entityPlayer1.displayGUIChest(this);
+			entityPlayer.displayGUIChest(this);
 		} else if(this.minecartType == 2) {
-			ItemStack itemStack2 = entityPlayer1.inventory.getCurrentItem();
+			ItemStack itemStack2 = entityPlayer.inventory.getCurrentItem();
 			if(itemStack2 != null && itemStack2.itemID == Item.coal.shiftedIndex) {
 				if(--itemStack2.stackSize == 0) {
-					entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, (ItemStack)null);
+					entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, (ItemStack)null);
 				}
 
 				this.fuel += 1200;
 			}
 
-			this.pushX = this.posX - entityPlayer1.posX;
-			this.pushZ = this.posZ - entityPlayer1.posZ;
+			this.pushX = this.posX - entityPlayer.posX;
+			this.pushZ = this.posZ - entityPlayer.posZ;
 		}
 
 		return true;

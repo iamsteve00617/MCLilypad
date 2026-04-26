@@ -27,7 +27,6 @@ public class PanelCrashReport extends Panel {
 			string5 = string5 + "Generated " + (new SimpleDateFormat()).format(new Date()) + "\n";
 			string5 = string5 + "\n";
 			string5 = string5 + "Minecraft: Minecraft Alpha v1.1.0\n";
-			string5 = string5 + "Ext: 16.05_13 Lilypad QA. Lilypad Version: v1.0.0\n";
 			string5 = string5 + "OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version") + "\n";
 			string5 = string5 + "Java: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor") + "\n";
 			string5 = string5 + "VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n";

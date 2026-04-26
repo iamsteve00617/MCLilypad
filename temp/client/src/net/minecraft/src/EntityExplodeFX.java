@@ -11,8 +11,8 @@ public class EntityExplodeFX extends EntityFX {
 		this.particleMaxAge = (int)(16.0D / ((double)this.rand.nextFloat() * 0.8D + 0.2D)) + 2;
 	}
 
-	public void renderParticle(Tessellator tessellator1, float f2, float f3, float f4, float f5, float f6, float f7) {
-		super.renderParticle(tessellator1, f2, f3, f4, f5, f6, f7);
+	public void renderParticle(Tessellator tessellator, float renderPartialTick, float xOffset, float yOffset, float zOffset, float xOffset2, float zOffset2) {
+		super.renderParticle(tessellator, renderPartialTick, xOffset, yOffset, zOffset, xOffset2, zOffset2);
 	}
 
 	public void onUpdate() {

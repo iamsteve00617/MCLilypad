@@ -18,14 +18,14 @@ public class EntityFlameFX extends EntityFX {
 		this.particleTextureIndex = 48;
 	}
 
-	public void renderParticle(Tessellator tessellator1, float f2, float f3, float f4, float f5, float f6, float f7) {
-		float f8 = ((float)this.particleAge + f2) / (float)this.particleMaxAge;
+	public void renderParticle(Tessellator tessellator, float renderPartialTick, float xOffset, float yOffset, float zOffset, float xOffset2, float zOffset2) {
+		float f8 = ((float)this.particleAge + renderPartialTick) / (float)this.particleMaxAge;
 		this.particleScale = this.flameScale * (1.0F - f8 * f8 * 0.5F);
-		super.renderParticle(tessellator1, f2, f3, f4, f5, f6, f7);
+		super.renderParticle(tessellator, renderPartialTick, xOffset, yOffset, zOffset, xOffset2, zOffset2);
 	}
 
-	public float getBrightness(float renderPartialTick) {
-		float f2 = ((float)this.particleAge + renderPartialTick) / (float)this.particleMaxAge;
+	public float getBrightness(float f1) {
+		float f2 = ((float)this.particleAge + f1) / (float)this.particleMaxAge;
 		if(f2 < 0.0F) {
 			f2 = 0.0F;
 		}
@@ -34,7 +34,7 @@ public class EntityFlameFX extends EntityFX {
 			f2 = 1.0F;
 		}
 
-		float f3 = super.getBrightness(renderPartialTick);
+		float f3 = super.getBrightness(f1);
 		return f3 * f2 + (1.0F - f2);
 	}
 

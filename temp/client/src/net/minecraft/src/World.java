@@ -401,8 +401,8 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	public int getBlockId(int i1, int i2, int i3) {
-		return i1 >= -32000000 && i3 >= -32000000 && i1 < 32000000 && i3 <= 32000000 ? (i2 < 0 ? 0 : (i2 >= 128 ? 0 : this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4).getBlockID(i1 & 15, i2, i3 & 15))) : 0;
+	public int getBlockId(int x, int y, int z) {
+		return x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000 ? (y < 0 ? 0 : (y >= 128 ? 0 : this.getChunkFromChunkCoords(x >> 4, z >> 4).getBlockID(x & 15, y, z & 15))) : 0;
 	}
 
 	public boolean blockExists(int x, int y, int z) {
@@ -1429,9 +1429,9 @@ public class World implements IBlockAccess {
 		return "All: " + this.loadedEntityList.size();
 	}
 
-	public TileEntity getBlockTileEntity(int i1, int i2, int i3) {
-		Chunk chunk4 = this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
-		return chunk4 != null ? chunk4.getChunkBlockTileEntity(i1 & 15, i2, i3 & 15) : null;
+	public TileEntity getBlockTileEntity(int x, int y, int z) {
+		Chunk chunk4 = this.getChunkFromChunkCoords(x >> 4, z >> 4);
+		return chunk4 != null ? chunk4.getChunkBlockTileEntity(x & 15, y, z & 15) : null;
 	}
 
 	public void setBlockTileEntity(int x, int y, int z, TileEntity tileEntity) {

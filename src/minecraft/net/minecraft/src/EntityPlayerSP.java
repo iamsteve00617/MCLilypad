@@ -157,11 +157,11 @@ public class EntityPlayerSP extends EntityPlayer {
 		return this.inventory.getTotalArmorValue();
 	}
 
-	public void interactWithEntity(Entity entity1) {
-		if(!entity1.interact(this)) {
+	public void interactWithEntity(Entity entity) {
+		if(!entity.interact(this)) {
 			ItemStack itemStack2 = this.getCurrentEquippedItem();
-			if(itemStack2 != null && entity1 instanceof EntityLiving) {
-				itemStack2.useItemOnEntity((EntityLiving)entity1);
+			if(itemStack2 != null && entity instanceof EntityLiving) {
+				itemStack2.useItemOnEntity((EntityLiving)entity);
 				if(itemStack2.stackSize <= 0) {
 					itemStack2.onItemDestroyedByUse(this);
 					this.destroyCurrentEquippedItem();

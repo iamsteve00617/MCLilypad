@@ -22,22 +22,22 @@ public class ChunkCache implements IBlockAccess {
 
 	}
 
-	public int getBlockId(int i1, int i2, int i3) {
-		if(i2 < 0) {
+	public int getBlockId(int x, int y, int z) {
+		if(y < 0) {
 			return 0;
-		} else if(i2 >= 128) {
+		} else if(y >= 128) {
 			return 0;
 		} else {
-			int i4 = (i1 >> 4) - this.chunkX;
-			int i5 = (i3 >> 4) - this.chunkZ;
-			return this.chunkArray[i4][i5].getBlockID(i1 & 15, i2, i3 & 15);
+			int i4 = (x >> 4) - this.chunkX;
+			int i5 = (z >> 4) - this.chunkZ;
+			return this.chunkArray[i4][i5].getBlockID(x & 15, y, z & 15);
 		}
 	}
 
-	public TileEntity getBlockTileEntity(int i1, int i2, int i3) {
-		int i4 = (i1 >> 4) - this.chunkX;
-		int i5 = (i3 >> 4) - this.chunkZ;
-		return this.chunkArray[i4][i5].getChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
+	public TileEntity getBlockTileEntity(int x, int y, int z) {
+		int i4 = (x >> 4) - this.chunkX;
+		int i5 = (z >> 4) - this.chunkZ;
+		return this.chunkArray[i4][i5].getChunkBlockTileEntity(x & 15, y, z & 15);
 	}
 
 	public float getBrightness(int x, int y, int z) {

@@ -169,10 +169,10 @@ public class EntityItem extends Entity {
 		nBTTagCompound1.setCompoundTag("Item", this.item.writeToNBT(new NBTTagCompound()));
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		this.health = compoundTag.getShort("Health") & 255;
-		this.age = compoundTag.getShort("Age");
-		NBTTagCompound nBTTagCompound2 = compoundTag.getCompoundTag("Item");
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		this.health = nBTTagCompound1.getShort("Health") & 255;
+		this.age = nBTTagCompound1.getShort("Age");
+		NBTTagCompound nBTTagCompound2 = nBTTagCompound1.getCompoundTag("Item");
 		this.item = new ItemStack(nBTTagCompound2);
 	}
 

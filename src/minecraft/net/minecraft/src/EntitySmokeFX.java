@@ -21,8 +21,8 @@ public class EntitySmokeFX extends EntityFX {
 		this.noClip = false;
 	}
 
-	public void renderParticle(Tessellator tessellator1, float f2, float f3, float f4, float f5, float f6, float f7) {
-		float f8 = ((float)this.particleAge + f2) / (float)this.particleMaxAge * 32.0F;
+	public void renderParticle(Tessellator tessellator, float renderPartialTick, float xOffset, float yOffset, float zOffset, float xOffset2, float zOffset2) {
+		float f8 = ((float)this.particleAge + renderPartialTick) / (float)this.particleMaxAge * 32.0F;
 		if(f8 < 0.0F) {
 			f8 = 0.0F;
 		}
@@ -32,7 +32,7 @@ public class EntitySmokeFX extends EntityFX {
 		}
 
 		this.particleScale = this.smokeParticleScale * f8;
-		super.renderParticle(tessellator1, f2, f3, f4, f5, f6, f7);
+		super.renderParticle(tessellator, renderPartialTick, xOffset, yOffset, zOffset, xOffset2, zOffset2);
 	}
 
 	public void onUpdate() {

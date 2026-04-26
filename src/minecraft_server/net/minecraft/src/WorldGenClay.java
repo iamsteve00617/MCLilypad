@@ -6,8 +6,8 @@ public class WorldGenClay extends WorldGenerator {
 	private int clayBlockId = Block.blockClay.blockID;
 	private int numberOfBlocks;
 
-	public WorldGenClay(int numberOfBlocks) {
-		this.numberOfBlocks = numberOfBlocks;
+	public WorldGenClay(int i1) {
+		this.numberOfBlocks = i1;
 	}
 
 	public boolean generate(World world1, Random random2, int i3, int i4, int i5) {

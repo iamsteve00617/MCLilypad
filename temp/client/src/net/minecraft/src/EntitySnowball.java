@@ -185,13 +185,13 @@ public class EntitySnowball extends Entity {
 		nBTTagCompound1.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		this.xTile = compoundTag.getShort("xTile");
-		this.yTile = compoundTag.getShort("yTile");
-		this.zTile = compoundTag.getShort("zTile");
-		this.inTile = compoundTag.getByte("inTile") & 255;
-		this.throwableShake = compoundTag.getByte("shake") & 255;
-		this.inGround = compoundTag.getByte("inGround") == 1;
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		this.xTile = nBTTagCompound1.getShort("xTile");
+		this.yTile = nBTTagCompound1.getShort("yTile");
+		this.zTile = nBTTagCompound1.getShort("zTile");
+		this.inTile = nBTTagCompound1.getByte("inTile") & 255;
+		this.throwableShake = nBTTagCompound1.getByte("shake") & 255;
+		this.inGround = nBTTagCompound1.getByte("inGround") == 1;
 	}
 
 	public void onCollideWithPlayer(EntityPlayer entityPlayer1) {

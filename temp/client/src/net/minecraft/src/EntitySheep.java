@@ -30,9 +30,9 @@ public class EntitySheep extends EntityAnimal {
 		nBTTagCompound1.setBoolean("Sheared", this.sheared);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		super.readEntityFromNBT(compoundTag);
-		this.sheared = compoundTag.getBoolean("Sheared");
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		super.readEntityFromNBT(nBTTagCompound1);
+		this.sheared = nBTTagCompound1.getBoolean("Sheared");
 	}
 
 	protected String getLivingSound() {

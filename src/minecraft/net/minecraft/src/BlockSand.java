@@ -17,8 +17,8 @@ public class BlockSand extends Block {
 		world1.scheduleBlockUpdate(i2, i3, i4, this.blockID);
 	}
 
-	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
-		this.tryToFall(worldObj, x, y, z);
+	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+		this.tryToFall(world1, i2, i3, i4);
 	}
 
 	private void tryToFall(World worldObj, int x, int y, int z) {

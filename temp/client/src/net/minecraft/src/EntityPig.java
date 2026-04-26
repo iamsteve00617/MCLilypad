@@ -15,9 +15,9 @@ public class EntityPig extends EntityAnimal {
 		nBTTagCompound1.setBoolean("Saddle", this.saddled);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		super.readEntityFromNBT(compoundTag);
-		this.saddled = compoundTag.getBoolean("Saddle");
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		super.readEntityFromNBT(nBTTagCompound1);
+		this.saddled = nBTTagCompound1.getBoolean("Saddle");
 	}
 
 	protected String getLivingSound() {
@@ -32,9 +32,9 @@ public class EntityPig extends EntityAnimal {
 		return "mob.pigdeath";
 	}
 
-	public boolean interact(EntityPlayer entityPlayer1) {
+	public boolean interact(EntityPlayer entityPlayer) {
 		if(this.saddled) {
-			entityPlayer1.mountEntity(this);
+			entityPlayer.mountEntity(this);
 			return true;
 		} else {
 			return false;

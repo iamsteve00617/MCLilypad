@@ -26,8 +26,8 @@ public class ChunkProviderServer implements IChunkProvider {
 		this.serverChunkProvider = chunkProvider;
 	}
 
-	public boolean chunkExists(int i1, int i2) {
-		ChunkCoordinates chunkCoordinates3 = new ChunkCoordinates(i1, i2);
+	public boolean chunkExists(int x, int z) {
+		ChunkCoordinates chunkCoordinates3 = new ChunkCoordinates(x, z);
 		return this.id2ChunkMap.containsKey(chunkCoordinates3);
 	}
 

@@ -496,15 +496,15 @@ public class EntityLiving extends Entity {
 		nBTTagCompound1.setShort("AttackTime", (short)this.attackTime);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		this.health = compoundTag.getShort("Health");
-		if(!compoundTag.hasKey("Health")) {
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		this.health = nBTTagCompound1.getShort("Health");
+		if(!nBTTagCompound1.hasKey("Health")) {
 			this.health = 10;
 		}
 
-		this.hurtTime = compoundTag.getShort("HurtTime");
-		this.deathTime = compoundTag.getShort("DeathTime");
-		this.attackTime = compoundTag.getShort("AttackTime");
+		this.hurtTime = nBTTagCompound1.getShort("HurtTime");
+		this.deathTime = nBTTagCompound1.getShort("DeathTime");
+		this.attackTime = nBTTagCompound1.getShort("AttackTime");
 	}
 
 	public boolean isEntityAlive() {

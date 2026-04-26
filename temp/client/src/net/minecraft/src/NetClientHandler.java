@@ -137,8 +137,8 @@ public class NetClientHandler extends NetHandler {
 		}
 	}
 
-	public void handleDestroyEntity(Packet29DestroyEntity packet29DestroyEntity1) {
-		this.worldClient.removeEntityFromWorld(packet29DestroyEntity1.entityId);
+	public void handleDestroyEntity(Packet29DestroyEntity packet) {
+		this.worldClient.removeEntityFromWorld(packet.entityId);
 	}
 
 	public void handleFlying(Packet10Flying packet) {
@@ -200,13 +200,13 @@ public class NetClientHandler extends NetHandler {
 
 	}
 
-	public void handleMapChunk(Packet51MapChunk packet51MapChunk1) {
-		this.worldClient.invalidateBlockReceiveRegion(packet51MapChunk1.xPosition, packet51MapChunk1.yPosition, packet51MapChunk1.zPosition, packet51MapChunk1.xPosition + packet51MapChunk1.xSize - 1, packet51MapChunk1.yPosition + packet51MapChunk1.ySize - 1, packet51MapChunk1.zPosition + packet51MapChunk1.zSize - 1);
-		this.worldClient.setChunkData(packet51MapChunk1.xPosition, packet51MapChunk1.yPosition, packet51MapChunk1.zPosition, packet51MapChunk1.xSize, packet51MapChunk1.ySize, packet51MapChunk1.zSize, packet51MapChunk1.chunkData);
+	public void handleMapChunk(Packet51MapChunk packet) {
+		this.worldClient.invalidateBlockReceiveRegion(packet.xPosition, packet.yPosition, packet.zPosition, packet.xPosition + packet.xSize - 1, packet.yPosition + packet.ySize - 1, packet.zPosition + packet.zSize - 1);
+		this.worldClient.setChunkData(packet.xPosition, packet.yPosition, packet.zPosition, packet.xSize, packet.ySize, packet.zSize, packet.chunkData);
 	}
 
-	public void handleBlockChange(Packet53BlockChange packet) {
-		this.worldClient.handleBlockChange(packet.xPosition, packet.yPosition, packet.zPosition, packet.type, packet.metadata);
+	public void handleBlockChange(Packet53BlockChange packet53BlockChange1) {
+		this.worldClient.handleBlockChange(packet53BlockChange1.xPosition, packet53BlockChange1.yPosition, packet53BlockChange1.zPosition, packet53BlockChange1.type, packet53BlockChange1.metadata);
 	}
 
 	public void handleKickDisconnect(Packet255KickDisconnect packet) {
@@ -216,11 +216,11 @@ public class NetClientHandler extends NetHandler {
 		this.mc.displayGuiScreen(new GuiConnectFailed("Disconnected by server", packet.reason));
 	}
 
-	public void handleErrorMessage(String string1) {
+	public void handleErrorMessage(String message) {
 		if(!this.disconnected) {
 			this.disconnected = true;
 			this.mc.changeWorld1((World)null);
-			this.mc.displayGuiScreen(new GuiConnectFailed("Connection lost", string1));
+			this.mc.displayGuiScreen(new GuiConnectFailed("Connection lost", message));
 		}
 	}
 
@@ -245,11 +245,11 @@ public class NetClientHandler extends NetHandler {
 
 	}
 
-	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet) {
-		Entity entity2 = this.worldClient.getEntityByID(packet.entityId);
+	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet16BlockItemSwitch1) {
+		Entity entity2 = this.worldClient.getEntityByID(packet16BlockItemSwitch1.entityId);
 		if(entity2 != null) {
 			EntityPlayer entityPlayer3 = (EntityPlayer)entity2;
-			int i4 = packet.id;
+			int i4 = packet16BlockItemSwitch1.id;
 			if(i4 == 0) {
 				entityPlayer3.inventory.mainInventory[entityPlayer3.inventory.currentItem] = null;
 			} else {
@@ -263,8 +263,8 @@ public class NetClientHandler extends NetHandler {
 		this.mc.ingameGUI.addChatMessage(packet.message);
 	}
 
-	public void handleArmAnimation(Packet18ArmAnimation packet18ArmAnimation1) {
-		Entity entity2 = this.worldClient.getEntityByID(packet18ArmAnimation1.entityId);
+	public void handleArmAnimation(Packet18ArmAnimation packet) {
+		Entity entity2 = this.worldClient.getEntityByID(packet.entityId);
 		if(entity2 != null) {
 			EntityPlayer entityPlayer3 = (EntityPlayer)entity2;
 			entityPlayer3.swingItem();
@@ -302,19 +302,19 @@ public class NetClientHandler extends NetHandler {
 		this.netManager.networkShutdown("Closed");
 	}
 
-	public void handleMobSpawn(Packet24MobSpawn packet24MobSpawn1) {
-		double d2 = (double)packet24MobSpawn1.xPosition / 32.0D;
-		double d4 = (double)packet24MobSpawn1.yPosition / 32.0D;
-		double d6 = (double)packet24MobSpawn1.zPosition / 32.0D;
-		float f8 = (float)(packet24MobSpawn1.yaw * 360) / 256.0F;
-		float f9 = (float)(packet24MobSpawn1.pitch * 360) / 256.0F;
-		EntityLiving entityLiving10 = (EntityLiving)EntityList.createEntityByID(packet24MobSpawn1.type, this.mc.theWorld);
-		entityLiving10.serverPosX = packet24MobSpawn1.xPosition;
-		entityLiving10.serverPosY = packet24MobSpawn1.yPosition;
-		entityLiving10.serverPosZ = packet24MobSpawn1.zPosition;
+	public void handleMobSpawn(Packet24MobSpawn packet) {
+		double d2 = (double)packet.xPosition / 32.0D;
+		double d4 = (double)packet.yPosition / 32.0D;
+		double d6 = (double)packet.zPosition / 32.0D;
+		float f8 = (float)(packet.yaw * 360) / 256.0F;
+		float f9 = (float)(packet.pitch * 360) / 256.0F;
+		EntityLiving entityLiving10 = (EntityLiving)EntityList.createEntityByID(packet.type, this.mc.theWorld);
+		entityLiving10.serverPosX = packet.xPosition;
+		entityLiving10.serverPosY = packet.yPosition;
+		entityLiving10.serverPosZ = packet.zPosition;
 		entityLiving10.setPositionAndRotation(d2, d4, d6, f8, f9);
 		entityLiving10.isAIEnabled = true;
-		this.worldClient.addEntityToWorld(packet24MobSpawn1.entityId, entityLiving10);
+		this.worldClient.addEntityToWorld(packet.entityId, entityLiving10);
 	}
 
 	public void handleUpdateTime(Packet4UpdateTime packet) {
@@ -337,11 +337,11 @@ public class NetClientHandler extends NetHandler {
 
 	}
 
-	public void handleComplexEntity(Packet59ComplexEntity packet) {
-		TileEntity tileEntity2 = this.worldClient.getBlockTileEntity(packet.xCoord, packet.yCoord, packet.zCoord);
+	public void handleComplexEntity(Packet59ComplexEntity packet59ComplexEntity1) {
+		TileEntity tileEntity2 = this.worldClient.getBlockTileEntity(packet59ComplexEntity1.xCoord, packet59ComplexEntity1.yCoord, packet59ComplexEntity1.zCoord);
 		if(tileEntity2 != null) {
-			tileEntity2.readFromNBT(packet.tileEntityNBT);
-			this.worldClient.markBlocksDirty(packet.xCoord, packet.yCoord, packet.zCoord, packet.xCoord, packet.yCoord, packet.zCoord);
+			tileEntity2.readFromNBT(packet59ComplexEntity1.tileEntityNBT);
+			this.worldClient.markBlocksDirty(packet59ComplexEntity1.xCoord, packet59ComplexEntity1.yCoord, packet59ComplexEntity1.zCoord, packet59ComplexEntity1.xCoord, packet59ComplexEntity1.yCoord, packet59ComplexEntity1.zCoord);
 		}
 
 	}

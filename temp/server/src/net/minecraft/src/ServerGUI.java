@@ -79,8 +79,8 @@ public class ServerGUI extends JComponent implements ICommandListener {
 		return jPanel1;
 	}
 
-	public void addHelpCommandMessage(String helpCommandMessage) {
-		logger.info(helpCommandMessage);
+	public void addHelpCommandMessage(String string1) {
+		logger.info(string1);
 	}
 
 	public String getUsername() {

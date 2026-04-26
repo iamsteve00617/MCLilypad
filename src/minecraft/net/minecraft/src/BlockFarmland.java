@@ -27,25 +27,25 @@ public class BlockFarmland extends Block {
 		return i1 == 1 && i2 > 0 ? this.blockIndexInTexture - 1 : (i1 == 1 ? this.blockIndexInTexture : 2);
 	}
 
-	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
-		if(rand.nextInt(5) == 0) {
-			if(this.isWaterNearby(worldObj, x, y, z)) {
-				worldObj.setBlockMetadataWithNotify(x, y, z, 7);
+	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+		if(random5.nextInt(5) == 0) {
+			if(this.isWaterNearby(world1, i2, i3, i4)) {
+				world1.setBlockMetadataWithNotify(i2, i3, i4, 7);
 			} else {
-				int i6 = worldObj.getBlockMetadata(x, y, z);
+				int i6 = world1.getBlockMetadata(i2, i3, i4);
 				if(i6 > 0) {
-					worldObj.setBlockMetadataWithNotify(x, y, z, i6 - 1);
-				} else if(!this.isCropsNearby(worldObj, x, y, z)) {
-					worldObj.setBlockWithNotify(x, y, z, Block.dirt.blockID);
+					world1.setBlockMetadataWithNotify(i2, i3, i4, i6 - 1);
+				} else if(!this.isCropsNearby(world1, i2, i3, i4)) {
+					world1.setBlockWithNotify(i2, i3, i4, Block.dirt.blockID);
 				}
 			}
 		}
 
 	}
 
-	public void onEntityWalking(World world1, int i2, int i3, int i4, Entity entity5) {
-		if(world1.rand.nextInt(4) == 0) {
-			world1.setBlockWithNotify(i2, i3, i4, Block.dirt.blockID);
+	public void onEntityWalking(World worldObj, int x, int y, int z, Entity entity) {
+		if(worldObj.rand.nextInt(4) == 0) {
+			worldObj.setBlockWithNotify(x, y, z, Block.dirt.blockID);
 		}
 
 	}

@@ -5,37 +5,37 @@ public class ItemRedstone extends Item {
 		super(i1);
 	}
 
-	public boolean onItemUse(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int i7) {
+	public boolean onItemUse(ItemStack itemStack1, EntityPlayer entityPlayer2, World world3, int i4, int i5, int i6, int i7) {
 		if(i7 == 0) {
-			--y;
+			--i5;
 		}
 
 		if(i7 == 1) {
-			++y;
+			++i5;
 		}
 
 		if(i7 == 2) {
-			--z;
+			--i6;
 		}
 
 		if(i7 == 3) {
-			++z;
+			++i6;
 		}
 
 		if(i7 == 4) {
-			--x;
+			--i4;
 		}
 
 		if(i7 == 5) {
-			++x;
+			++i4;
 		}
 
-		if(world.getBlockId(x, y, z) != 0) {
+		if(world3.getBlockId(i4, i5, i6) != 0) {
 			return false;
 		} else {
-			if(Block.redstoneWire.canPlaceBlockAt(world, x, y, z)) {
-				--stack.stackSize;
-				world.setBlockWithNotify(x, y, z, Block.redstoneWire.blockID);
+			if(Block.redstoneWire.canPlaceBlockAt(world3, i4, i5, i6)) {
+				--itemStack1.stackSize;
+				world3.setBlockWithNotify(i4, i5, i6, Block.redstoneWire.blockID);
 			}
 
 			return true;

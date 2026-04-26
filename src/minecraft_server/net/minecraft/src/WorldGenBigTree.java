@@ -146,16 +146,16 @@ public class WorldGenBigTree extends WorldGenerator {
 		}
 	}
 
-	float b(int i1) {
+	float leafSize(int i1) {
 		return i1 >= 0 && i1 < this.leafDistanceLimit ? (i1 != 0 && i1 != this.leafDistanceLimit - 1 ? 3.0F : 2.0F) : -1.0F;
 	}
 
-	void generateLeafNode(int x, int y, int z) {
-		int i4 = y;
+	void generateLeafNode(int i1, int i2, int i3) {
+		int i4 = i2;
 
-		for(int i5 = y + this.leafDistanceLimit; i4 < i5; ++i4) {
-			float f6 = this.b(i4 - y);
-			this.genTreeLayer(x, i4, z, f6, (byte)1, 18);
+		for(int i5 = i2 + this.leafDistanceLimit; i4 < i5; ++i4) {
+			float f6 = this.leafSize(i4 - i2);
+			this.genTreeLayer(i1, i4, i3, f6, (byte)1, 18);
 		}
 
 	}

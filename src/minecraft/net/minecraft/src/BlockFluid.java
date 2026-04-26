@@ -179,8 +179,8 @@ public abstract class BlockFluid extends Block {
 		return f5 > f6 ? f5 : f6;
 	}
 
-	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
-		super.updateTick(worldObj, x, y, z, rand);
+	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+		super.updateTick(world1, i2, i3, i4, random5);
 	}
 
 	public int getRenderBlockPass() {

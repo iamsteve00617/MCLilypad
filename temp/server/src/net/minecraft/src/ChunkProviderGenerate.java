@@ -287,7 +287,7 @@ public class ChunkProviderGenerate implements IChunkProvider {
 		return d1;
 	}
 
-	public boolean chunkExists(int i1, int i2) {
+	public boolean chunkExists(int x, int z) {
 		return true;
 	}
 

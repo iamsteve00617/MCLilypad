@@ -8,14 +8,14 @@ public class ItemSeeds extends Item {
 		this.blockType = blockType;
 	}
 
-	public boolean onItemUse(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int i7) {
+	public boolean onItemUse(ItemStack itemStack1, EntityPlayer entityPlayer2, World world3, int i4, int i5, int i6, int i7) {
 		if(i7 != 1) {
 			return false;
 		} else {
-			int i8 = world.getBlockId(x, y, z);
+			int i8 = world3.getBlockId(i4, i5, i6);
 			if(i8 == Block.tilledField.blockID) {
-				world.setBlockWithNotify(x, y + 1, z, this.blockType);
-				--stack.stackSize;
+				world3.setBlockWithNotify(i4, i5 + 1, i6, this.blockType);
+				--itemStack1.stackSize;
 				return true;
 			} else {
 				return false;

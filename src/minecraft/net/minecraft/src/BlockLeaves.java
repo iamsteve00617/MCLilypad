@@ -75,15 +75,15 @@ public class BlockLeaves extends BlockLeavesBase {
 		}
 	}
 
-	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
-		int i6 = worldObj.getBlockMetadata(x, y, z);
+	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+		int i6 = world1.getBlockMetadata(i2, i3, i4);
 		if(i6 == 0) {
 			this.decayCounter = 0;
-			this.updateCurrentLeaves(worldObj, x, y, z);
+			this.updateCurrentLeaves(world1, i2, i3, i4);
 		} else if(i6 == 1) {
-			this.removeLeaves(worldObj, x, y, z);
-		} else if(rand.nextInt(10) == 0) {
-			this.updateCurrentLeaves(worldObj, x, y, z);
+			this.removeLeaves(world1, i2, i3, i4);
+		} else if(random5.nextInt(10) == 0) {
+			this.updateCurrentLeaves(world1, i2, i3, i4);
 		}
 
 	}
@@ -110,7 +110,7 @@ public class BlockLeaves extends BlockLeavesBase {
 		this.blockIndexInTexture = this.leafTexIndex + (graphicsLevel ? 0 : 1);
 	}
 
-	public void onEntityWalking(World world1, int i2, int i3, int i4, Entity entity5) {
-		super.onEntityWalking(world1, i2, i3, i4, entity5);
+	public void onEntityWalking(World worldObj, int x, int y, int z, Entity entity) {
+		super.onEntityWalking(worldObj, x, y, z, entity);
 	}
 }

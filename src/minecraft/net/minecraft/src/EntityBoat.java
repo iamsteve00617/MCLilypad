@@ -224,8 +224,8 @@ public class EntityBoat extends Entity {
 		return 0.0F;
 	}
 
-	public boolean interact(EntityPlayer entityPlayer1) {
-		entityPlayer1.mountEntity(this);
+	public boolean interact(EntityPlayer entityPlayer) {
+		entityPlayer.mountEntity(this);
 		return true;
 	}
 }

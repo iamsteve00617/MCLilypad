@@ -94,6 +94,6 @@ public class EntityFX extends Entity {
 	public void writeEntityToNBT(NBTTagCompound nBTTagCompound1) {
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
 	}
 }

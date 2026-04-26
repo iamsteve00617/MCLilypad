@@ -26,7 +26,7 @@ public class ItemSword extends Item {
 		itemStack1.damageItem(2);
 	}
 
-	public int getDamageVsEntity(Entity entity1) {
+	public int getDamageVsEntity(Entity entity) {
 		return this.weaponDamage;
 	}
 

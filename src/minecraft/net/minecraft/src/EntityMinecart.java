@@ -603,17 +603,17 @@ public class EntityMinecart extends Entity implements IInventory {
 		return this.cargoItems[i1];
 	}
 
-	public ItemStack decrStackSize(int slot, int stackSize) {
-		if(this.cargoItems[slot] != null) {
+	public ItemStack decrStackSize(int i1, int i2) {
+		if(this.cargoItems[i1] != null) {
 			ItemStack itemStack3;
-			if(this.cargoItems[slot].stackSize <= stackSize) {
-				itemStack3 = this.cargoItems[slot];
-				this.cargoItems[slot] = null;
+			if(this.cargoItems[i1].stackSize <= i2) {
+				itemStack3 = this.cargoItems[i1];
+				this.cargoItems[i1] = null;
 				return itemStack3;
 			} else {
-				itemStack3 = this.cargoItems[slot].splitStack(stackSize);
-				if(this.cargoItems[slot].stackSize == 0) {
-					this.cargoItems[slot] = null;
+				itemStack3 = this.cargoItems[i1].splitStack(i2);
+				if(this.cargoItems[i1].stackSize == 0) {
+					this.cargoItems[i1] = null;
 				}
 
 				return itemStack3;
@@ -642,23 +642,23 @@ public class EntityMinecart extends Entity implements IInventory {
 	public void onInventoryChanged() {
 	}
 
-	public boolean interact(EntityPlayer entityPlayer1) {
+	public boolean interact(EntityPlayer entityPlayer) {
 		if(this.minecartType == 0) {
-			entityPlayer1.mountEntity(this);
+			entityPlayer.mountEntity(this);
 		} else if(this.minecartType == 1) {
-			entityPlayer1.displayGUIChest(this);
+			entityPlayer.displayGUIChest(this);
 		} else if(this.minecartType == 2) {
-			ItemStack itemStack2 = entityPlayer1.inventory.getCurrentItem();
+			ItemStack itemStack2 = entityPlayer.inventory.getCurrentItem();
 			if(itemStack2 != null && itemStack2.itemID == Item.coal.shiftedIndex) {
 				if(--itemStack2.stackSize == 0) {
-					entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, (ItemStack)null);
+					entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, (ItemStack)null);
 				}
 
 				this.fuel += 1200;
 			}
 
-			this.pushX = this.posX - entityPlayer1.posX;
-			this.pushZ = this.posZ - entityPlayer1.posZ;
+			this.pushX = this.posX - entityPlayer.posX;
+			this.pushZ = this.posZ - entityPlayer.posZ;
 		}
 
 		return true;

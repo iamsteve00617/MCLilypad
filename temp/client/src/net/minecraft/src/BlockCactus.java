@@ -80,7 +80,7 @@ public class BlockCactus extends Block {
 		}
 	}
 
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		entity.attackEntityFrom((Entity)null, 1);
+	public void onEntityCollidedWithBlock(World world1, int i2, int i3, int i4, Entity entity5) {
+		entity5.attackEntityFrom((Entity)null, 1);
 	}
 }

@@ -16,10 +16,10 @@ public class BlockSnowBlock extends Block {
 		return 4;
 	}
 
-	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
-		if(worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z) > 11) {
-			this.dropBlockAsItem(worldObj, x, y, z, worldObj.getBlockMetadata(x, y, z));
-			worldObj.setBlockWithNotify(x, y, z, 0);
+	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+		if(world1.getSavedLightValue(EnumSkyBlock.Block, i2, i3, i4) > 11) {
+			this.dropBlockAsItem(world1, i2, i3, i4, world1.getBlockMetadata(i2, i3, i4));
+			world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 
 	}

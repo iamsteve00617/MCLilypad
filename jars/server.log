@@ -1,0 +1,31 @@
+2026-04-25 21:31:41 [INFO] Starting minecraft server version 0.2.0_01
+2026-04-25 21:31:41 [INFO] Loading properties
+2026-04-25 21:31:41 [INFO] Starting Minecraft server on 192.168.0.165:25565
+2026-04-25 21:31:41 [WARNING] **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+2026-04-25 21:31:41 [WARNING] The server will make no attempt to authenticate usernames. Beware.
+2026-04-25 21:31:41 [WARNING] While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+2026-04-25 21:31:41 [WARNING] To change this, set "online-mode" to "true" in the server.settings file.
+2026-04-25 21:31:41 [INFO] Preparing level "world"
+2026-04-25 21:31:41 [INFO] Preparing start region
+2026-04-25 21:31:45 [INFO] Done! For help, type "help" or "?"
+2026-04-25 21:31:56 [INFO] Steve404_ [/192.168.0.165:60905] logged in
+2026-04-25 21:32:02 [INFO] <Steve404_> aaa
+2026-04-25 21:32:09 [INFO] Steve404_ lost connection: Quitting
+2026-04-25 21:32:12 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
+2026-04-25 21:32:51 [INFO] Steve404_ [/192.168.0.165:60926] logged in
+2026-04-25 21:32:58 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
+2026-04-25 21:33:52 [INFO] <Steve404_> So
+2026-04-25 21:33:55 [INFO] <Steve404_> I was bored
+2026-04-25 21:34:01 [INFO] <Steve404_> And I did this for the mod
+2026-04-25 21:34:08 [INFO] <Steve404_> Chack this :D
+2026-04-25 21:34:22 [INFO] <Steve404_> It only works for "Steve404_" and "Devoe"
+2026-04-25 21:34:26 [INFO] Devoe [/192.168.0.165:53818] logged in
+2026-04-25 21:35:05 [INFO] <Steve404_> Yeah
+2026-04-25 21:35:11 [INFO] <Steve404_> It's broken.
+2026-04-25 21:35:15 [INFO] Devoe lost connection: Internal exception: java.net.SocketException: Connection reset
+2026-04-25 21:35:33 [INFO] <Steve404_> Anyways hope you like ot
+2026-04-25 21:35:34 [INFO] <Steve404_> Bye
+2026-04-25 21:35:37 [INFO] Steve404_ lost connection: Quitting
+2026-04-25 21:35:48 [INFO] CONSOLE: Stopping the server..
+2026-04-25 21:35:48 [INFO] Stopping server
+2026-04-25 21:35:48 [INFO] Saving chunks

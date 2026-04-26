@@ -44,7 +44,7 @@ public class NetLoginHandler extends NetHandler {
 		this.finishedProcessing = true;
 	}
 
-	public void handleHandshake(Packet2Handshake packet) {
+	public void handleHandshake(Packet2Handshake packet2Handshake1) {
 		if(this.mcServer.onlineMode) {
 			this.serverId = Long.toHexString(rand.nextLong());
 			this.netManager.addToSendQueue(new Packet2Handshake(this.serverId));

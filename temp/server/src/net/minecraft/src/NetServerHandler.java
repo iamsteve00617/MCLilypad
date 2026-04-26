@@ -218,8 +218,8 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		this.netManager.addToSendQueue(packet1);
 	}
 
-	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet16BlockItemSwitch1) {
-		int i2 = packet16BlockItemSwitch1.id;
+	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet) {
+		int i2 = packet.id;
 		this.playerEntity.inventory.currentItem = this.playerEntity.inventory.mainInventory.length - 1;
 		if(i2 == 0) {
 			this.heldItem = null;
@@ -243,8 +243,8 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		this.mcServer.worldMngr.spawnEntityInWorld(entityItem8);
 	}
 
-	public void handleChat(Packet3Chat packet3Chat1) {
-		String string2 = packet3Chat1.message;
+	public void handleChat(Packet3Chat packet) {
+		String string2 = packet.message;
 		if(string2.length() > 100) {
 			this.kickPlayer("Chat message too long");
 		} else {
@@ -336,7 +336,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
 	}
 
-	public void handleKickDisconnect(Packet255KickDisconnect packet) {
+	public void handleKickDisconnect(Packet255KickDisconnect packet255KickDisconnect1) {
 		this.netManager.networkShutdown("Quitting");
 	}
 
@@ -344,25 +344,25 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		return this.netManager.getNumChunkDataPackets();
 	}
 
-	public void addHelpCommandMessage(String helpCommandMessage) {
-		this.sendPacket(new Packet3Chat("\u00a77" + helpCommandMessage));
+	public void addHelpCommandMessage(String string1) {
+		this.sendPacket(new Packet3Chat("\u00a77" + string1));
 	}
 
 	public String getUsername() {
 		return this.playerEntity.username;
 	}
 
-	public void handlePlayerInventory(Packet5PlayerInventory packet5PlayerInventory1) {
-		if(packet5PlayerInventory1.inventoryType == -1) {
-			this.playerEntity.inventory.mainInventory = packet5PlayerInventory1.inventory;
+	public void handlePlayerInventory(Packet5PlayerInventory packet) {
+		if(packet.inventoryType == -1) {
+			this.playerEntity.inventory.mainInventory = packet.inventory;
 		}
 
-		if(packet5PlayerInventory1.inventoryType == -2) {
-			this.playerEntity.inventory.craftingInventory = packet5PlayerInventory1.inventory;
+		if(packet.inventoryType == -2) {
+			this.playerEntity.inventory.craftingInventory = packet.inventory;
 		}
 
-		if(packet5PlayerInventory1.inventoryType == -3) {
-			this.playerEntity.inventory.armorInventory = packet5PlayerInventory1.inventory;
+		if(packet.inventoryType == -3) {
+			this.playerEntity.inventory.armorInventory = packet.inventory;
 		}
 
 	}

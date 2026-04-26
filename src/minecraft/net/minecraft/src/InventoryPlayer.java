@@ -145,23 +145,23 @@ public class InventoryPlayer implements IInventory {
 		}
 	}
 
-	public ItemStack decrStackSize(int slot, int stackSize) {
+	public ItemStack decrStackSize(int i1, int i2) {
 		ItemStack[] itemStack3 = this.mainInventory;
-		if(slot >= this.mainInventory.length) {
+		if(i1 >= this.mainInventory.length) {
 			itemStack3 = this.armorInventory;
-			slot -= this.mainInventory.length;
+			i1 -= this.mainInventory.length;
 		}
 
-		if(itemStack3[slot] != null) {
+		if(itemStack3[i1] != null) {
 			ItemStack itemStack4;
-			if(itemStack3[slot].stackSize <= stackSize) {
-				itemStack4 = itemStack3[slot];
-				itemStack3[slot] = null;
+			if(itemStack3[i1].stackSize <= i2) {
+				itemStack4 = itemStack3[i1];
+				itemStack3[i1] = null;
 				return itemStack4;
 			} else {
-				itemStack4 = itemStack3[slot].splitStack(stackSize);
-				if(itemStack3[slot].stackSize == 0) {
-					itemStack3[slot] = null;
+				itemStack4 = itemStack3[i1].splitStack(i2);
+				if(itemStack3[i1].stackSize == 0) {
+					itemStack3[i1] = null;
 				}
 
 				return itemStack4;

@@ -127,8 +127,8 @@ public class BlockButton extends Block {
 
 	}
 
-	public void onBlockClicked(World worldObj, int x, int y, int z, EntityPlayer entityPlayer) {
-		this.blockActivated(worldObj, x, y, z, entityPlayer);
+	public void onBlockClicked(World world1, int i2, int i3, int i4, EntityPlayer entityPlayer5) {
+		this.blockActivated(world1, i2, i3, i4, entityPlayer5);
 	}
 
 	public boolean blockActivated(World world1, int i2, int i3, int i4, EntityPlayer entityPlayer5) {

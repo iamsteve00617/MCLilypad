@@ -6,7 +6,7 @@ public class ItemPainting extends Item {
 		this.maxDamage = 64;
 	}
 
-	public boolean onItemUse(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int i7) {
+	public boolean onItemUse(ItemStack itemStack1, EntityPlayer entityPlayer2, World world3, int i4, int i5, int i6, int i7) {
 		if(i7 == 0) {
 			return false;
 		} else if(i7 == 1) {
@@ -25,10 +25,10 @@ public class ItemPainting extends Item {
 				b8 = 3;
 			}
 
-			EntityPainting entityPainting9 = new EntityPainting(world, x, y, z, b8);
+			EntityPainting entityPainting9 = new EntityPainting(world3, i4, i5, i6, b8);
 			if(entityPainting9.onValidSurface()) {
-				world.spawnEntityInWorld(entityPainting9);
-				--stack.stackSize;
+				world3.spawnEntityInWorld(entityPainting9);
+				--itemStack1.stackSize;
 			}
 
 			return true;

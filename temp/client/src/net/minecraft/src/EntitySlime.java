@@ -27,9 +27,9 @@ public class EntitySlime extends EntityLiving implements IMobs {
 		nBTTagCompound1.setInteger("Size", this.size - 1);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		super.readEntityFromNBT(compoundTag);
-		this.size = compoundTag.getInteger("Size") + 1;
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		super.readEntityFromNBT(nBTTagCompound1);
+		this.size = nBTTagCompound1.getInteger("Size") + 1;
 	}
 
 	public void onUpdate() {

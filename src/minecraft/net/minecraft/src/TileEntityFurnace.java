@@ -14,19 +14,19 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 		return this.furnaceItemStacks[i1];
 	}
 
-	public ItemStack decrStackSize(int slot, int stackSize) {
-		if(this.furnaceItemStacks[slot] == null) {
+	public ItemStack decrStackSize(int i1, int i2) {
+		if(this.furnaceItemStacks[i1] == null) {
 			return null;
 		} else {
 			ItemStack itemStack3;
-			if(this.furnaceItemStacks[slot].stackSize <= stackSize) {
-				itemStack3 = this.furnaceItemStacks[slot];
-				this.furnaceItemStacks[slot] = null;
+			if(this.furnaceItemStacks[i1].stackSize <= i2) {
+				itemStack3 = this.furnaceItemStacks[i1];
+				this.furnaceItemStacks[i1] = null;
 				return itemStack3;
 			} else {
-				itemStack3 = this.furnaceItemStacks[slot].splitStack(stackSize);
-				if(this.furnaceItemStacks[slot].stackSize == 0) {
-					this.furnaceItemStacks[slot] = null;
+				itemStack3 = this.furnaceItemStacks[i1].splitStack(i2);
+				if(this.furnaceItemStacks[i1].stackSize == 0) {
+					this.furnaceItemStacks[i1] = null;
 				}
 
 				return itemStack3;

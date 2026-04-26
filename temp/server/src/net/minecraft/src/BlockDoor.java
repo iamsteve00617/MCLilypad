@@ -23,9 +23,9 @@ public class BlockDoor extends Block {
 		return 7;
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		this.setBlockBoundsBasedOnState(world, x, y, z);
-		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world1, int i2, int i3, int i4) {
+		this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
+		return super.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
 	public void setBlockBoundsBasedOnState(IBlockAccess iBlockAccess1, int i2, int i3, int i4) {

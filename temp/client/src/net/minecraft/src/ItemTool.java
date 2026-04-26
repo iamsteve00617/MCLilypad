@@ -38,7 +38,7 @@ public class ItemTool extends Item {
 		itemStack1.damageItem(1);
 	}
 
-	public int getDamageVsEntity(Entity entity1) {
+	public int getDamageVsEntity(Entity entity) {
 		return this.damageVsEntity;
 	}
 

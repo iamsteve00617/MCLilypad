@@ -68,8 +68,8 @@ public class EntityFallingSand extends Entity {
 		nBTTagCompound1.setByte("Tile", (byte)this.blockID);
 	}
 
-	protected void readEntityFromNBT(NBTTagCompound compoundTag) {
-		this.blockID = compoundTag.getByte("Tile") & 255;
+	protected void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		this.blockID = nBTTagCompound1.getByte("Tile") & 255;
 	}
 
 	public float getShadowSize() {

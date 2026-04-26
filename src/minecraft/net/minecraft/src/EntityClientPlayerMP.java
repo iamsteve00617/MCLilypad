@@ -71,16 +71,16 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	}
 
-	protected void joinEntityItemWithWorld(EntityItem entityItem1) {
+	protected void joinEntityItemWithWorld(EntityItem entityItem) {
 		System.out.println("Dropping?");
-		Packet21PickupSpawn packet21PickupSpawn2 = new Packet21PickupSpawn(entityItem1);
+		Packet21PickupSpawn packet21PickupSpawn2 = new Packet21PickupSpawn(entityItem);
 		this.sendQueue.addToSendQueue(packet21PickupSpawn2);
-		entityItem1.posX = (double)packet21PickupSpawn2.xPosition / 32.0D;
-		entityItem1.posY = (double)packet21PickupSpawn2.yPosition / 32.0D;
-		entityItem1.posZ = (double)packet21PickupSpawn2.zPosition / 32.0D;
-		entityItem1.motionX = (double)packet21PickupSpawn2.rotation / 128.0D;
-		entityItem1.motionY = (double)packet21PickupSpawn2.pitch / 128.0D;
-		entityItem1.motionZ = (double)packet21PickupSpawn2.roll / 128.0D;
+		entityItem.posX = (double)packet21PickupSpawn2.xPosition / 32.0D;
+		entityItem.posY = (double)packet21PickupSpawn2.yPosition / 32.0D;
+		entityItem.posZ = (double)packet21PickupSpawn2.zPosition / 32.0D;
+		entityItem.motionX = (double)packet21PickupSpawn2.rotation / 128.0D;
+		entityItem.motionY = (double)packet21PickupSpawn2.pitch / 128.0D;
+		entityItem.motionZ = (double)packet21PickupSpawn2.roll / 128.0D;
 	}
 
 	public void sendChatMessage(String string1) {

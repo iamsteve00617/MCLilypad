@@ -150,8 +150,8 @@ public class EntityPlayer extends EntityLiving {
 		this.yOffset = 0.1F;
 	}
 
-	public void addToPlayerScore(Entity entity1, int i2) {
-		this.score += i2;
+	public void addToPlayerScore(Entity entity, int score) {
+		this.score += score;
 	}
 
 	public void dropPlayerItem(ItemStack itemStack) {
@@ -204,9 +204,9 @@ public class EntityPlayer extends EntityLiving {
 		return this.inventory.canHarvestBlock(block);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compoundTag) {
-		super.readEntityFromNBT(compoundTag);
-		this.inventory.readFromNBT(compoundTag.getTagList("Inventory"));
+	public void readEntityFromNBT(NBTTagCompound nBTTagCompound1) {
+		super.readEntityFromNBT(nBTTagCompound1);
+		this.inventory.readFromNBT(nBTTagCompound1.getTagList("Inventory"));
 	}
 
 	public void writeEntityToNBT(NBTTagCompound nBTTagCompound1) {

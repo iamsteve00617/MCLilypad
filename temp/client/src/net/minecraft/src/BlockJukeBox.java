@@ -32,13 +32,13 @@ public class BlockJukeBox extends Block {
 		worldObj.spawnEntityInWorld(entityItem14);
 	}
 
-	public void dropBlockAsItemWithChance(World worldObj, int x, int y, int z, int metadata, float chance) {
-		if(!worldObj.multiplayerWorld) {
-			if(metadata > 0) {
-				this.ejectRecord(worldObj, x, y, z, metadata);
+	public void dropBlockAsItemWithChance(World world1, int i2, int i3, int i4, int i5, float f6) {
+		if(!world1.multiplayerWorld) {
+			if(i5 > 0) {
+				this.ejectRecord(world1, i2, i3, i4, i5);
 			}
 
-			super.dropBlockAsItemWithChance(worldObj, x, y, z, metadata, chance);
+			super.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, f6);
 		}
 	}
 }

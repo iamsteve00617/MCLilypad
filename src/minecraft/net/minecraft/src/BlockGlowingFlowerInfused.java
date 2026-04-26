@@ -8,10 +8,10 @@ public class BlockGlowingFlowerInfused extends BlockGlowing {
 		this.power = i4;
 	}
 
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		if(entity instanceof EntityMob) {
-			((EntityMob)entity).attackEntityFrom((Entity)null, 2 * this.power);
-			((EntityMob)entity).fire = 300;
+	public void onEntityCollidedWithBlock(World world1, int i2, int i3, int i4, Entity entity5) {
+		if(entity5 instanceof EntityMob) {
+			((EntityMob)entity5).attackEntityFrom((Entity)null, 2 * this.power);
+			((EntityMob)entity5).fire = 300;
 		}
 
 	}

@@ -51,7 +51,7 @@ public class BlockReed extends Block {
 		return this.canPlaceBlockAt(world1, i2, i3, i4);
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world1, int i2, int i3, int i4) {
 		return null;
 	}
 
