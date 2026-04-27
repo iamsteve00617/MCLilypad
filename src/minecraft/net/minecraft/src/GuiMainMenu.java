@@ -13,7 +13,7 @@ public class GuiMainMenu extends GuiScreen {
 	private LogoEffectRandomizer[][] logoEffects;
 	private float updateCounter = 0.0F;
 	private String splashString = "missingno";
-	private String[] splashes = new String[]{"...!", "(Stay tuned for more)", "Developed by Steve404_ and Devoe!", "[6], you're the best!", "1.0.16.05!"};
+	private String[] splashes = new String[]{"...!", "(Stay tuned for more)", "Developed by Steve404_ and Devoe!", "[6], you're the best!", "1.0.16.05!", "Blocks!", "Rubydung!", "Dragon free!", "Also try Dwarf Fortress!", "Also try Dungeon Keeper!"};
 	public static boolean shw = false;
 
 	public GuiMainMenu() {

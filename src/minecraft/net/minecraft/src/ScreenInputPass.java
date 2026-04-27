@@ -27,15 +27,15 @@ public class ScreenInputPass extends GuiScreen {
 				String string4 = scanner3.nextLine();
 				if(YesThisIsEasyToCircumvent_howeverPleaseDont(string4)) {
 					GuiMainMenu.shw = true;
-					System.out.println("act. successful");
+					System.out.println("Key was found!");
 				} else {
-					System.out.println("Saved act. key invalid");
+					System.out.println("Saved act. Key is invalid");
 				}
 			} catch (FileNotFoundException fileNotFoundException5) {
 				System.out.println("What");
 			}
 		} else {
-			System.out.println("act file not found");
+			System.out.println("Act file not found");
 		}
 
 	}
