@@ -107,7 +107,7 @@ public class GuiMainMenu extends GuiScreen {
 			System.out.println("Showing screen");
 			this.mc.displayGuiScreen(new ScreenInputPass(this.mc));
 		} else {
-			this.drawString(this.fontRenderer, "QA Build: " + ScreenInputPass.name, 2, 12, 2105376);
+			this.drawString(this.fontRenderer, "Logged in as: " + ScreenInputPass.name, 2, 12, 2105376);
 		}
 	}
 
