@@ -136,8 +136,8 @@ public class BlockFire extends Block {
 		return i6 > flag ? i6 : flag;
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return world.isBlockNormalCube(x, y - 1, z) || this.canNeighborBurn(world, x, y, z);
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
+		return world1.isBlockNormalCube(i2, i3 - 1, i4) || this.canNeighborBurn(world1, i2, i3, i4);
 	}
 
 	public void onNeighborBlockChange(World world1, int i2, int i3, int i4, int i5) {

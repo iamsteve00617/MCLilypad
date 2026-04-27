@@ -23,8 +23,8 @@ public class InventoryLargeChest implements IInventory {
 		return i1 >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlot(i1 - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlot(i1);
 	}
 
-	public ItemStack decrStackSize(int i1, int i2) {
-		return i1 >= this.upperChest.getSizeInventory() ? this.lowerChest.decrStackSize(i1 - this.upperChest.getSizeInventory(), i2) : this.upperChest.decrStackSize(i1, i2);
+	public ItemStack decrStackSize(int slot, int stackSize) {
+		return slot >= this.upperChest.getSizeInventory() ? this.lowerChest.decrStackSize(slot - this.upperChest.getSizeInventory(), stackSize) : this.upperChest.decrStackSize(slot, stackSize);
 	}
 
 	public void setInventorySlotContents(int i1, ItemStack itemStack2) {

@@ -74,7 +74,7 @@ public class WorldGenDungeons extends WorldGenerator {
 						}
 
 						if(i15 == 1) {
-							world1.setBlockWithNotify(i12, i4, i14, Block.chest.blockID);
+							world1.setBlockWithNotify(i12, i4, i14, Block.crate.blockID);
 							TileEntityChest tileEntityChest16 = (TileEntityChest)world1.getBlockTileEntity(i12, i4, i14);
 							int i17 = 0;
 
@@ -95,7 +95,7 @@ public class WorldGenDungeons extends WorldGenerator {
 				}
 			}
 
-			world1.setBlockWithNotify(i3, i4, i5, Block.mobSpawner.blockID);
+			world1.setBlockWithNotify(i3, i4, i5, Block.spawner.blockID);
 			TileEntityMobSpawner tileEntityMobSpawner19 = (TileEntityMobSpawner)world1.getBlockTileEntity(i3, i4, i5);
 			tileEntityMobSpawner19.mobID = this.pickMobSpawner(random2);
 			return true;
@@ -104,13 +104,13 @@ public class WorldGenDungeons extends WorldGenerator {
 		}
 	}
 
-	private ItemStack pickCheckLootItem(Random random1) {
-		int i2 = random1.nextInt(11);
-		return i2 == 0 ? new ItemStack(Item.saddle) : (i2 == 1 ? new ItemStack(Item.ingotIron, random1.nextInt(4) + 1) : (i2 == 2 ? new ItemStack(Item.bread) : (i2 == 3 ? new ItemStack(Item.wheat, random1.nextInt(4) + 1) : (i2 == 4 ? new ItemStack(Item.gunpowder, random1.nextInt(4) + 1) : (i2 == 5 ? new ItemStack(Item.silk, random1.nextInt(4) + 1) : (i2 == 6 ? new ItemStack(Item.bucketEmpty) : (i2 == 7 && random1.nextInt(100) == 0 ? new ItemStack(Item.appleGold) : (i2 == 8 && random1.nextInt(2) == 0 ? new ItemStack(Item.redstone, random1.nextInt(4) + 1) : (i2 == 9 && random1.nextInt(10) == 0 ? new ItemStack(Item.itemsList[Item.record13.shiftedIndex + random1.nextInt(2)]) : null)))))))));
+	private ItemStack pickCheckLootItem(Random random) {
+		int i2 = random.nextInt(11);
+		return i2 == 0 ? new ItemStack(Item.saddle) : (i2 == 1 ? new ItemStack(Item.ingotIron, random.nextInt(4) + 1) : (i2 == 2 ? new ItemStack(Item.bread) : (i2 == 3 ? new ItemStack(Item.wheat, random.nextInt(4) + 1) : (i2 == 4 ? new ItemStack(Item.gunpowder, random.nextInt(4) + 1) : (i2 == 5 ? new ItemStack(Item.silk, random.nextInt(4) + 1) : (i2 == 6 ? new ItemStack(Item.bucketEmpty) : (i2 == 7 && random.nextInt(100) == 0 ? new ItemStack(Item.appleGold) : (i2 == 8 && random.nextInt(2) == 0 ? new ItemStack(Item.redstone, random.nextInt(4) + 1) : (i2 == 9 && random.nextInt(10) == 0 ? new ItemStack(Item.itemsList[Item.record13.shiftedIndex + random.nextInt(2)]) : null)))))))));
 	}
 
-	private String pickMobSpawner(Random random1) {
-		int i2 = random1.nextInt(4);
+	private String pickMobSpawner(Random random) {
+		int i2 = random.nextInt(4);
 		return i2 == 0 ? "Skeleton" : (i2 == 1 ? "Zombie" : (i2 == 2 ? "Zombie" : (i2 == 3 ? "Spider" : "")));
 	}
 }

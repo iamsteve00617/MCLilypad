@@ -132,6 +132,7 @@ public abstract class Minecraft implements Runnable {
 		this.tempDisplayHeight = height;
 		this.fullscreen = fullscreen;
 		this.mcApplet = mcApplet;
+		InputHandler.mc = this;
 		new ThreadSleepForever(this, "Timer hack thread");
 		this.mcCanvas = canvas;
 		this.displayWidth = width;

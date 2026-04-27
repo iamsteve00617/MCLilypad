@@ -1,4 +1,4 @@
-net/minecraft/server/MinecraftServer 51d2ce4e92f67ab0b9198fec6b2f0237
+net/minecraft/server/MinecraftServer 268063cdc29d6f0fbd25bd090b7e78b6
 net/minecraft/src/AxisAlignedBB a2aba5386ec4b998b273f9b0fc0272a7
 net/minecraft/src/Block 36a0c0c251db8acbd0d1f3aedd7a66af
 net/minecraft/src/BlockBookshelf b51f595f6269ed6b0364ae67b9483ec4
@@ -220,7 +220,7 @@ net/minecraft/src/Pathfinder 207515aac7078a52648058a85ff7e3e9
 net/minecraft/src/PathPoint 06f3b3d7b5d814bc18777867d3585c2f
 net/minecraft/src/PlayerInstance cab393cb67bb503552a8e36341f594b1
 net/minecraft/src/PlayerListBox 8b9943661a7564d09044e371fef70225
-net/minecraft/src/PlayerManager 27b68141f14e20e203da3ebe8b813d0b
+net/minecraft/src/PlayerManager 10d456301b8fed96f8b854c28c6b1903
 net/minecraft/src/PlayerNBTManager 2c051e4ca225ed9a73c3ea9b9444cb34
 net/minecraft/src/PropertyManager afb586477d66dcda659de3a927fc7141
 net/minecraft/src/RedstoneUpdateInfo 4c19faa3c89e83989071313f60beeace

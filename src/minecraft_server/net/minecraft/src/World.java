@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,8 +13,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.lwjgl.input.Keyboard;
 
 public class World implements IBlockAccess {
 	private List lightingToUpdate;
@@ -39,7 +35,6 @@ public class World implements IBlockAccess {
 	protected int autosavePeriod;
 	public List playerEntities;
 	public int difficultySetting;
-	public Object fontRenderer;
 	public Random rand;
 	public int spawnX;
 	public int spawnY;
@@ -58,95 +53,12 @@ public class World implements IBlockAccess {
 	private int soundCounter;
 	private List entitiesWithinAABBExcludingEntity;
 	public boolean multiplayerWorld;
-	public long milestone;
-	public boolean exclFrailMode;
-	public boolean checkedInputManager;
-	public boolean hasInputManager;
-	public boolean bossfightInProgress;
-	public MobGiant bossRef;
-	public String bossname;
 
-	public boolean CanUseCheats() {
-		if(!this.checkedInputManager) {
-			try {
-				Class.forName("InputHandler");
-				this.hasInputManager = true;
-			} catch (ClassNotFoundException classNotFoundException2) {
-				this.hasInputManager = false;
-			}
-
-			this.checkedInputManager = true;
-		}
-
-		return this.hasInputManager ? InputHandler.cheatsEnabled : false;
+	public World(File worldFile, String levelName) {
+		this(worldFile, levelName, (new Random()).nextLong());
 	}
 
-	public void CueSpawnBossFrom(int i1, int i2) {
-		if(!this.multiplayerWorld && !this.bossfightInProgress) {
-			int i3 = i1 + 64 * ((new Random()).nextInt(3) - 1);
-			int i4 = i2 + 64 * ((new Random()).nextInt(3) - 1);
-			if(i3 == i1 && i4 == i2) {
-				i4 += 64;
-			}
-
-			String string5 = "Giant of " + GuiIngame.Namegen2(this.randomSeed, i3 / 32, i4 / 32);
-			this.bossname = string5;
-			this.bossRef = InputHandler.SpawnGiant((double)i3, 100.0D, (double)i4);
-			System.out.println("spawned at " + i3 + ", " + i4 + ", health: " + this.bossRef.health);
-			this.bossfightInProgress = true;
-		}
-
-	}
-
-	public static NBTTagCompound getLevelData(File file, String world) {
-		File file2 = new File(new File(file, "saves"), world);
-		if(!file2.exists()) {
-			return null;
-		} else {
-			File file3 = new File(file2, "level.dat");
-			if(file3.exists()) {
-				try {
-					return ClassX.a((InputStream)(new FileInputStream(file3))).getCompoundTag("Data");
-				} catch (Exception exception5) {
-					exception5.printStackTrace();
-				}
-			}
-
-			return null;
-		}
-	}
-
-	public static void deleteWorld(File file, String world) {
-		File file2 = new File(new File(file, "saves"), world);
-		if(file2.exists()) {
-			deleteWorldFiles(file2.listFiles());
-			file2.delete();
-		}
-	}
-
-	private static void deleteWorldFiles(File[] files) {
-		for(int i1 = 0; i1 < files.length; ++i1) {
-			if(files[i1].isDirectory()) {
-				deleteWorldFiles(files[i1].listFiles());
-			}
-
-			files[i1].delete();
-		}
-
-	}
-
-	public World(File file, String name) {
-		this(file, name, (new Random()).nextLong());
-	}
-
-	public World(String name) {
-		this.milestone = 0L;
-		this.exclFrailMode = true;
-		this.checkedInputManager = false;
-		this.hasInputManager = false;
-		this.bossfightInProgress = false;
-		this.bossRef = null;
-		this.bossname = "";
+	public World(String levelName) {
 		this.lightingToUpdate = new ArrayList();
 		this.loadedEntityList = new ArrayList();
 		this.unloadedEntityList = new ArrayList();
@@ -175,19 +87,12 @@ public class World implements IBlockAccess {
 		this.soundCounter = this.rand.nextInt(12000);
 		this.entitiesWithinAABBExcludingEntity = new ArrayList();
 		this.multiplayerWorld = false;
-		this.levelName = name;
+		this.levelName = levelName;
 		this.chunkProvider = this.getChunkProvider(this.saveDirectory);
 		this.calculateInitialSkylight();
 	}
 
-	public World(File file, String name, long seed) {
-		this.milestone = 0L;
-		this.exclFrailMode = true;
-		this.checkedInputManager = false;
-		this.hasInputManager = false;
-		this.bossfightInProgress = false;
-		this.bossRef = null;
-		this.bossname = "";
+	public World(File baseDir, String levelName, long randomSeed) {
 		this.lightingToUpdate = new ArrayList();
 		this.loadedEntityList = new ArrayList();
 		this.unloadedEntityList = new ArrayList();
@@ -216,61 +121,61 @@ public class World implements IBlockAccess {
 		this.soundCounter = this.rand.nextInt(12000);
 		this.entitiesWithinAABBExcludingEntity = new ArrayList();
 		this.multiplayerWorld = false;
-		this.levelName = name;
-		file.mkdirs();
-		(this.saveDirectory = new File(file, name)).mkdirs();
+		this.levelName = levelName;
+		baseDir.mkdirs();
+		this.saveDirectory = new File(baseDir, levelName);
+		this.saveDirectory.mkdirs();
 
+		File file5;
 		try {
-			DataOutputStream dataOutputStream5 = new DataOutputStream(new FileOutputStream(new File(this.saveDirectory, "session.lock")));
+			file5 = new File(this.saveDirectory, "session.lock");
+			DataOutputStream dataOutputStream6 = new DataOutputStream(new FileOutputStream(file5));
 
 			try {
-				dataOutputStream5.writeLong(this.lockTimestamp);
+				dataOutputStream6.writeLong(this.lockTimestamp);
 			} finally {
-				dataOutputStream5.close();
+				dataOutputStream6.close();
 			}
-		} catch (IOException iOException12) {
+		} catch (IOException iOException13) {
 			throw new RuntimeException("Failed to check session lock, aborting");
 		}
 
-		File file13 = new File(this.saveDirectory, "level.dat");
-		this.isNewWorld = !file13.exists();
-		if(file13.exists()) {
+		file5 = new File(this.saveDirectory, "level.dat");
+		this.isNewWorld = !file5.exists();
+		if(file5.exists()) {
 			try {
-				NBTTagCompound nBTTagCompound6 = ClassX.a((InputStream)(new FileInputStream(file13))).getCompoundTag("Data");
-				this.randomSeed = nBTTagCompound6.getLong("RandomSeed");
-				this.spawnX = nBTTagCompound6.getInteger("SpawnX");
-				this.spawnY = nBTTagCompound6.getInteger("SpawnY");
-				this.spawnZ = nBTTagCompound6.getInteger("SpawnZ");
-				this.worldTime = nBTTagCompound6.getLong("Time");
-				this.sizeOnDisk = nBTTagCompound6.getLong("SizeOnDisk");
-				this.snowCovered = nBTTagCompound6.getBoolean("SnowCovered");
-				if(nBTTagCompound6.hasKey("Player")) {
-					this.nbtCompoundPlayer = nBTTagCompound6.getCompoundTag("Player");
+				NBTTagCompound nBTTagCompound14 = CompressedStreamTools.readCompressed(new FileInputStream(file5));
+				NBTTagCompound nBTTagCompound7 = nBTTagCompound14.getCompoundTag("Data");
+				this.randomSeed = nBTTagCompound7.getLong("RandomSeed");
+				this.spawnX = nBTTagCompound7.getInteger("SpawnX");
+				this.spawnY = nBTTagCompound7.getInteger("SpawnY");
+				this.spawnZ = nBTTagCompound7.getInteger("SpawnZ");
+				this.worldTime = nBTTagCompound7.getLong("Time");
+				this.sizeOnDisk = nBTTagCompound7.getLong("SizeOnDisk");
+				this.snowCovered = nBTTagCompound7.getBoolean("SnowCovered");
+				if(nBTTagCompound7.hasKey("Player")) {
+					this.nbtCompoundPlayer = nBTTagCompound7.getCompoundTag("Player");
 				}
-
-				this.milestone = nBTTagCompound6.getLong("Milestones");
-				this.exclFrailMode = nBTTagCompound6.getBoolean("ExclusivelyFrail");
-				System.out.println("Current milestone: " + this.milestone);
-			} catch (Exception exception10) {
-				exception10.printStackTrace();
+			} catch (Exception exception11) {
+				exception11.printStackTrace();
 			}
 		} else {
 			this.snowCovered = this.rand.nextInt(4) == 0;
 		}
 
-		boolean z14 = false;
+		boolean z15 = false;
 		if(this.randomSeed == 0L) {
-			this.randomSeed = seed;
-			z14 = true;
+			this.randomSeed = randomSeed;
+			z15 = true;
 		}
 
 		this.chunkProvider = this.getChunkProvider(this.saveDirectory);
-		if(z14) {
+		if(z15) {
 			this.worldChunkLoadOverride = true;
 			this.spawnX = 0;
 			this.spawnY = 64;
 
-			for(this.spawnZ = 0; !this.findSpawn(this.spawnX, this.spawnZ); this.spawnZ += this.rand.nextInt(64) - this.rand.nextInt(64)) {
+			for(this.spawnZ = 0; !this.getInitialSpawnLocation(this.spawnX, this.spawnZ); this.spawnZ += this.rand.nextInt(64) - this.rand.nextInt(64)) {
 				this.spawnX += this.rand.nextInt(64) - this.rand.nextInt(64);
 			}
 
@@ -280,24 +185,13 @@ public class World implements IBlockAccess {
 		this.calculateInitialSkylight();
 	}
 
-	protected IChunkProvider getChunkProvider(File file) {
-		return new ChunkProviderLoadOrGenerate(this, new ChunkLoader(file, true), new ChunkProviderGenerate(this, this.randomSeed));
+	protected IChunkProvider getChunkProvider(File saveDir) {
+		return new ChunkProviderLoadOrGenerate(this, new ChunkLoader(saveDir, true), new ChunkProviderGenerate(this, this.randomSeed));
 	}
 
-	public void setSpawnLocation() {
-		if(this.spawnY <= 0) {
-			this.spawnY = 64;
-		}
-
-		while(this.getFirstUncoveredBlock(this.spawnX, this.spawnZ) == 0) {
-			this.spawnX += this.rand.nextInt(8) - this.rand.nextInt(8);
-			this.spawnZ += this.rand.nextInt(8) - this.rand.nextInt(8);
-		}
-
-	}
-
-	private boolean findSpawn(int x, int z) {
-		return this.getFirstUncoveredBlock(x, z) == Block.sand.blockID;
+	private boolean getInitialSpawnLocation(int x, int z) {
+		int i3 = this.getFirstUncoveredBlock(x, z);
+		return i3 == Block.sand.blockID;
 	}
 
 	private int getFirstUncoveredBlock(int x, int z) {
@@ -308,32 +202,18 @@ public class World implements IBlockAccess {
 		return this.getBlockId(x, i3, z);
 	}
 
-	public void spawnPlayerWithLoadedChunks(EntityPlayer entityPlayer) {
-		try {
-			if(this.nbtCompoundPlayer != null) {
-				entityPlayer.readFromNBT(this.nbtCompoundPlayer);
-				this.nbtCompoundPlayer = null;
-			}
-
-			this.spawnEntityInWorld(entityPlayer);
-		} catch (Exception exception3) {
-			exception3.printStackTrace();
-		}
-
-	}
-
-	public void saveWorld(boolean z1, IProgressUpdate iProgressUpdate2) {
+	public void saveWorld(boolean flag, IProgressUpdate progressUpdate) {
 		if(this.chunkProvider.canSave()) {
-			if(iProgressUpdate2 != null) {
-				iProgressUpdate2.displayProgressMessage("Saving level");
+			if(progressUpdate != null) {
+				progressUpdate.displayProgressMessage("Saving level");
 			}
 
 			this.saveLevel();
-			if(iProgressUpdate2 != null) {
-				iProgressUpdate2.displayLoadingString("Saving chunks");
+			if(progressUpdate != null) {
+				progressUpdate.resetProgressAndWorkingMessage("Saving chunks");
 			}
 
-			this.chunkProvider.saveChunks(z1, iProgressUpdate2);
+			this.chunkProvider.saveChunks(flag, progressUpdate);
 		}
 	}
 
@@ -348,17 +228,15 @@ public class World implements IBlockAccess {
 		nBTTagCompound1.setLong("SizeOnDisk", this.sizeOnDisk);
 		nBTTagCompound1.setBoolean("SnowCovered", this.snowCovered);
 		nBTTagCompound1.setLong("LastPlayed", System.currentTimeMillis());
-		nBTTagCompound1.setLong("Milestones", this.milestone);
-		nBTTagCompound1.setBoolean("ExclusivelyFrail", this.exclFrailMode);
-		Entity entity2 = null;
+		EntityPlayer entityPlayer2 = null;
 		if(this.playerEntities.size() > 0) {
-			entity2 = (Entity)this.playerEntities.get(0);
+			entityPlayer2 = (EntityPlayer)this.playerEntities.get(0);
 		}
 
 		NBTTagCompound nBTTagCompound3;
-		if(entity2 != null) {
+		if(entityPlayer2 != null) {
 			nBTTagCompound3 = new NBTTagCompound();
-			entity2.writeToNBT(nBTTagCompound3);
+			entityPlayer2.writeToNBT(nBTTagCompound3);
 			nBTTagCompound1.setCompoundTag("Player", nBTTagCompound3);
 		}
 
@@ -369,7 +247,7 @@ public class World implements IBlockAccess {
 			File file4 = new File(this.saveDirectory, "level.dat_new");
 			File file5 = new File(this.saveDirectory, "level.dat_old");
 			File file6 = new File(this.saveDirectory, "level.dat");
-			ClassX.a(nBTTagCompound3, (OutputStream)(new FileOutputStream(file4)));
+			CompressedStreamTools.writeCompressed(nBTTagCompound3, new FileOutputStream(file4));
 			if(file5.exists()) {
 				file5.delete();
 			}
@@ -389,37 +267,25 @@ public class World implements IBlockAccess {
 
 	}
 
-	public boolean saveWorld(int i1) {
-		if(!this.chunkProvider.canSave()) {
-			return true;
-		} else {
-			if(i1 == 0) {
-				this.saveLevel();
-			}
-
-			return this.chunkProvider.saveChunks(false, (IProgressUpdate)null);
-		}
-	}
-
-	public int getBlockId(int x, int y, int z) {
-		return x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000 ? (y < 0 ? 0 : (y >= 128 ? 0 : this.getChunkFromChunkCoords(x >> 4, z >> 4).getBlockID(x & 15, y, z & 15))) : 0;
+	public int getBlockId(int i1, int i2, int i3) {
+		return i1 >= -32000000 && i3 >= -32000000 && i1 < 32000000 && i3 <= 32000000 ? (i2 < 0 ? 0 : (i2 >= 128 ? 0 : this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4).getBlockID(i1 & 15, i2, i3 & 15))) : 0;
 	}
 
 	public boolean blockExists(int x, int y, int z) {
-		return y >= 0 && y < 128 && this.chunkExists(x >> 4, z >> 4);
+		return y >= 0 && y < 128 ? this.chunkExists(x >> 4, z >> 4) : false;
 	}
 
-	public boolean checkChunksExist(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		if(maxY >= 0 && minY < 128) {
-			minX >>= 4;
-			minY >>= 4;
-			minZ >>= 4;
-			maxX >>= 4;
-			maxY >>= 4;
-			maxZ >>= 4;
+	public boolean checkChunksExist(int i1, int i2, int i3, int i4, int i5, int i6) {
+		if(i5 >= 0 && i2 < 128) {
+			i1 >>= 4;
+			i2 >>= 4;
+			i3 >>= 4;
+			i4 >>= 4;
+			i5 >>= 4;
+			i6 >>= 4;
 
-			for(int i7 = minX; i7 <= maxX; ++i7) {
-				for(int i8 = minZ; i8 <= maxZ; ++i8) {
+			for(int i7 = i1; i7 <= i4; ++i7) {
+				for(int i8 = i3; i8 <= i6; ++i8) {
 					if(!this.chunkExists(i7, i8)) {
 						return false;
 					}
@@ -432,53 +298,75 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	private boolean chunkExists(int xPos, int zPos) {
-		return this.chunkProvider.chunkExists(xPos, zPos);
+	private boolean chunkExists(int x, int z) {
+		return this.chunkProvider.chunkExists(x, z);
 	}
 
-	public Chunk getChunkFromBlockCoords(int xPos, int zPos) {
-		return this.getChunkFromChunkCoords(xPos >> 4, zPos >> 4);
+	public Chunk getChunkFromBlockCoords(int x, int z) {
+		return this.getChunkFromChunkCoords(x >> 4, z >> 4);
 	}
 
-	public Chunk getChunkFromChunkCoords(int xPos, int zPos) {
-		return this.chunkProvider.provideChunk(xPos, zPos);
+	public Chunk getChunkFromChunkCoords(int x, int z) {
+		return this.chunkProvider.provideChunk(x, z);
 	}
 
-	public boolean setBlockAndMetadata(int x, int y, int z, int id, int metadata) {
-		return x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000 && y >= 0 && y < 128 && this.getChunkFromChunkCoords(x >> 4, z >> 4).setBlockIDWithMetadata(x & 15, y, z & 15, id, metadata);
-	}
-
-	public boolean setBlock(int x, int y, int z, int id) {
-		return x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000 && y >= 0 && y < 128 && this.getChunkFromChunkCoords(x >> 4, z >> 4).setBlockID(x & 15, y, z & 15, id);
-	}
-
-	public Material getBlockMaterial(int i1, int i2, int i3) {
-		int i4 = this.getBlockId(i1, i2, i3);
-		return i4 == 0 ? Material.air : Block.blocksList[i4].material;
-	}
-
-	public int getBlockMetadata(int x, int y, int z) {
+	public boolean setBlockAndMetadata(int x, int y, int z, int i4, int i5) {
 		if(x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000) {
 			if(y < 0) {
-				return 0;
+				return false;
 			} else if(y >= 128) {
+				return false;
+			} else {
+				Chunk chunk6 = this.getChunkFromChunkCoords(x >> 4, z >> 4);
+				return chunk6.setBlockIDWithMetadata(x & 15, y, z & 15, i4, i5);
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public boolean setBlock(int x, int y, int z, int i4) {
+		if(x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000) {
+			if(y < 0) {
+				return false;
+			} else if(y >= 128) {
+				return false;
+			} else {
+				Chunk chunk5 = this.getChunkFromChunkCoords(x >> 4, z >> 4);
+				return chunk5.setBlockID(x & 15, y, z & 15, i4);
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public Material getBlockMaterial(int x, int y, int z) {
+		int i4 = this.getBlockId(x, y, z);
+		return i4 == 0 ? Material.air : Block.blockList[i4].material;
+	}
+
+	public int getBlockMetadata(int i1, int i2, int i3) {
+		if(i1 >= -32000000 && i3 >= -32000000 && i1 < 32000000 && i3 <= 32000000) {
+			if(i2 < 0) {
+				return 0;
+			} else if(i2 >= 128) {
 				return 0;
 			} else {
-				Chunk chunk4 = this.getChunkFromChunkCoords(x >> 4, z >> 4);
-				x &= 15;
-				z &= 15;
-				return chunk4.getBlockMetadata(x, y, z);
+				Chunk chunk4 = this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
+				i1 &= 15;
+				i3 &= 15;
+				return chunk4.getBlockMetadata(i1, i2, i3);
 			}
 		} else {
 			return 0;
 		}
 	}
 
-	public void setBlockMetadataWithNotify(int x, int y, int z, int metadata) {
-		this.setBlockMetadata(x, y, z, metadata);
+	public void setBlockMetadataWithNotify(int i1, int i2, int i3, int i4) {
+		this.setBlockMetadata(i1, i2, i3, i4);
 	}
 
-	public boolean setBlockMetadata(int x, int y, int z, int metadata) {
+	public boolean setBlockMetadata(int x, int y, int z, int i4) {
 		if(x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000) {
 			if(y < 0) {
 				return false;
@@ -488,7 +376,7 @@ public class World implements IBlockAccess {
 				Chunk chunk5 = this.getChunkFromChunkCoords(x >> 4, z >> 4);
 				x &= 15;
 				z &= 15;
-				chunk5.setBlockMetadata(x, y, z, metadata);
+				chunk5.setBlockMetadata(x, y, z, i4);
 				return true;
 			}
 		} else {
@@ -496,22 +384,18 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	public boolean setBlockWithNotify(int x, int y, int z, int id) {
-		if(this.setBlock(x, y, z, id)) {
-			this.notifyBlockChange(x, y, z, id);
+	public boolean setBlockWithNotify(int x, int y, int z, int i4) {
+		if(this.setBlock(x, y, z, i4)) {
+			this.notifyBlockChange(x, y, z, i4);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public boolean setBlockAndMetadataWithNotify(int x, int y, int z, int id, int metadata) {
-		return this.bStage2(x, y, z, id, metadata);
-	}
-
-	public boolean bStage2(int i1, int i2, int i3, int i4, int i5) {
-		if(this.setBlockAndMetadata(i1, i2, i3, i4, i5)) {
-			this.notifyBlockChange(i1, i2, i3, i4);
+	public boolean setBlockAndMetadataWithNotify(int x, int y, int z, int i4, int i5) {
+		if(this.setBlockAndMetadata(x, y, z, i4, i5)) {
+			this.notifyBlockChange(x, y, z, i4);
 			return true;
 		} else {
 			return false;
@@ -525,42 +409,42 @@ public class World implements IBlockAccess {
 
 	}
 
-	protected void notifyBlockChange(int x, int y, int z, int id) {
+	protected void notifyBlockChange(int x, int y, int z, int i4) {
 		this.markBlockNeedsUpdate(x, y, z);
-		this.notifyBlocksOfNeighborChange(x, y, z, id);
+		this.notifyBlocksOfNeighborChange(x, y, z, i4);
 	}
 
-	public void markBlocksDirtyVertical(int x, int z, int minY, int maxY) {
-		if(minY > maxY) {
-			int i5 = maxY;
-			maxY = minY;
-			minY = i5;
+	public void markBlockAsNeedsUpdate(int x, int z, int y, int i4) {
+		if(y > i4) {
+			int i5 = i4;
+			i4 = y;
+			y = i5;
 		}
 
-		this.markBlocksDirty(x, minY, z, x, maxY, z);
+		this.markBlocksDirty(x, y, z, x, i4, z);
 	}
 
-	public void markBlocksDirty(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	public void markBlocksDirty(int i1, int i2, int i3, int i4, int i5, int i6) {
 		for(int i7 = 0; i7 < this.worldAccesses.size(); ++i7) {
-			((IWorldAccess)this.worldAccesses.get(i7)).markBlockRangeNeedsUpdate(minX, minY, minZ, maxX, maxY, maxZ);
+			((IWorldAccess)this.worldAccesses.get(i7)).markBlockRangeNeedsUpdate(i1, i2, i3, i4, i5, i6);
 		}
 
 	}
 
-	public void notifyBlocksOfNeighborChange(int x, int y, int z, int id) {
-		this.notifyBlockOfNeighborChange(x - 1, y, z, id);
-		this.notifyBlockOfNeighborChange(x + 1, y, z, id);
-		this.notifyBlockOfNeighborChange(x, y - 1, z, id);
-		this.notifyBlockOfNeighborChange(x, y + 1, z, id);
-		this.notifyBlockOfNeighborChange(x, y, z - 1, id);
-		this.notifyBlockOfNeighborChange(x, y, z + 1, id);
+	public void notifyBlocksOfNeighborChange(int x, int y, int z, int i4) {
+		this.notifyBlockOfNeighborChange(x - 1, y, z, i4);
+		this.notifyBlockOfNeighborChange(x + 1, y, z, i4);
+		this.notifyBlockOfNeighborChange(x, y - 1, z, i4);
+		this.notifyBlockOfNeighborChange(x, y + 1, z, i4);
+		this.notifyBlockOfNeighborChange(x, y, z - 1, i4);
+		this.notifyBlockOfNeighborChange(x, y, z + 1, i4);
 	}
 
-	private void notifyBlockOfNeighborChange(int x, int y, int z, int id) {
+	private void notifyBlockOfNeighborChange(int x, int y, int z, int i4) {
 		if(!this.editingBlocks && !this.multiplayerWorld) {
-			Block block5 = Block.blocksList[this.getBlockId(x, y, z)];
+			Block block5 = Block.blockList[this.getBlockId(x, y, z)];
 			if(block5 != null) {
-				block5.onNeighborBlockChange(this, x, y, z, id);
+				block5.onNeighborBlockChange(this, x, y, z, i4);
 			}
 
 		}
@@ -574,10 +458,10 @@ public class World implements IBlockAccess {
 		return this.getBlockLightValue_do(x, y, z, true);
 	}
 
-	public int getBlockLightValue_do(int x, int y, int z, boolean update) {
+	public int getBlockLightValue_do(int x, int y, int z, boolean z4) {
 		if(x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000) {
 			int i5;
-			if(update) {
+			if(z4) {
 				i5 = this.getBlockId(x, y, z);
 				if(i5 == Block.stairSingle.blockID || i5 == Block.tilledField.blockID) {
 					int i6 = this.getBlockLightValue_do(x, y + 1, z, false);
@@ -645,52 +529,63 @@ public class World implements IBlockAccess {
 	}
 
 	public int getHeightValue(int blockX, int blockZ) {
-		return blockX >= -32000000 && blockZ >= -32000000 && blockX < 32000000 && blockZ <= 32000000 ? (!this.chunkExists(blockX >> 4, blockZ >> 4) ? 0 : this.getChunkFromChunkCoords(blockX >> 4, blockZ >> 4).getHeightValue(blockX & 15, blockZ & 15)) : 0;
+		if(blockX >= -32000000 && blockZ >= -32000000 && blockX < 32000000 && blockZ <= 32000000) {
+			if(!this.chunkExists(blockX >> 4, blockZ >> 4)) {
+				return 0;
+			} else {
+				Chunk chunk3 = this.getChunkFromChunkCoords(blockX >> 4, blockZ >> 4);
+				return chunk3.getHeightValue(blockX & 15, blockZ & 15);
+			}
+		} else {
+			return 0;
+		}
 	}
 
-	public void neighborLightPropagationChanged(EnumSkyBlock skyBlock, int x, int y, int z, int lightValue) {
-		this.aStage3(skyBlock, x, y, z, lightValue);
-	}
-
-	public void aStage3(EnumSkyBlock enumSkyBlock1, int i2, int i3, int i4, int i5) {
-		if(this.blockExists(i2, i3, i4)) {
-			if(enumSkyBlock1 == EnumSkyBlock.Sky) {
-				if(this.canExistingBlockSeeTheSky(i2, i3, i4)) {
+	public void neighborLightPropagationChanged(EnumSkyBlock skyBlock, int x, int y, int z, int i5) {
+		if(this.blockExists(x, y, z)) {
+			if(skyBlock == EnumSkyBlock.Sky) {
+				if(this.canExistingBlockSeeTheSky(x, y, z)) {
 					i5 = 15;
 				}
-			} else if(enumSkyBlock1 == EnumSkyBlock.Block) {
-				int i6 = this.getBlockId(i2, i3, i4);
+			} else if(skyBlock == EnumSkyBlock.Block) {
+				int i6 = this.getBlockId(x, y, z);
 				if(Block.lightValue[i6] > i5) {
 					i5 = Block.lightValue[i6];
 				}
 			}
 
-			if(this.getSavedLightValue(enumSkyBlock1, i2, i3, i4) != i5) {
-				this.scheduleLightingUpdate(enumSkyBlock1, i2, i3, i4, i2, i3, i4);
+			if(this.getSavedLightValue(skyBlock, x, y, z) != i5) {
+				this.scheduleLightingUpdate(skyBlock, x, y, z, x, y, z);
 			}
 
 		}
 	}
 
-	public int getSavedLightValue(EnumSkyBlock skyBlock, int x, int y, int z) {
-		if(y >= 0 && y < 128 && x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000) {
-			int i5 = x >> 4;
-			int i6 = z >> 4;
-			return !this.chunkExists(i5, i6) ? 0 : this.getChunkFromChunkCoords(i5, i6).getSavedLightValue(skyBlock, x & 15, y, z & 15);
+	public int getSavedLightValue(EnumSkyBlock skyBlock, int blockX, int blockY, int blockZ) {
+		if(blockY >= 0 && blockY < 128 && blockX >= -32000000 && blockZ >= -32000000 && blockX < 32000000 && blockZ <= 32000000) {
+			int i5 = blockX >> 4;
+			int i6 = blockZ >> 4;
+			if(!this.chunkExists(i5, i6)) {
+				return 0;
+			} else {
+				Chunk chunk7 = this.getChunkFromChunkCoords(i5, i6);
+				return chunk7.getSavedLightValue(skyBlock, blockX & 15, blockY, blockZ & 15);
+			}
 		} else {
 			return skyBlock.defaultLightValue;
 		}
 	}
 
-	public void setLightValue(EnumSkyBlock skyBlock, int x, int y, int z, int lightValue) {
-		if(x >= -32000000 && z >= -32000000 && x < 32000000 && z <= 32000000) {
-			if(y >= 0) {
-				if(y < 128) {
-					if(this.chunkExists(x >> 4, z >> 4)) {
-						this.getChunkFromChunkCoords(x >> 4, z >> 4).setLightValue(skyBlock, x & 15, y, z & 15, lightValue);
+	public void setLightValue(EnumSkyBlock skyBlock, int blockX, int blockY, int blockZ, int i5) {
+		if(blockX >= -32000000 && blockZ >= -32000000 && blockX < 32000000 && blockZ <= 32000000) {
+			if(blockY >= 0) {
+				if(blockY < 128) {
+					if(this.chunkExists(blockX >> 4, blockZ >> 4)) {
+						Chunk chunk6 = this.getChunkFromChunkCoords(blockX >> 4, blockZ >> 4);
+						chunk6.setLightValue(skyBlock, blockX & 15, blockY, blockZ & 15, i5);
 
-						for(int i6 = 0; i6 < this.worldAccesses.size(); ++i6) {
-							((IWorldAccess)this.worldAccesses.get(i6)).markBlockAndNeighborsNeedsUpdate(x, y, z);
+						for(int i7 = 0; i7 < this.worldAccesses.size(); ++i7) {
+							((IWorldAccess)this.worldAccesses.get(i7)).markBlockAndNeighborsNeedsUpdate(blockX, blockY, blockZ);
 						}
 
 					}
@@ -703,27 +598,27 @@ public class World implements IBlockAccess {
 		return lightBrightnessTable[this.getBlockLightValue(x, y, z)];
 	}
 
-	public boolean isDaytime() {
+	public boolean isDayTime() {
 		return this.skylightSubtracted < 4;
 	}
 
-	public MovingObjectPosition rayTraceBlocks(Vec3D vec3D1, Vec3D vec3D2) {
-		return this.rayTraceBlocks_do(vec3D1, vec3D2, false);
+	public MovingObjectPosition rayTraceBlocks(Vec3D vector1, Vec3D vector2) {
+		return this.rayTraceBlocks_do(vector1, vector2, false);
 	}
 
-	public MovingObjectPosition rayTraceBlocks_do(Vec3D vec3D1, Vec3D vec3D2, boolean z3) {
-		if(!Double.isNaN(vec3D1.xCoord) && !Double.isNaN(vec3D1.yCoord) && !Double.isNaN(vec3D1.zCoord)) {
-			if(!Double.isNaN(vec3D2.xCoord) && !Double.isNaN(vec3D2.yCoord) && !Double.isNaN(vec3D2.zCoord)) {
-				int i4 = MathHelper.floor_double(vec3D2.xCoord);
-				int i5 = MathHelper.floor_double(vec3D2.yCoord);
-				int i6 = MathHelper.floor_double(vec3D2.zCoord);
-				int i7 = MathHelper.floor_double(vec3D1.xCoord);
-				int i8 = MathHelper.floor_double(vec3D1.yCoord);
-				int i9 = MathHelper.floor_double(vec3D1.zCoord);
+	public MovingObjectPosition rayTraceBlocks_do(Vec3D vector1, Vec3D vector2, boolean z3) {
+		if(!Double.isNaN(vector1.xCoord) && !Double.isNaN(vector1.yCoord) && !Double.isNaN(vector1.zCoord)) {
+			if(!Double.isNaN(vector2.xCoord) && !Double.isNaN(vector2.yCoord) && !Double.isNaN(vector2.zCoord)) {
+				int i4 = MathHelper.floor_double(vector2.xCoord);
+				int i5 = MathHelper.floor_double(vector2.yCoord);
+				int i6 = MathHelper.floor_double(vector2.zCoord);
+				int i7 = MathHelper.floor_double(vector1.xCoord);
+				int i8 = MathHelper.floor_double(vector1.yCoord);
+				int i9 = MathHelper.floor_double(vector1.zCoord);
 				int i10 = 20;
 
 				while(i10-- >= 0) {
-					if(Double.isNaN(vec3D1.xCoord) || Double.isNaN(vec3D1.yCoord) || Double.isNaN(vec3D1.zCoord)) {
+					if(Double.isNaN(vector1.xCoord) || Double.isNaN(vector1.yCoord) || Double.isNaN(vector1.zCoord)) {
 						return null;
 					}
 
@@ -761,87 +656,81 @@ public class World implements IBlockAccess {
 					double d17 = 999.0D;
 					double d19 = 999.0D;
 					double d21 = 999.0D;
-					double d23 = vec3D2.xCoord - vec3D1.xCoord;
-					double d25 = vec3D2.yCoord - vec3D1.yCoord;
-					double d27 = vec3D2.zCoord - vec3D1.zCoord;
+					double d23 = vector2.xCoord - vector1.xCoord;
+					double d25 = vector2.yCoord - vector1.yCoord;
+					double d27 = vector2.zCoord - vector1.zCoord;
 					if(d11 != 999.0D) {
-						d17 = (d11 - vec3D1.xCoord) / d23;
+						d17 = (d11 - vector1.xCoord) / d23;
 					}
 
 					if(d13 != 999.0D) {
-						d19 = (d13 - vec3D1.yCoord) / d25;
+						d19 = (d13 - vector1.yCoord) / d25;
 					}
 
 					if(d15 != 999.0D) {
-						d21 = (d15 - vec3D1.zCoord) / d27;
+						d21 = (d15 - vector1.zCoord) / d27;
 					}
 
-					byte b29;
+					boolean z29 = false;
+					byte b35;
 					if(d17 < d19 && d17 < d21) {
 						if(i4 > i7) {
-							b29 = 4;
+							b35 = 4;
 						} else {
-							b29 = 5;
+							b35 = 5;
 						}
 
-						vec3D1.xCoord = d11;
-						vec3D1.yCoord += d25 * d17;
-						vec3D1.zCoord += d27 * d17;
+						vector1.xCoord = d11;
+						vector1.yCoord += d25 * d17;
+						vector1.zCoord += d27 * d17;
 					} else if(d19 < d21) {
 						if(i5 > i8) {
-							b29 = 0;
+							b35 = 0;
 						} else {
-							b29 = 1;
+							b35 = 1;
 						}
 
-						vec3D1.xCoord += d23 * d19;
-						vec3D1.yCoord = d13;
-						vec3D1.zCoord += d27 * d19;
+						vector1.xCoord += d23 * d19;
+						vector1.yCoord = d13;
+						vector1.zCoord += d27 * d19;
 					} else {
 						if(i6 > i9) {
-							b29 = 2;
+							b35 = 2;
 						} else {
-							b29 = 3;
+							b35 = 3;
 						}
 
-						vec3D1.xCoord += d23 * d21;
-						vec3D1.yCoord += d25 * d21;
-						vec3D1.zCoord = d15;
+						vector1.xCoord += d23 * d21;
+						vector1.yCoord += d25 * d21;
+						vector1.zCoord = d15;
 					}
 
-					Vec3D vec3D30;
-					Vec3D vec3D31 = vec3D30 = Vec3D.createVector(vec3D1.xCoord, vec3D1.yCoord, vec3D1.zCoord);
-					double d32 = (double)MathHelper.floor_double(vec3D1.xCoord);
-					vec3D30.xCoord = d32;
-					i7 = (int)d32;
-					if(b29 == 5) {
+					Vec3D vec3D30 = Vec3D.createVector(vector1.xCoord, vector1.yCoord, vector1.zCoord);
+					i7 = (int)(vec3D30.xCoord = (double)MathHelper.floor_double(vector1.xCoord));
+					if(b35 == 5) {
 						--i7;
-						++vec3D31.xCoord;
+						++vec3D30.xCoord;
 					}
 
-					double d35 = (double)MathHelper.floor_double(vec3D1.yCoord);
-					vec3D31.yCoord = d35;
-					i8 = (int)d35;
-					if(b29 == 1) {
+					i8 = (int)(vec3D30.yCoord = (double)MathHelper.floor_double(vector1.yCoord));
+					if(b35 == 1) {
 						--i8;
-						++vec3D31.yCoord;
+						++vec3D30.yCoord;
 					}
 
-					double d38 = (double)MathHelper.floor_double(vec3D1.zCoord);
-					vec3D31.zCoord = d38;
-					i9 = (int)d38;
-					if(b29 == 3) {
+					i9 = (int)(vec3D30.zCoord = (double)MathHelper.floor_double(vector1.zCoord));
+					if(b35 == 3) {
 						--i9;
-						++vec3D31.zCoord;
+						++vec3D30.zCoord;
 					}
 
-					int i40 = this.getBlockId(i7, i8, i9);
-					int i41 = this.getBlockMetadata(i7, i8, i9);
-					Block block42 = Block.blocksList[i40];
-					if(i40 > 0 && block42.canCollideCheck(i41, z3)) {
-						MovingObjectPosition movingObjectPosition43 = block42.collisionRayTrace(this, i7, i8, i9, vec3D1, vec3D2);
-						if(movingObjectPosition43 != null) {
-							return movingObjectPosition43;
+					int i31 = this.getBlockId(i7, i8, i9);
+					int i32 = this.getBlockMetadata(i7, i8, i9);
+					Block block33 = Block.blockList[i31];
+					if(i31 > 0 && block33.canCollideCheck(i32, z3)) {
+						MovingObjectPosition movingObjectPosition34 = block33.collisionRayTrace(this, i7, i8, i9, vector1, vector2);
+						if(movingObjectPosition34 != null) {
+							return movingObjectPosition34;
 						}
 					}
 				}
@@ -855,30 +744,30 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	public void playSoundAtEntity(Entity entity, String sound, float volume, float pitch) {
+	public void playSoundAtEntity(Entity entity, String soundName, float f3, float f4) {
 		for(int i5 = 0; i5 < this.worldAccesses.size(); ++i5) {
-			((IWorldAccess)this.worldAccesses.get(i5)).playSound(sound, entity.posX, entity.posY - (double)entity.yOffset, entity.posZ, volume, pitch);
+			((IWorldAccess)this.worldAccesses.get(i5)).playSound(soundName, entity.posX, entity.posY - (double)entity.yOffset, entity.posZ, f3, f4);
 		}
 
 	}
 
-	public void playSoundEffect(double posX, double posY, double posZ, String sound, float volume, float pitch) {
+	public void playSoundEffect(double x, double y, double z, String soundName, float f8, float f9) {
 		for(int i10 = 0; i10 < this.worldAccesses.size(); ++i10) {
-			((IWorldAccess)this.worldAccesses.get(i10)).playSound(sound, posX, posY, posZ, volume, pitch);
+			((IWorldAccess)this.worldAccesses.get(i10)).playSound(soundName, x, y, z, f8, f9);
 		}
 
 	}
 
-	public void playRecord(String record, int x, int y, int z) {
+	public void playRecord(String recordName, int x, int y, int z) {
 		for(int i5 = 0; i5 < this.worldAccesses.size(); ++i5) {
-			((IWorldAccess)this.worldAccesses.get(i5)).playRecord(record, x, y, z);
+			((IWorldAccess)this.worldAccesses.get(i5)).playRecord(recordName, x, y, z);
 		}
 
 	}
 
-	public void spawnParticle(String particle, double posX, double posY, double posZ, double motionX, double motionY, double motionZ) {
+	public void spawnParticle(String particleName, double x, double y, double z, double d8, double d10, double d12) {
 		for(int i14 = 0; i14 < this.worldAccesses.size(); ++i14) {
-			((IWorldAccess)this.worldAccesses.get(i14)).spawnParticle(particle, posX, posY, posZ, motionX, motionY, motionZ);
+			((IWorldAccess)this.worldAccesses.get(i14)).spawnParticle(particleName, x, y, z, d8, d10, d12);
 		}
 
 	}
@@ -895,11 +784,11 @@ public class World implements IBlockAccess {
 			return false;
 		} else {
 			if(entity instanceof EntityPlayer) {
-				this.playerEntities.add(entity);
+				this.playerEntities.add((EntityPlayer)entity);
 				System.out.println("Player count: " + this.playerEntities.size());
 			}
 
-			this.getChunkFromChunkCoords(i2, i3).addEntity(entity);
+			this.getChunkFromChunkCoords(i2, i3).removeEntityAtIndex(entity);
 			this.loadedEntityList.add(entity);
 			this.obtainEntitySkin(entity);
 			return true;
@@ -923,7 +812,7 @@ public class World implements IBlockAccess {
 	public void setEntityDead(Entity entity) {
 		entity.setEntityDead();
 		if(entity instanceof EntityPlayer) {
-			this.playerEntities.remove(entity);
+			this.playerEntities.remove((EntityPlayer)entity);
 			System.out.println("Player count: " + this.playerEntities.size());
 		}
 
@@ -931,10 +820,6 @@ public class World implements IBlockAccess {
 
 	public void addWorldAccess(IWorldAccess worldAccess) {
 		this.worldAccesses.add(worldAccess);
-	}
-
-	public void removeWorldAccess(IWorldAccess worldAccess) {
-		this.worldAccesses.remove(worldAccess);
 	}
 
 	public List getCollidingBoundingBoxes(Entity entity, AxisAlignedBB aabb) {
@@ -950,7 +835,7 @@ public class World implements IBlockAccess {
 			for(int i10 = i7; i10 < i8; ++i10) {
 				if(this.blockExists(i9, 64, i10)) {
 					for(int i11 = i5 - 1; i11 < i6; ++i11) {
-						Block block12 = Block.blocksList[this.getBlockId(i9, i11, i10)];
+						Block block12 = Block.blockList[this.getBlockId(i9, i11, i10)];
 						if(block12 != null) {
 							block12.getCollidingBoundingBoxes(this, i9, i11, i10, aabb, this.collidingBoundingBoxes);
 						}
@@ -959,7 +844,8 @@ public class World implements IBlockAccess {
 			}
 		}
 
-		List list15 = this.getEntitiesWithinAABBExcludingEntity(entity, aabb.expand(0.25D, 0.25D, 0.25D));
+		double d14 = 0.25D;
+		List list15 = this.getEntitiesWithinAABBExcludingEntity(entity, aabb.expand(d14, d14, d14));
 
 		for(int i16 = 0; i16 < list15.size(); ++i16) {
 			AxisAlignedBB axisAlignedBB13 = ((Entity)list15.get(i16)).getBoundingBox();
@@ -967,78 +853,44 @@ public class World implements IBlockAccess {
 				this.collidingBoundingBoxes.add(axisAlignedBB13);
 			}
 
-			AxisAlignedBB axisAlignedBB14 = entity.getCollisionBox((Entity)list15.get(i16));
-			if(axisAlignedBB14 != null && axisAlignedBB14.intersectsWith(aabb)) {
-				this.collidingBoundingBoxes.add(axisAlignedBB14);
+			axisAlignedBB13 = entity.getCollisionBox((Entity)list15.get(i16));
+			if(axisAlignedBB13 != null && axisAlignedBB13.intersectsWith(aabb)) {
+				this.collidingBoundingBoxes.add(axisAlignedBB13);
 			}
 		}
 
 		return this.collidingBoundingBoxes;
 	}
 
-	public int calculateSkylightSubtracted(float renderPartialTick) {
-		float f2 = 1.0F - (MathHelper.cos(this.getCelestialAngle(renderPartialTick) * (float)Math.PI * 2.0F) * 2.0F + 0.5F);
-		if(f2 < 0.0F) {
-			f2 = 0.0F;
+	public int calculateSkylightSubtracted(float f1) {
+		float f2 = this.getCelestialAngle(f1);
+		float f3 = 1.0F - (MathHelper.cos(f2 * (float)Math.PI * 2.0F) * 2.0F + 0.5F);
+		if(f3 < 0.0F) {
+			f3 = 0.0F;
 		}
 
-		if(f2 > 1.0F) {
-			f2 = 1.0F;
+		if(f3 > 1.0F) {
+			f3 = 1.0F;
 		}
 
-		return (int)(f2 * 11.0F);
+		return (int)(f3 * 11.0F);
 	}
 
-	public Vec3D getSkyColor(float renderPartialTick) {
-		float f2 = MathHelper.cos(this.getCelestialAngle(renderPartialTick) * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
-		if(f2 < 0.0F) {
-			f2 = 0.0F;
+	public float getCelestialAngle(float f1) {
+		int i2 = (int)(this.worldTime % 24000L);
+		float f3 = ((float)i2 + f1) / 24000.0F - 0.25F;
+		if(f3 < 0.0F) {
+			++f3;
 		}
 
-		if(f2 > 1.0F) {
-			f2 = 1.0F;
+		if(f3 > 1.0F) {
+			--f3;
 		}
 
-		return Vec3D.createVector((double)((float)(this.skyColor >> 16 & 255L) / 255.0F * f2), (double)((float)(this.skyColor >> 8 & 255L) / 255.0F * f2), (double)((float)(this.skyColor & 255L) / 255.0F * f2));
-	}
-
-	public float getCelestialAngle(float renderPartialTick) {
-		float f2 = ((float)((int)(this.worldTime % 24000L)) + renderPartialTick) / 24000.0F - 0.25F;
-		if(f2 < 0.0F) {
-			++f2;
-		}
-
-		if(f2 > 1.0F) {
-			--f2;
-		}
-
-		return f2 + (1.0F - (float)((Math.cos((double)f2 * Math.PI) + 1.0D) / 2.0D) - f2) / 3.0F;
-	}
-
-	public Vec3D getCloudColor(float renderPartialTick) {
-		float f2 = MathHelper.cos(this.getCelestialAngle(renderPartialTick) * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
-		if(f2 < 0.0F) {
-			f2 = 0.0F;
-		}
-
-		if(f2 > 1.0F) {
-			f2 = 1.0F;
-		}
-
-		return Vec3D.createVector((double)((float)(this.cloudColor >> 16 & 255L) / 255.0F * (f2 * 0.9F + 0.1F)), (double)((float)(this.cloudColor >> 8 & 255L) / 255.0F * (f2 * 0.9F + 0.1F)), (double)((float)(this.cloudColor & 255L) / 255.0F * (f2 * 0.85F + 0.15F)));
-	}
-
-	public Vec3D getFogColor(float renderPartialTick) {
-		float f2 = MathHelper.cos(this.getCelestialAngle(renderPartialTick) * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
-		if(f2 < 0.0F) {
-			f2 = 0.0F;
-		}
-
-		if(f2 > 1.0F) {
-			f2 = 1.0F;
-		}
-
-		return Vec3D.createVector((double)((float)(this.fogColor >> 16 & 255L) / 255.0F * (f2 * 0.94F + 0.06F)), (double)((float)(this.fogColor >> 8 & 255L) / 255.0F * (f2 * 0.94F + 0.06F)), (double)((float)(this.fogColor & 255L) / 255.0F * (f2 * 0.91F + 0.09F)));
+		float f4 = f3;
+		f3 = 1.0F - (float)((Math.cos((double)f3 * Math.PI) + 1.0D) / 2.0D);
+		f3 = f4 + (f3 - f4) / 3.0F;
+		return f3;
 	}
 
 	public int getTopSolidOrLiquidBlock(int x, int z) {
@@ -1048,7 +900,7 @@ public class World implements IBlockAccess {
 
 		for(z &= 15; i4 > 0; --i4) {
 			int i5 = chunk3.getBlockID(x, i4, z);
-			if(i5 != 0 && (Block.blocksList[i5].material.getIsSolid() || Block.blocksList[i5].material.getIsLiquid())) {
+			if(i5 != 0 && (Block.blockList[i5].material.getIsSolid() || Block.blockList[i5].material.getIsLiquid())) {
 				return i4 + 1;
 			}
 		}
@@ -1056,32 +908,12 @@ public class World implements IBlockAccess {
 		return -1;
 	}
 
-	public int getPrecipitationHeight(int x, int z) {
-		return this.eStage2(x, z);
-	}
-
-	public int eStage2(int i1, int i2) {
-		return this.getChunkFromBlockCoords(i1, i2).getHeightValue(i1 & 15, i2 & 15);
-	}
-
-	public float getStarBrightness(float renderPartialTick) {
-		float f2 = 1.0F - (MathHelper.cos(this.getCelestialAngle(renderPartialTick) * (float)Math.PI * 2.0F) * 2.0F + 0.75F);
-		if(f2 < 0.0F) {
-			f2 = 0.0F;
-		}
-
-		if(f2 > 1.0F) {
-			f2 = 1.0F;
-		}
-
-		return f2 * f2 * 0.5F;
-	}
-
-	public void scheduleBlockUpdate(int x, int y, int z, int id) {
-		NextTickListEntry nextTickListEntry5 = new NextTickListEntry(x, y, z, id);
-		if(this.checkChunksExist(x - 8, y - 8, z - 8, x + 8, y + 8, z + 8)) {
-			if(id > 0) {
-				nextTickListEntry5.setScheduledTime((long)Block.blocksList[id].tickRate() + this.worldTime);
+	public void scheduleBlockUpdate(int i1, int i2, int i3, int i4) {
+		NextTickListEntry nextTickListEntry5 = new NextTickListEntry(i1, i2, i3, i4);
+		byte b6 = 8;
+		if(this.checkChunksExist(i1 - b6, i2 - b6, i3 - b6, i1 + b6, i2 + b6, i3 + b6)) {
+			if(i4 > 0) {
+				nextTickListEntry5.setScheduledTime((long)Block.blockList[i4].tickRate() + this.worldTime);
 			}
 
 			if(!this.scheduledTickSet.contains(nextTickListEntry5)) {
@@ -1142,7 +974,8 @@ public class World implements IBlockAccess {
 		}
 
 		for(i1 = 0; i1 < this.loadedTileEntityList.size(); ++i1) {
-			((TileEntity)this.loadedTileEntityList.get(i1)).updateEntity();
+			TileEntity tileEntity5 = (TileEntity)this.loadedTileEntityList.get(i1);
+			tileEntity5.updateEntity();
 		}
 
 	}
@@ -1150,7 +983,8 @@ public class World implements IBlockAccess {
 	protected void updateEntity(Entity entity) {
 		int i2 = MathHelper.floor_double(entity.posX);
 		int i3 = MathHelper.floor_double(entity.posZ);
-		if(this.checkChunksExist(i2 - 16, 0, i3 - 16, i2 + 16, 128, i3 + 16)) {
+		byte b4 = 16;
+		if(this.checkChunksExist(i2 - b4, 0, i3 - b4, i2 + b4, 128, i3 + b4)) {
 			entity.lastTickPosX = entity.posX;
 			entity.lastTickPosY = entity.posY;
 			entity.lastTickPosZ = entity.posZ;
@@ -1171,7 +1005,7 @@ public class World implements IBlockAccess {
 				}
 
 				if(this.chunkExists(i5, i7)) {
-					this.getChunkFromChunkCoords(i5, i7).addEntity(entity);
+					this.getChunkFromChunkCoords(i5, i7).removeEntityAtIndex(entity);
 				} else {
 					entity.addedToChunk = false;
 					System.out.println("Removing entity because it\'s not in a chunk!!");
@@ -1246,7 +1080,7 @@ public class World implements IBlockAccess {
 		for(int i8 = i2; i8 < i3; ++i8) {
 			for(int i9 = i4; i9 < i5; ++i9) {
 				for(int i10 = i6; i10 < i7; ++i10) {
-					Block block11 = Block.blocksList[this.getBlockId(i8, i9, i10)];
+					Block block11 = Block.blockList[this.getBlockId(i8, i9, i10)];
 					if(block11 != null && block11.material.getIsLiquid()) {
 						return true;
 					}
@@ -1292,20 +1126,24 @@ public class World implements IBlockAccess {
 		for(int i12 = i4; i12 < i5; ++i12) {
 			for(int i13 = i6; i13 < i7; ++i13) {
 				for(int i14 = i8; i14 < i9; ++i14) {
-					Block block15 = Block.blocksList[this.getBlockId(i12, i13, i14)];
-					if(block15 != null && block15.material == material && (double)i7 >= (double)((float)(i13 + 1) - BlockFluid.getFluidHeightPercent(this.getBlockMetadata(i12, i13, i14)))) {
-						z10 = true;
-						block15.velocityToAddToEntity(this, i12, i13, i14, entity, vec3D11);
+					Block block15 = Block.blockList[this.getBlockId(i12, i13, i14)];
+					if(block15 != null && block15.material == material) {
+						double d16 = (double)((float)(i13 + 1) - BlockFluid.getFluidHeightPercent(this.getBlockMetadata(i12, i13, i14)));
+						if((double)i7 >= d16) {
+							z10 = true;
+							block15.velocityToAddToEntity(this, i12, i13, i14, entity, vec3D11);
+						}
 					}
 				}
 			}
 		}
 
 		if(vec3D11.lengthVector() > 0.0D) {
-			Vec3D vec3D16 = vec3D11.normalize();
-			entity.motionX += vec3D16.xCoord * 0.004D;
-			entity.motionY += vec3D16.yCoord * 0.004D;
-			entity.motionZ += vec3D16.zCoord * 0.004D;
+			vec3D11 = vec3D11.normalize();
+			double d18 = 0.004D;
+			entity.motionX += vec3D11.xCoord * d18;
+			entity.motionY += vec3D11.yCoord * d18;
+			entity.motionZ += vec3D11.zCoord * d18;
 		}
 
 		return z10;
@@ -1322,7 +1160,7 @@ public class World implements IBlockAccess {
 		for(int i9 = i3; i9 < i4; ++i9) {
 			for(int i10 = i5; i10 < i6; ++i10) {
 				for(int i11 = i7; i11 < i8; ++i11) {
-					Block block12 = Block.blocksList[this.getBlockId(i9, i10, i11)];
+					Block block12 = Block.blockList[this.getBlockId(i9, i10, i11)];
 					if(block12 != null && block12.material == material) {
 						return true;
 					}
@@ -1344,7 +1182,7 @@ public class World implements IBlockAccess {
 		for(int i9 = i3; i9 < i4; ++i9) {
 			for(int i10 = i5; i10 < i6; ++i10) {
 				for(int i11 = i7; i11 < i8; ++i11) {
-					Block block12 = Block.blocksList[this.getBlockId(i9, i10, i11)];
+					Block block12 = Block.blockList[this.getBlockId(i9, i10, i11)];
 					if(block12 != null && block12.material == material) {
 						int i13 = this.getBlockMetadata(i9, i10, i11);
 						double d14 = (double)(i10 + 1);
@@ -1363,8 +1201,8 @@ public class World implements IBlockAccess {
 		return false;
 	}
 
-	public void createExplosion(Entity entity1, double d2, double d4, double d6, float f8) {
-		(new Explosion()).doExplosion(this, entity1, d2, d4, d6, f8);
+	public void createExplosion(Entity entity, double x, double y, double z, float f8) {
+		(new Explosion()).doExplosion(this, entity, x, y, z, f8);
 	}
 
 	public float getBlockDensity(Vec3D vector, AxisAlignedBB aabb) {
@@ -1374,10 +1212,13 @@ public class World implements IBlockAccess {
 		int i9 = 0;
 		int i10 = 0;
 
-		for(float f11 = 0.0F; f11 <= 1.0F; f11 += (float)d3) {
-			for(float f12 = 0.0F; f12 <= 1.0F; f12 += (float)d5) {
-				for(float f13 = 0.0F; f13 <= 1.0F; f13 += (float)d7) {
-					if(this.rayTraceBlocks(Vec3D.createVector(aabb.minX + (aabb.maxX - aabb.minX) * (double)f11, aabb.minY + (aabb.maxY - aabb.minY) * (double)f12, aabb.minZ + (aabb.maxZ - aabb.minZ) * (double)f13), vector) == null) {
+		for(float f11 = 0.0F; f11 <= 1.0F; f11 = (float)((double)f11 + d3)) {
+			for(float f12 = 0.0F; f12 <= 1.0F; f12 = (float)((double)f12 + d5)) {
+				for(float f13 = 0.0F; f13 <= 1.0F; f13 = (float)((double)f13 + d7)) {
+					double d14 = aabb.minX + (aabb.maxX - aabb.minX) * (double)f11;
+					double d16 = aabb.minY + (aabb.maxY - aabb.minY) * (double)f12;
+					double d18 = aabb.minZ + (aabb.maxZ - aabb.minZ) * (double)f13;
+					if(this.rayTraceBlocks(Vec3D.createVector(d14, d16, d18), vector) == null) {
 						++i9;
 					}
 
@@ -1387,46 +1228,6 @@ public class World implements IBlockAccess {
 		}
 
 		return (float)i9 / (float)i10;
-	}
-
-	public void extinguishFire(int x, int y, int z, int side) {
-		if(side == 0) {
-			--y;
-		}
-
-		if(side == 1) {
-			++y;
-		}
-
-		if(side == 2) {
-			--z;
-		}
-
-		if(side == 3) {
-			++z;
-		}
-
-		if(side == 4) {
-			--x;
-		}
-
-		if(side == 5) {
-			++x;
-		}
-
-		if(this.getBlockId(x, y, z) == Block.fire.blockID) {
-			this.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), "random.fizz", 0.5F, 2.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.8F);
-			this.setBlockWithNotify(x, y, z, 0);
-		}
-
-	}
-
-	public Entity createDebugPlayer(Class playerClass) {
-		return null;
-	}
-
-	public String getDebugLoadedEntities() {
-		return "All: " + this.loadedEntityList.size();
 	}
 
 	public TileEntity getBlockTileEntity(int x, int y, int z) {
@@ -1451,19 +1252,11 @@ public class World implements IBlockAccess {
 	}
 
 	public boolean isBlockNormalCube(int i1, int i2, int i3) {
-		Block block4 = Block.blocksList[this.getBlockId(i1, i2, i3)];
-		return block4 != null && block4.isOpaqueCube();
-	}
-
-	public void saveWorldIndirectly(IProgressUpdate iProgressUpdate1) {
-		this.saveWorld(true, iProgressUpdate1);
+		Block block4 = Block.blockList[this.getBlockId(i1, i2, i3)];
+		return block4 == null ? false : block4.isOpaqueCube();
 	}
 
 	public boolean updatingLighting() {
-		return this.e2stage2();
-	}
-
-	public boolean e2stage2() {
 		int i1 = 1000;
 
 		while(this.lightingToUpdate.size() > 0) {
@@ -1478,28 +1271,30 @@ public class World implements IBlockAccess {
 		return false;
 	}
 
-	public void scheduleLightingUpdate(EnumSkyBlock skyBlock, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		this.scheduleLightingUpdate_do(skyBlock, minX, minY, minZ, maxX, maxY, maxZ, true);
+	public void scheduleLightingUpdate(EnumSkyBlock skyBlock, int i2, int i3, int i4, int i5, int i6, int i7) {
+		this.scheduleLightingUpdate_do(skyBlock, i2, i3, i4, i5, i6, i7, true);
 	}
 
-	public void scheduleLightingUpdate_do(EnumSkyBlock skyBlock, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, boolean update) {
-		if(this.blockExists((maxX + minX) / 2, 64, (maxZ + minZ) / 2)) {
-			int i9 = this.lightingToUpdate.size();
-			if(update) {
-				int i10 = 4;
-				if(i10 > i9) {
-					i10 = i9;
+	public void scheduleLightingUpdate_do(EnumSkyBlock skyBlock, int i2, int i3, int i4, int i5, int i6, int i7, boolean z8) {
+		int i9 = (i5 + i2) / 2;
+		int i10 = (i7 + i4) / 2;
+		if(this.blockExists(i9, 64, i10)) {
+			int i11 = this.lightingToUpdate.size();
+			if(z8) {
+				int i12 = 4;
+				if(i12 > i11) {
+					i12 = i11;
 				}
 
-				for(int i11 = 0; i11 < i10; ++i11) {
-					MetadataChunkBlock metadataChunkBlock12 = (MetadataChunkBlock)this.lightingToUpdate.get(this.lightingToUpdate.size() - i11 - 1);
-					if(metadataChunkBlock12.skyBlock == skyBlock && metadataChunkBlock12.getLightUpdated(minX, minY, minZ, maxX, maxY, maxZ)) {
+				for(int i13 = 0; i13 < i12; ++i13) {
+					MetadataChunkBlock metadataChunkBlock14 = (MetadataChunkBlock)this.lightingToUpdate.get(this.lightingToUpdate.size() - i13 - 1);
+					if(metadataChunkBlock14.skyBlock == skyBlock && metadataChunkBlock14.getLightUpdated(i2, i3, i4, i5, i6, i7)) {
 						return;
 					}
 				}
 			}
 
-			this.lightingToUpdate.add(new MetadataChunkBlock(skyBlock, minX, minY, minZ, maxX, maxY, maxZ));
+			this.lightingToUpdate.add(new MetadataChunkBlock(skyBlock, i2, i3, i4, i5, i6, i7));
 			if(this.lightingToUpdate.size() > 100000) {
 				while(this.lightingToUpdate.size() > 50000) {
 					this.updatingLighting();
@@ -1528,30 +1323,7 @@ public class World implements IBlockAccess {
 			}
 		}
 
-		if(this.bossfightInProgress && this.bossRef.isDead) {
-			this.bossfightInProgress = false;
-			this.bossRef = null;
-		}
-
-		if(this.exclFrailMode && InputHandler.mc.options.difficulty != 4) {
-			this.exclFrailMode = false;
-			System.out.println("World has been changed from Frail mode");
-		}
-
-		if(this.CanUseCheats() && Keyboard.isKeyDown(Keyboard.KEY_MULTIPLY)) {
-			this.worldTime += 12L;
-		} else if(!this.CanUseCheats() || !Keyboard.isKeyDown(Keyboard.KEY_DECIMAL)) {
-			++this.worldTime;
-			if(this.worldTime % 23000L == 0L) {
-				++this.milestone;
-				System.out.println("Milestone " + this.milestone + (this.exclFrailMode ? "*" : "") + " reached.");
-				if(this.exclFrailMode && this.milestone == 10L) {
-					GuiIngame.uqKey = ScreenKeyInput.playerIndex() + ": " + ScreenKeyInput.calcString((long)ScreenKeyInput.playerIndex() << 56, ~((int)(this.milestone - 2L - (long)ScreenKeyInput.playerIndex())));
-					System.out.println(GuiIngame.uqKey);
-				}
-			}
-		}
-
+		++this.worldTime;
 		if(this.worldTime % (long)this.autosavePeriod == 0L) {
 			this.saveWorld(false, (IProgressUpdate)null);
 		}
@@ -1563,15 +1335,17 @@ public class World implements IBlockAccess {
 	protected void updateBlocksAndPlayCaveSounds() {
 		this.positionsToUpdate.clear();
 
+		int i3;
 		int i4;
+		int i6;
 		int i7;
 		for(int i1 = 0; i1 < this.playerEntities.size(); ++i1) {
 			EntityPlayer entityPlayer2 = (EntityPlayer)this.playerEntities.get(i1);
-			int i3 = MathHelper.floor_double(entityPlayer2.posX / 16.0D);
+			i3 = MathHelper.floor_double(entityPlayer2.posX / 16.0D);
 			i4 = MathHelper.floor_double(entityPlayer2.posZ / 16.0D);
 			byte b5 = 9;
 
-			for(int i6 = -b5; i6 <= b5; ++i6) {
+			for(i6 = -b5; i6 <= b5; ++i6) {
 				for(i7 = -b5; i7 <= b5; ++i7) {
 					this.positionsToUpdate.add(new ChunkCoordIntPair(i6 + i3, i7 + i4));
 				}
@@ -1582,31 +1356,29 @@ public class World implements IBlockAccess {
 			--this.soundCounter;
 		}
 
-		Iterator iterator15 = this.positionsToUpdate.iterator();
+		Iterator iterator12 = this.positionsToUpdate.iterator();
 
-		while(iterator15.hasNext()) {
-			Object object16 = iterator15.next();
-			ChunkCoordIntPair chunkCoordIntPair17 = (ChunkCoordIntPair)object16;
-			i4 = chunkCoordIntPair17.chunkXPos * 16;
-			int i18 = chunkCoordIntPair17.chunkZPos * 16;
-			Chunk chunk19 = this.getChunkFromChunkCoords(chunkCoordIntPair17.chunkXPos, chunkCoordIntPair17.chunkZPos);
+		while(iterator12.hasNext()) {
+			ChunkCoordIntPair chunkCoordIntPair13 = (ChunkCoordIntPair)iterator12.next();
+			i3 = chunkCoordIntPair13.chunkXPos * 16;
+			i4 = chunkCoordIntPair13.chunkZPos * 16;
+			Chunk chunk14 = this.getChunkFromChunkCoords(chunkCoordIntPair13.chunkXPos, chunkCoordIntPair13.chunkZPos);
 			int i8;
 			int i9;
 			int i10;
-			int i11;
 			if(this.soundCounter == 0) {
 				this.updateLCG = this.updateLCG * 3 + this.DIST_HASH_MAGIC;
-				i7 = this.updateLCG >> 2;
-				i8 = i7 & 15;
-				i9 = i7 >> 8 & 15;
-				i10 = i7 >> 16 & 127;
-				i11 = chunk19.getBlockID(i8, i10, i9);
-				int i12 = i8 + i4;
-				int i13 = i9 + i18;
-				if(i11 == 0 && this.getBlockLightValue(i12, i10, i13) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, i12, i10, i13) <= 0) {
-					EntityPlayer entityPlayer14 = this.getClosestPlayer((double)i12 + 0.5D, (double)i10 + 0.5D, (double)i13 + 0.5D, 8.0D);
-					if(entityPlayer14 != null && entityPlayer14.getDistanceSq((double)i12 + 0.5D, (double)i10 + 0.5D, (double)i13 + 0.5D) > 4.0D) {
-						this.playSoundEffect((double)i12 + 0.5D, (double)i10 + 0.5D, (double)i13 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.rand.nextFloat() * 0.2F);
+				i6 = this.updateLCG >> 2;
+				i7 = i6 & 15;
+				i8 = i6 >> 8 & 15;
+				i9 = i6 >> 16 & 127;
+				i10 = chunk14.getBlockID(i7, i9, i8);
+				i7 += i3;
+				i8 += i4;
+				if(i10 == 0 && this.getBlockLightValue(i7, i9, i8) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, i7, i9, i8) <= 0) {
+					EntityPlayer entityPlayer11 = this.getClosestPlayer((double)i7 + 0.5D, (double)i9 + 0.5D, (double)i8 + 0.5D, 8.0D);
+					if(entityPlayer11 != null && entityPlayer11.getDistanceSq((double)i7 + 0.5D, (double)i9 + 0.5D, (double)i8 + 0.5D) > 4.0D) {
+						this.playSoundEffect((double)i7 + 0.5D, (double)i9 + 0.5D, (double)i8 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.rand.nextFloat() * 0.2F);
 						this.soundCounter = this.rand.nextInt(12000) + 6000;
 					}
 				}
@@ -1614,31 +1386,31 @@ public class World implements IBlockAccess {
 
 			if(this.snowCovered && this.rand.nextInt(4) == 0) {
 				this.updateLCG = this.updateLCG * 3 + this.DIST_HASH_MAGIC;
-				i7 = this.updateLCG >> 2;
-				i8 = i7 & 15;
-				i9 = i7 >> 8 & 15;
-				i10 = this.getTopSolidOrLiquidBlock(i8 + i4, i9 + i18);
-				if(i10 >= 0 && i10 < 128 && chunk19.getSavedLightValue(EnumSkyBlock.Block, i8, i10, i9) < 10) {
-					i11 = chunk19.getBlockID(i8, i10 - 1, i9);
-					if(chunk19.getBlockID(i8, i10, i9) == 0 && Block.snow.canPlaceBlockAt(this, i8 + i4, i10, i9 + i18)) {
-						this.setBlockWithNotify(i8 + i4, i10, i9 + i18, Block.snow.blockID);
+				i6 = this.updateLCG >> 2;
+				i7 = i6 & 15;
+				i8 = i6 >> 8 & 15;
+				i9 = this.getTopSolidOrLiquidBlock(i7 + i3, i8 + i4);
+				if(i9 >= 0 && i9 < 128 && chunk14.getSavedLightValue(EnumSkyBlock.Block, i7, i9, i8) < 10) {
+					i10 = chunk14.getBlockID(i7, i9 - 1, i8);
+					if(chunk14.getBlockID(i7, i9, i8) == 0 && Block.snow.canPlaceBlockAt(this, i7 + i3, i9, i8 + i4)) {
+						this.setBlockWithNotify(i7 + i3, i9, i8 + i4, Block.snow.blockID);
 					}
 
-					if(i11 == Block.waterStill.blockID && chunk19.getBlockMetadata(i8, i10 - 1, i9) == 0) {
-						this.setBlockWithNotify(i8 + i4, i10 - 1, i9 + i18, Block.ice.blockID);
+					if(i10 == Block.waterStill.blockID && chunk14.getBlockMetadata(i7, i9 - 1, i8) == 0) {
+						this.setBlockWithNotify(i7 + i3, i9 - 1, i8 + i4, Block.ice.blockID);
 					}
 				}
 			}
 
-			for(i7 = 0; i7 < 80; ++i7) {
+			for(i6 = 0; i6 < 80; ++i6) {
 				this.updateLCG = this.updateLCG * 3 + this.DIST_HASH_MAGIC;
-				i8 = this.updateLCG >> 2;
-				i9 = i8 & 15;
-				i10 = i8 >> 8 & 15;
-				i11 = i8 >> 16 & 127;
-				byte b20 = chunk19.blocks[i9 << 11 | i10 << 7 | i11];
-				if(Block.tickOnLoad[b20]) {
-					Block.blocksList[b20].updateTick(this, i9 + i4, i11, i10 + i18, this.rand);
+				i7 = this.updateLCG >> 2;
+				i8 = i7 & 15;
+				i9 = i7 >> 8 & 15;
+				i10 = i7 >> 16 & 127;
+				byte b15 = chunk14.blocks[i8 << 11 | i9 << 7 | i10];
+				if(Block.tickOnLoad[b15]) {
+					Block.blockList[b15].updateTick(this, i8 + i3, i10, i9 + i4, this.rand);
 				}
 			}
 		}
@@ -1662,31 +1434,17 @@ public class World implements IBlockAccess {
 
 				this.scheduledTickTreeSet.remove(nextTickListEntry4);
 				this.scheduledTickSet.remove(nextTickListEntry4);
-				if(this.checkChunksExist(nextTickListEntry4.xCoord - 8, nextTickListEntry4.yCoord - 8, nextTickListEntry4.zCoord - 8, nextTickListEntry4.xCoord + 8, nextTickListEntry4.yCoord + 8, nextTickListEntry4.zCoord + 8)) {
+				byte b5 = 8;
+				if(this.checkChunksExist(nextTickListEntry4.xCoord - b5, nextTickListEntry4.yCoord - b5, nextTickListEntry4.zCoord - b5, nextTickListEntry4.xCoord + b5, nextTickListEntry4.yCoord + b5, nextTickListEntry4.zCoord + b5)) {
 					int i6 = this.getBlockId(nextTickListEntry4.xCoord, nextTickListEntry4.yCoord, nextTickListEntry4.zCoord);
 					if(i6 == nextTickListEntry4.blockID && i6 > 0) {
-						Block.blocksList[i6].updateTick(this, nextTickListEntry4.xCoord, nextTickListEntry4.yCoord, nextTickListEntry4.zCoord, this.rand);
+						Block.blockList[i6].updateTick(this, nextTickListEntry4.xCoord, nextTickListEntry4.yCoord, nextTickListEntry4.zCoord, this.rand);
 					}
 				}
 			}
 
 			return this.scheduledTickTreeSet.size() != 0;
 		}
-	}
-
-	public void randomDisplayUpdates(int posX, int posY, int posZ) {
-		Random random5 = new Random();
-
-		for(int i6 = 0; i6 < 1000; ++i6) {
-			int i7 = posX + this.rand.nextInt(16) - this.rand.nextInt(16);
-			int i8 = posY + this.rand.nextInt(16) - this.rand.nextInt(16);
-			int i9 = posZ + this.rand.nextInt(16) - this.rand.nextInt(16);
-			int i10 = this.getBlockId(i7, i8, i9);
-			if(i10 > 0) {
-				Block.blocksList[i10].randomDisplayTick(this, i7, i8, i9, random5);
-			}
-		}
-
 	}
 
 	public List getEntitiesWithinAABBExcludingEntity(Entity entity, AxisAlignedBB aabb) {
@@ -1707,7 +1465,7 @@ public class World implements IBlockAccess {
 		return this.entitiesWithinAABBExcludingEntity;
 	}
 
-	public List getEntitiesWithinAABB(Class entityClass, AxisAlignedBB aabb) {
+	public List getEntitiesWithinAABB(Class clazz, AxisAlignedBB aabb) {
 		int i3 = MathHelper.floor_double((aabb.minX - 2.0D) / 16.0D);
 		int i4 = MathHelper.floor_double((aabb.maxX + 2.0D) / 16.0D);
 		int i5 = MathHelper.floor_double((aabb.minZ - 2.0D) / 16.0D);
@@ -1717,16 +1475,12 @@ public class World implements IBlockAccess {
 		for(int i8 = i3; i8 <= i4; ++i8) {
 			for(int i9 = i5; i9 <= i6; ++i9) {
 				if(this.chunkExists(i8, i9)) {
-					this.getChunkFromChunkCoords(i8, i9).getEntitiesOfTypeWithinAAAB(entityClass, aabb, arrayList7);
+					this.getChunkFromChunkCoords(i8, i9).getEntitiesOfTypeWithinAAAB(clazz, aabb, arrayList7);
 				}
 			}
 		}
 
 		return arrayList7;
-	}
-
-	public List getLoadedEntityList() {
-		return this.loadedEntityList;
 	}
 
 	public void updateTileEntityChunkAndDoNothing(int x, int y, int z, TileEntity tileEntity) {
@@ -1740,11 +1494,12 @@ public class World implements IBlockAccess {
 
 	}
 
-	public int countEntities(Class entityClass) {
+	public int countEntities(Class clazz) {
 		int i2 = 0;
 
 		for(int i3 = 0; i3 < this.loadedEntityList.size(); ++i3) {
-			if(entityClass.isAssignableFrom(((Entity)this.loadedEntityList.get(i3)).getClass())) {
+			Entity entity4 = (Entity)this.loadedEntityList.get(i3);
+			if(clazz.isAssignableFrom(entity4.getClass())) {
 				++i2;
 			}
 		}
@@ -1765,21 +1520,16 @@ public class World implements IBlockAccess {
 		this.unloadedEntityList.addAll(list);
 	}
 
-	public void dropOldChunks() {
-		while(this.chunkProvider.unload100OldestChunks()) {
+	public boolean canBlockBePlacedAt(int blockID, int x, int y, int z, boolean z5) {
+		int i6 = this.getBlockId(x, y, z);
+		Block block7 = Block.blockList[i6];
+		Block block8 = Block.blockList[blockID];
+		AxisAlignedBB axisAlignedBB9 = block8.getCollisionBoundingBoxFromPool(this, x, y, z);
+		if(z5) {
+			axisAlignedBB9 = null;
 		}
 
-	}
-
-	public boolean canBlockBePlacedAt(int id, int x, int y, int z, boolean ignoreBB) {
-		Block block6 = Block.blocksList[this.getBlockId(x, y, z)];
-		Block block7 = Block.blocksList[id];
-		AxisAlignedBB axisAlignedBB8 = block7.getCollisionBoundingBoxFromPool(this, x, y, z);
-		if(ignoreBB) {
-			axisAlignedBB8 = null;
-		}
-
-		return (axisAlignedBB8 == null || this.checkIfAABBIsClear(axisAlignedBB8)) && (block6 == Block.waterMoving || block6 == Block.waterStill || block6 == Block.lavaMoving || block6 == Block.lavaStill || block6 == Block.fire || block6 == Block.snow || id > 0 && block6 == null && block7.canPlaceBlockAt(this, x, y, z));
+		return axisAlignedBB9 != null && !this.checkIfAABBIsClear(axisAlignedBB9) ? false : (block7 != Block.waterMoving && block7 != Block.waterStill && block7 != Block.lavaMoving && block7 != Block.lavaStill && block7 != Block.fire && block7 != Block.snow ? blockID > 0 && block7 == null && block8.canPlaceBlockAt(this, x, y, z) : true);
 	}
 
 	public PathEntity getPathToEntity(Entity entity1, Entity entity2, float f3) {
@@ -1787,51 +1537,65 @@ public class World implements IBlockAccess {
 		int i5 = MathHelper.floor_double(entity1.posY);
 		int i6 = MathHelper.floor_double(entity1.posZ);
 		int i7 = (int)(f3 + 16.0F);
-		return (new Pathfinder(new ChunkCache(this, i4 - i7, i5 - i7, i6 - i7, i4 + i7, i5 + i7, i6 + i7))).createEntityPathTo(entity1, entity2, f3);
+		int i8 = i4 - i7;
+		int i9 = i5 - i7;
+		int i10 = i6 - i7;
+		int i11 = i4 + i7;
+		int i12 = i5 + i7;
+		int i13 = i6 + i7;
+		ChunkCache chunkCache14 = new ChunkCache(this, i8, i9, i10, i11, i12, i13);
+		return (new Pathfinder(chunkCache14)).createEntityPathTo(entity1, entity2, f3);
 	}
 
-	public PathEntity getEntityPathToXYZ(Entity entity, int i2, int i3, int i4, float f5) {
+	public PathEntity getEntityPathToXYZ(Entity entity, int x, int y, int z, float f5) {
 		int i6 = MathHelper.floor_double(entity.posX);
 		int i7 = MathHelper.floor_double(entity.posY);
 		int i8 = MathHelper.floor_double(entity.posZ);
 		int i9 = (int)(f5 + 8.0F);
-		return (new Pathfinder(new ChunkCache(this, i6 - i9, i7 - i9, i8 - i9, i6 + i9, i7 + i9, i8 + i9))).createEntityPathTo(entity, i2, i3, i4, f5);
+		int i10 = i6 - i9;
+		int i11 = i7 - i9;
+		int i12 = i8 - i9;
+		int i13 = i6 + i9;
+		int i14 = i7 + i9;
+		int i15 = i8 + i9;
+		ChunkCache chunkCache16 = new ChunkCache(this, i10, i11, i12, i13, i14, i15);
+		return (new Pathfinder(chunkCache16)).createEntityPathTo(entity, x, y, z, f5);
 	}
 
-	public boolean isBlockProvidingPowerTo(int x, int y, int z, int side) {
+	public boolean isBlockProvidingPowerTo(int x, int y, int z, int i4) {
 		int i5 = this.getBlockId(x, y, z);
-		return i5 != 0 && Block.blocksList[i5].isIndirectlyPoweringTo(this, x, y, z, side);
+		return i5 == 0 ? false : Block.blockList[i5].isIndirectlyPoweringTo(this, x, y, z, i4);
 	}
 
-	public boolean isBlockGettingPowered(int x, int y, int z) {
-		return this.isBlockProvidingPowerTo(x, y - 1, z, 0) || this.isBlockProvidingPowerTo(x, y + 1, z, 1) || this.isBlockProvidingPowerTo(x, y, z - 1, 2) || this.isBlockProvidingPowerTo(x, y, z + 1, 3) || this.isBlockProvidingPowerTo(x - 1, y, z, 4) || this.isBlockProvidingPowerTo(x + 1, y, z, 5);
+	public boolean isBlockGettingPowered(int i1, int i2, int i3) {
+		return this.isBlockProvidingPowerTo(i1, i2 - 1, i3, 0) ? true : (this.isBlockProvidingPowerTo(i1, i2 + 1, i3, 1) ? true : (this.isBlockProvidingPowerTo(i1, i2, i3 - 1, 2) ? true : (this.isBlockProvidingPowerTo(i1, i2, i3 + 1, 3) ? true : (this.isBlockProvidingPowerTo(i1 - 1, i2, i3, 4) ? true : this.isBlockProvidingPowerTo(i1 + 1, i2, i3, 5)))));
 	}
 
-	public boolean isBlockIndirectlyProvidingPowerTo(int x, int y, int z, int side) {
+	public boolean isBlockIndirectlyProvidingPowerTo(int x, int y, int z, int i4) {
 		if(this.isBlockNormalCube(x, y, z)) {
 			return this.isBlockGettingPowered(x, y, z);
 		} else {
 			int i5 = this.getBlockId(x, y, z);
-			return i5 != 0 && Block.blocksList[i5].isPoweringTo(this, x, y, z, side);
+			return i5 == 0 ? false : Block.blockList[i5].isPoweringTo(this, x, y, z, i4);
 		}
 	}
 
 	public boolean isBlockIndirectlyGettingPowered(int x, int y, int z) {
-		return this.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || this.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || this.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) || this.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) || this.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) || this.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5);
+		return this.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) ? true : (this.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) ? true : (this.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) ? true : (this.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) ? true : (this.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) ? true : this.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5)))));
 	}
 
-	public EntityPlayer getClosestPlayerToEntity(Entity entity, double distance) {
-		return this.getClosestPlayer(entity.posX, entity.posY, entity.posZ, distance);
+	public EntityPlayer getClosestPlayerToEntity(Entity entity, double d2) {
+		return this.getClosestPlayer(entity.posX, entity.posY, entity.posZ, d2);
 	}
 
-	public EntityPlayer getClosestPlayer(double posX, double posY, double posZ, double distance) {
+	public EntityPlayer getClosestPlayer(double d1, double d3, double d5, double d7) {
 		double d9 = -1.0D;
 		EntityPlayer entityPlayer11 = null;
 
 		for(int i12 = 0; i12 < this.playerEntities.size(); ++i12) {
 			EntityPlayer entityPlayer13 = (EntityPlayer)this.playerEntities.get(i12);
-			double d14 = entityPlayer13.getDistanceSq(posX, posY, posZ);
-			if((distance < 0.0D || d14 < distance * distance) && (d9 == -1.0D || d14 < d9)) {
+			double d14 = entityPlayer13.getDistanceSq(d1, d3, d5);
+			if((d7 < 0.0D || d14 < d7 * d7) && (d9 == -1.0D || d14 < d9)) {
 				d9 = d14;
 				entityPlayer11 = entityPlayer13;
 			}
@@ -1840,15 +1604,16 @@ public class World implements IBlockAccess {
 		return entityPlayer11;
 	}
 
-	public void setChunkData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, byte[] blocks) {
-		int i8 = minX >> 4;
-		int i9 = minZ >> 4;
-		int i10 = minX + maxX - 1 >> 4;
-		int i11 = minZ + maxZ - 1 >> 4;
+	public byte[] getChunkData(int i1, int i2, int i3, int x, int y, int z) {
+		byte[] b7 = new byte[x * y * z * 5 / 2];
+		int i8 = i1 >> 4;
+		int i9 = i3 >> 4;
+		int i10 = i1 + x - 1 >> 4;
+		int i11 = i3 + z - 1 >> 4;
 		int i12 = 0;
-		int i13 = minY;
-		int i14 = minY + maxY;
-		if(minY < 0) {
+		int i13 = i2;
+		int i14 = i2 + y;
+		if(i2 < 0) {
 			i13 = 0;
 		}
 
@@ -1857,8 +1622,8 @@ public class World implements IBlockAccess {
 		}
 
 		for(int i15 = i8; i15 <= i10; ++i15) {
-			int i16 = minX - i15 * 16;
-			int i17 = minX + maxX - i15 * 16;
+			int i16 = i1 - i15 * 16;
+			int i17 = i1 + x - i15 * 16;
 			if(i16 < 0) {
 				i16 = 0;
 			}
@@ -1868,8 +1633,8 @@ public class World implements IBlockAccess {
 			}
 
 			for(int i18 = i9; i18 <= i11; ++i18) {
-				int i19 = minZ - i18 * 16;
-				int i20 = minZ + maxZ - i18 * 16;
+				int i19 = i3 - i18 * 16;
+				int i20 = i3 + z - i18 * 16;
 				if(i19 < 0) {
 					i19 = 0;
 				}
@@ -1878,59 +1643,37 @@ public class World implements IBlockAccess {
 					i20 = 16;
 				}
 
-				i12 = this.getChunkFromChunkCoords(i15, i18).setChunkData(blocks, i16, i13, i19, i17, i14, i20, i12);
-				this.markBlocksDirty(i15 * 16 + i16, i13, i18 * 16 + i19, i15 * 16 + i17, i14, i18 * 16 + i20);
+				i12 = this.getChunkFromChunkCoords(i15, i18).setChunkData(b7, i16, i13, i19, i17, i14, i20, i12);
 			}
 		}
 
-	}
-
-	public void sendQuittingDisconnectingPacket() {
+		return b7;
 	}
 
 	public void checkSessionLock() {
 		try {
-			DataInputStream dataInputStream1 = new DataInputStream(new FileInputStream(new File(this.saveDirectory, "session.lock")));
+			File file1 = new File(this.saveDirectory, "session.lock");
+			DataInputStream dataInputStream2 = new DataInputStream(new FileInputStream(file1));
 
 			try {
-				if(dataInputStream1.readLong() != this.lockTimestamp) {
+				if(dataInputStream2.readLong() != this.lockTimestamp) {
 					throw new MinecraftException("The save is being accessed from another location, aborting");
 				}
 			} finally {
-				dataInputStream1.close();
+				dataInputStream2.close();
 			}
 
-		} catch (IOException iOException6) {
+		} catch (IOException iOException7) {
 			throw new MinecraftException("Failed to check session lock, aborting");
 		}
 	}
 
-	public void setWorldTime(long time) {
-		this.worldTime = time;
-	}
-
-	public void joinEntityInSurroundings(Entity entity) {
-		int i2 = MathHelper.floor_double(entity.posX / 16.0D);
-		int i3 = MathHelper.floor_double(entity.posZ / 16.0D);
-		byte b4 = 2;
-
-		for(int i5 = i2 - b4; i5 <= i2 + b4; ++i5) {
-			for(int i6 = i3 - b4; i6 <= i3 + b4; ++i6) {
-				this.getChunkFromChunkCoords(i5, i6);
-			}
-		}
-
-		if(!this.loadedEntityList.contains(entity)) {
-			System.out.println("REINSERTING PLAYER!");
-			this.loadedEntityList.add(entity);
-		}
-
-	}
-
 	static {
+		float f0 = 0.05F;
+
 		for(int i1 = 0; i1 <= 15; ++i1) {
 			float f2 = 1.0F - (float)i1 / 15.0F;
-			lightBrightnessTable[i1] = (1.0F - f2) / (f2 * 3.0F + 1.0F) * 0.95F + 0.05F;
+			lightBrightnessTable[i1] = (1.0F - f2) / (f2 * 3.0F + 1.0F) * (1.0F - f0) + f0;
 		}
 
 	}

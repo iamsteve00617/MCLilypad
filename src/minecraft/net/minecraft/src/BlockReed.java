@@ -11,19 +11,19 @@ public class BlockReed extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		if(world1.getBlockId(i2, i3 + 1, i4) == 0) {
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		if(worldObj.getBlockId(x, y + 1, z) == 0) {
 			int i6;
-			for(i6 = 1; world1.getBlockId(i2, i3 - i6, i4) == this.blockID; ++i6) {
+			for(i6 = 1; worldObj.getBlockId(x, y - i6, z) == this.blockID; ++i6) {
 			}
 
 			if(i6 < 3) {
-				int i7 = world1.getBlockMetadata(i2, i3, i4);
+				int i7 = worldObj.getBlockMetadata(x, y, z);
 				if(i7 == 15) {
-					world1.setBlockWithNotify(i2, i3 + 1, i4, this.blockID);
-					world1.setBlockMetadataWithNotify(i2, i3, i4, 0);
+					worldObj.setBlockWithNotify(x, y + 1, z, this.blockID);
+					worldObj.setBlockMetadataWithNotify(x, y, z, 0);
 				} else {
-					world1.setBlockMetadataWithNotify(i2, i3, i4, i7 + 1);
+					worldObj.setBlockMetadataWithNotify(x, y, z, i7 + 1);
 				}
 			}
 		}

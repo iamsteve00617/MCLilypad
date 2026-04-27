@@ -37,8 +37,8 @@ public class BlockLadder extends Block {
 		return 8;
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return world.isBlockNormalCube(x - 1, y, z) ? true : (world.isBlockNormalCube(x + 1, y, z) ? true : (world.isBlockNormalCube(x, y, z - 1) ? true : world.isBlockNormalCube(x, y, z + 1)));
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
+		return world1.isBlockNormalCube(i2 - 1, i3, i4) ? true : (world1.isBlockNormalCube(i2 + 1, i3, i4) ? true : (world1.isBlockNormalCube(i2, i3, i4 - 1) ? true : world1.isBlockNormalCube(i2, i3, i4 + 1)));
 	}
 
 	public void onBlockPlaced(World world1, int i2, int i3, int i4, int i5) {

@@ -18,9 +18,9 @@ public class BlockRedstoneOre extends Block {
 		return 30;
 	}
 
-	public void onBlockClicked(World world1, int i2, int i3, int i4, EntityPlayer entityPlayer5) {
-		this.glow(world1, i2, i3, i4);
-		super.onBlockClicked(world1, i2, i3, i4, entityPlayer5);
+	public void onBlockClicked(World worldObj, int x, int y, int z, EntityPlayer entityPlayer) {
+		this.glow(worldObj, x, y, z);
+		super.onBlockClicked(worldObj, x, y, z, entityPlayer);
 	}
 
 	public void onEntityWalking(World worldObj, int x, int y, int z, Entity entity) {
@@ -41,9 +41,9 @@ public class BlockRedstoneOre extends Block {
 
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
 		if(this.blockID == Block.oreRedstoneGlowing.blockID) {
-			world1.setBlockWithNotify(i2, i3, i4, Block.oreRedstone.blockID);
+			worldObj.setBlockWithNotify(x, y, z, Block.oreRedstone.blockID);
 		}
 
 	}

@@ -11,8 +11,8 @@ public class BlockFlower extends Block {
 		this.setBlockBounds(0.5F - f3, 0.0F, 0.5F - f3, 0.5F + f3, f3 * 3.0F, 0.5F + f3);
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return this.canThisPlantGrowOnThisBlockID(world.getBlockId(x, y - 1, z));
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
+		return this.canThisPlantGrowOnThisBlockID(world1.getBlockId(i2, i3 - 1, i4));
 	}
 
 	protected boolean canThisPlantGrowOnThisBlockID(int id) {

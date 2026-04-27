@@ -29,18 +29,18 @@ public class BlockStationary extends BlockFluid {
 		worldObj.editingBlocks = false;
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
 		if(this.material == Material.lava) {
-			int i6 = random5.nextInt(3);
+			int i6 = rand.nextInt(3);
 
 			for(int i7 = 0; i7 < i6; ++i7) {
-				i2 += random5.nextInt(3) - 1;
-				++i3;
-				i4 += random5.nextInt(3) - 1;
-				int i8 = world1.getBlockId(i2, i3, i4);
+				x += rand.nextInt(3) - 1;
+				++y;
+				z += rand.nextInt(3) - 1;
+				int i8 = worldObj.getBlockId(x, y, z);
 				if(i8 == 0) {
-					if(this.isFlammable(world1, i2 - 1, i3, i4) || this.isFlammable(world1, i2 + 1, i3, i4) || this.isFlammable(world1, i2, i3, i4 - 1) || this.isFlammable(world1, i2, i3, i4 + 1) || this.isFlammable(world1, i2, i3 - 1, i4) || this.isFlammable(world1, i2, i3 + 1, i4)) {
-						world1.setBlockWithNotify(i2, i3, i4, Block.fire.blockID);
+					if(this.isFlammable(worldObj, x - 1, y, z) || this.isFlammable(worldObj, x + 1, y, z) || this.isFlammable(worldObj, x, y, z - 1) || this.isFlammable(worldObj, x, y, z + 1) || this.isFlammable(worldObj, x, y - 1, z) || this.isFlammable(worldObj, x, y + 1, z)) {
+						worldObj.setBlockWithNotify(x, y, z, Block.fire.blockID);
 						return;
 					}
 				} else if(Block.blocksList[i8].material.getIsSolid()) {

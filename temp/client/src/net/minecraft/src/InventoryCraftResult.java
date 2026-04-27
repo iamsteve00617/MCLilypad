@@ -15,10 +15,10 @@ public class InventoryCraftResult implements IInventory {
 		return "Result";
 	}
 
-	public ItemStack decrStackSize(int i1, int i2) {
-		if(this.stackResult[i1] != null) {
-			ItemStack itemStack3 = this.stackResult[i1];
-			this.stackResult[i1] = null;
+	public ItemStack decrStackSize(int slot, int stackSize) {
+		if(this.stackResult[slot] != null) {
+			ItemStack itemStack3 = this.stackResult[slot];
+			this.stackResult[slot] = null;
 			return itemStack3;
 		} else {
 			return null;

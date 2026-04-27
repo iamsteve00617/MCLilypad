@@ -15,15 +15,15 @@ public class BlockCrops extends BlockFlower {
 		return i1 == Block.tilledField.blockID;
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		super.updateTick(world1, i2, i3, i4, random5);
-		if(world1.getBlockLightValue(i2, i3 + 1, i4) >= 9) {
-			int i6 = world1.getBlockMetadata(i2, i3, i4);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		super.updateTick(worldObj, x, y, z, rand);
+		if(worldObj.getBlockLightValue(x, y + 1, z) >= 9) {
+			int i6 = worldObj.getBlockMetadata(x, y, z);
 			if(i6 < 7) {
-				float f7 = this.getGrowthRate(world1, i2, i3, i4);
-				if(random5.nextInt((int)(100.0F / f7)) == 0) {
+				float f7 = this.getGrowthRate(worldObj, x, y, z);
+				if(rand.nextInt((int)(100.0F / f7)) == 0) {
 					++i6;
-					world1.setBlockMetadataWithNotify(i2, i3, i4, i6);
+					worldObj.setBlockMetadataWithNotify(x, y, z, i6);
 				}
 			}
 		}

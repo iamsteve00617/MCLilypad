@@ -59,12 +59,12 @@ public class PlayerControllerSP extends PlayerController {
 		this.blockHitWait = 0;
 	}
 
-	public void sendBlockRemoving(int x, int y, int z, int side) {
+	public void sendBlockRemoving(int i1, int i2, int i3, int i4) {
 		if(this.blockHitWait > 0) {
 			--this.blockHitWait;
 		} else {
-			if(x == this.curBlockX && y == this.curBlockY && z == this.curBlockZ) {
-				int i5 = this.mc.theWorld.getBlockId(x, y, z);
+			if(i1 == this.curBlockX && i2 == this.curBlockY && i3 == this.curBlockZ) {
+				int i5 = this.mc.theWorld.getBlockId(i1, i2, i3);
 				if(i5 == 0) {
 					return;
 				}
@@ -72,12 +72,12 @@ public class PlayerControllerSP extends PlayerController {
 				Block block6 = Block.blocksList[i5];
 				this.curBlockDamage += block6.blockStrength(this.mc.thePlayer);
 				if(this.blockDestroySoundCounter % 4.0F == 0.0F && block6 != null) {
-					this.mc.sndManager.playSound(block6.stepSound.getStepSound(), (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, (block6.stepSound.getVolume() + 1.0F) / 8.0F, block6.stepSound.getPitch() * 0.5F);
+					this.mc.sndManager.playSound(block6.stepSound.getStepSound(), (float)i1 + 0.5F, (float)i2 + 0.5F, (float)i3 + 0.5F, (block6.stepSound.getVolume() + 1.0F) / 8.0F, block6.stepSound.getPitch() * 0.5F);
 				}
 
 				++this.blockDestroySoundCounter;
 				if(this.curBlockDamage >= 1.0F) {
-					this.sendBlockRemoved(x, y, z, side);
+					this.sendBlockRemoved(i1, i2, i3, i4);
 					this.curBlockDamage = 0.0F;
 					this.prevBlockDamage = 0.0F;
 					this.blockDestroySoundCounter = 0.0F;
@@ -87,9 +87,9 @@ public class PlayerControllerSP extends PlayerController {
 				this.curBlockDamage = 0.0F;
 				this.prevBlockDamage = 0.0F;
 				this.blockDestroySoundCounter = 0.0F;
-				this.curBlockX = x;
-				this.curBlockY = y;
-				this.curBlockZ = z;
+				this.curBlockX = i1;
+				this.curBlockY = i2;
+				this.curBlockZ = i3;
 			}
 
 		}

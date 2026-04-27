@@ -160,7 +160,7 @@ public class BlockDoor extends Block {
 		return (flag & 4) == 0 ? flag - 1 & 3 : flag & 3;
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return y >= 127 ? false : world.isBlockNormalCube(x, y - 1, z) && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
+		return i3 >= 127 ? false : world1.isBlockNormalCube(i2, i3 - 1, i4) && super.canPlaceBlockAt(world1, i2, i3, i4) && super.canPlaceBlockAt(world1, i2, i3 + 1, i4);
 	}
 }

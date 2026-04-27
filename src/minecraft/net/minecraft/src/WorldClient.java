@@ -163,11 +163,11 @@ public class WorldClient extends World {
 		}
 	}
 
-	public boolean setBlockAndMetadata(int x, int y, int z, int id, int metadata) {
-		int i6 = this.getBlockId(x, y, z);
-		int i7 = this.getBlockMetadata(x, y, z);
-		if(super.setBlockAndMetadata(x, y, z, id, metadata)) {
-			this.blocksToReceive.add(new WorldBlockPositionType(this, x, y, z, i6, i7));
+	public boolean setBlockAndMetadata(int i1, int i2, int i3, int i4, int i5) {
+		int i6 = this.getBlockId(i1, i2, i3);
+		int i7 = this.getBlockMetadata(i1, i2, i3);
+		if(super.setBlockAndMetadata(i1, i2, i3, i4, i5)) {
+			this.blocksToReceive.add(new WorldBlockPositionType(this, i1, i2, i3, i6, i7));
 			return true;
 		} else {
 			return false;

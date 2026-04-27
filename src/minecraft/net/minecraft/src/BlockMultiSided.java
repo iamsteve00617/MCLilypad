@@ -22,7 +22,7 @@ public class BlockMultiSided extends Block {
 		return i5 == 1 ? this.texTop : (i5 == 0 ? this.texBottom : this.texSide);
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
 	}
 
 	public int idDropped(int i1, Random random2) {

@@ -22,8 +22,8 @@ public class BlockRedstoneWire extends Block {
 		return 5;
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return world.isBlockNormalCube(x, y - 1, z);
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
+		return world1.isBlockNormalCube(i2, i3 - 1, i4);
 	}
 
 	private void updateAndPropagateCurrentStrength(World world, int x, int y, int z) {

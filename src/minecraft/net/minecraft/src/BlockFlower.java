@@ -24,8 +24,8 @@ public class BlockFlower extends Block {
 		this.checkFlowerChange(world1, i2, i3, i4);
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		this.checkFlowerChange(world1, i2, i3, i4);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		this.checkFlowerChange(worldObj, x, y, z);
 	}
 
 	protected final void checkFlowerChange(World worldObj, int x, int y, int z) {

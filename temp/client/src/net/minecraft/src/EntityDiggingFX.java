@@ -13,20 +13,20 @@ public class EntityDiggingFX extends EntityFX {
 		return 1;
 	}
 
-	public void renderParticle(Tessellator tessellator, float renderPartialTick, float xOffset, float yOffset, float zOffset, float xOffset2, float zOffset2) {
+	public void renderParticle(Tessellator tessellator1, float f2, float f3, float f4, float f5, float f6, float f7) {
 		float f8 = ((float)(this.particleTextureIndex % 16) + this.particleTextureJitterX / 4.0F) / 16.0F;
 		float f9 = f8 + 0.015609375F;
 		float f10 = ((float)(this.particleTextureIndex / 16) + this.particleTextureJitterY / 4.0F) / 16.0F;
 		float f11 = f10 + 0.015609375F;
 		float f12 = 0.1F * this.particleScale;
-		float f13 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)renderPartialTick - interpPosX);
-		float f14 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)renderPartialTick - interpPosY);
-		float f15 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)renderPartialTick - interpPosZ);
-		float f16 = this.getBrightness(renderPartialTick);
-		tessellator.setColorOpaque_F(f16 * this.particleRed, f16 * this.particleGreen, f16 * this.particleBlue);
-		tessellator.addVertexWithUV((double)(f13 - xOffset * f12 - xOffset2 * f12), (double)(f14 - yOffset * f12), (double)(f15 - zOffset * f12 - zOffset2 * f12), (double)f8, (double)f11);
-		tessellator.addVertexWithUV((double)(f13 - xOffset * f12 + xOffset2 * f12), (double)(f14 + yOffset * f12), (double)(f15 - zOffset * f12 + zOffset2 * f12), (double)f8, (double)f10);
-		tessellator.addVertexWithUV((double)(f13 + xOffset * f12 + xOffset2 * f12), (double)(f14 + yOffset * f12), (double)(f15 + zOffset * f12 + zOffset2 * f12), (double)f9, (double)f10);
-		tessellator.addVertexWithUV((double)(f13 + xOffset * f12 - xOffset2 * f12), (double)(f14 - yOffset * f12), (double)(f15 + zOffset * f12 - zOffset2 * f12), (double)f9, (double)f11);
+		float f13 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)f2 - interpPosX);
+		float f14 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)f2 - interpPosY);
+		float f15 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)f2 - interpPosZ);
+		float f16 = this.getBrightness(f2);
+		tessellator1.setColorOpaque_F(f16 * this.particleRed, f16 * this.particleGreen, f16 * this.particleBlue);
+		tessellator1.addVertexWithUV((double)(f13 - f3 * f12 - f6 * f12), (double)(f14 - f4 * f12), (double)(f15 - f5 * f12 - f7 * f12), (double)f8, (double)f11);
+		tessellator1.addVertexWithUV((double)(f13 - f3 * f12 + f6 * f12), (double)(f14 + f4 * f12), (double)(f15 - f5 * f12 + f7 * f12), (double)f8, (double)f10);
+		tessellator1.addVertexWithUV((double)(f13 + f3 * f12 + f6 * f12), (double)(f14 + f4 * f12), (double)(f15 + f5 * f12 + f7 * f12), (double)f9, (double)f10);
+		tessellator1.addVertexWithUV((double)(f13 + f3 * f12 - f6 * f12), (double)(f14 - f4 * f12), (double)(f15 + f5 * f12 - f7 * f12), (double)f9, (double)f11);
 	}
 }

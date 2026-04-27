@@ -31,10 +31,10 @@ public class BlockGlowing extends Block {
 		return true;
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		super.updateTick(world1, i2, i3, i4, random5);
-		if(world1.getBlockMetadata(i2, i3, i4) == 0) {
-			this.onBlockAdded(world1, i2, i3, i4);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		super.updateTick(worldObj, x, y, z, rand);
+		if(worldObj.getBlockMetadata(x, y, z) == 0) {
+			this.onBlockAdded(worldObj, x, y, z);
 		}
 
 	}

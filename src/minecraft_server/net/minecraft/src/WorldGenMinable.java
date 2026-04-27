@@ -6,9 +6,9 @@ public class WorldGenMinable extends WorldGenerator {
 	private int minableBlockId;
 	private int numberOfBlocks;
 
-	public WorldGenMinable(int i1, int i2) {
-		this.minableBlockId = i1;
-		this.numberOfBlocks = i2;
+	public WorldGenMinable(int minableBlockID, int numberOfBlocks) {
+		this.minableBlockId = minableBlockID;
+		this.numberOfBlocks = numberOfBlocks;
 	}
 
 	public boolean generate(World world1, Random random2, int i3, int i4, int i5) {

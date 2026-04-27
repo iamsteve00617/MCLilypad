@@ -30,7 +30,7 @@ public class GuiIngame extends Gui {
 	public String currentArea = "";
 	public long areaTimer = 0L;
 	private static final String[] syllab = new String[]{"SIE", "LOH", "KII", "HUR", "MIS", "RUU", "VY", "KA", "TAV", "OLE", "PAH", "MUI", "MAT", "JA", "SAU", "NIN", "UD", "MU", "NGI", "BAR", "LUG", "MAH", "GIR", "AK", "USU", "ESE", "IRU", "UUN", "AMTU", "AGAS", "HI", "TOOI", "YORU", "NEN", "PON", "ONNA", "TSU", "YA", "AO", "ONI", "AN", "KO", "SHI", "YUME", "YARI", "TEST"};
-
+	/*
 	public void RenderHungerBar() {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
@@ -39,7 +39,7 @@ public class GuiIngame extends Gui {
 		i1 = 3 - i1;
 		this.drawTexturedModalRect(0, 0, i1 * 32, 43, 32, 16);
 	}
-
+	*/
 	public void renderSomethingIdk(int i1, int i2, int i3, int i4, int i5, int i6) {
 		Tessellator tessellator10 = Tessellator.instance;
 		tessellator10.startDrawingQuads();
@@ -259,11 +259,12 @@ public class GuiIngame extends Gui {
 		GLStatics.a();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		if(this.mc.options.d) {
-			fontRenderer8.drawStringWithShadow("Minecraft Alpha 1.0.16.05_13 Lilypad", 2, 2, 0xFFFFFF);
-			fontRenderer8.drawStringWithShadow(this.mc.debug, 2, 12, 0xFFFFFF);
-			fontRenderer8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 22, 0xFFFFFF);
-			fontRenderer8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 32, 0xFFFFFF);
-			fontRenderer8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 42, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow("Minecraft Lilypad v1.0.0", 2, 2, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow("[BASE] et16.05_13 Lilypad", 2, 12, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow(this.mc.debug, 2, 22, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 32, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 42, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 52, 0xFFFFFF);
 			if(this.mc.theWorld != null) {
 				fontRenderer8.drawStringWithShadow(Long.toString(this.mc.theWorld.randomSeed), 2, 52, 0xFFFFFF);
 			}
@@ -280,7 +281,7 @@ public class GuiIngame extends Gui {
 			String string36 = "Allocated memory: " + j27 * 100L / j25 + "% (" + j27 / 1024L / 1024L + "MB)";
 			this.drawString(fontRenderer8, string36, i6 - fontRenderer8.getStringWidth(string36) - 2, 12, 14737632);
 		} else {
-			fontRenderer8.drawStringWithShadow("Minecraft Alpha 1.0.16.05_13 Lilypad", 2, 2, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow("Minecraft Lilypad v1.0.0", 2, 2, 0xFFFFFF);
 			if(uqKey != "") {
 				fontRenderer8.drawStringWithShadow(uqKey, 2, 12, 0xFFFFFF);
 			}
@@ -380,7 +381,7 @@ public class GuiIngame extends Gui {
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)i6 / 2.0F - 16.0F, (float)i7 - 50.0F, -1.0F);
 			GL11.glEnable(GL11.GL_BLEND);
-			this.RenderHungerBar();
+			//this.RenderHungerBar();
 			GL11.glPopMatrix();
 		}
 

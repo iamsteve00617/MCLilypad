@@ -50,15 +50,15 @@ public class BlockPressurePlate extends Block {
 
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		if(world1.getBlockMetadata(i2, i3, i4) != 0) {
-			this.setStateIfMobInteractsWithPlate(world1, i2, i3, i4);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		if(worldObj.getBlockMetadata(x, y, z) != 0) {
+			this.setStateIfMobInteractsWithPlate(worldObj, x, y, z);
 		}
 	}
 
-	public void onEntityCollidedWithBlock(World world1, int i2, int i3, int i4, Entity entity5) {
-		if(world1.getBlockMetadata(i2, i3, i4) != 1) {
-			this.setStateIfMobInteractsWithPlate(world1, i2, i3, i4);
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+		if(world.getBlockMetadata(x, y, z) != 1) {
+			this.setStateIfMobInteractsWithPlate(world, x, y, z);
 		}
 	}
 

@@ -18,24 +18,24 @@ public class BlockFlowing extends BlockFluid {
 		worldObj.markBlockNeedsUpdate(x, y, z);
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		int i6 = this.getFlowDecay(world1, i2, i3, i4);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		int i6 = this.getFlowDecay(worldObj, x, y, z);
 		boolean z7 = true;
 		int i9;
 		if(i6 > 0) {
 			byte b8 = -100;
 			this.numAdjacentSources = 0;
-			int i11 = this.getSmallestFlowDecay(world1, i2 - 1, i3, i4, b8);
-			i11 = this.getSmallestFlowDecay(world1, i2 + 1, i3, i4, i11);
-			i11 = this.getSmallestFlowDecay(world1, i2, i3, i4 - 1, i11);
-			i11 = this.getSmallestFlowDecay(world1, i2, i3, i4 + 1, i11);
+			int i11 = this.getSmallestFlowDecay(worldObj, x - 1, y, z, b8);
+			i11 = this.getSmallestFlowDecay(worldObj, x + 1, y, z, i11);
+			i11 = this.getSmallestFlowDecay(worldObj, x, y, z - 1, i11);
+			i11 = this.getSmallestFlowDecay(worldObj, x, y, z + 1, i11);
 			i9 = i11 + this.fluidType;
 			if(i9 >= 8 || i11 < 0) {
 				i9 = -1;
 			}
 
-			if(this.getFlowDecay(world1, i2, i3 + 1, i4) >= 0) {
-				int i10 = this.getFlowDecay(world1, i2, i3 + 1, i4);
+			if(this.getFlowDecay(worldObj, x, y + 1, z) >= 0) {
+				int i10 = this.getFlowDecay(worldObj, x, y + 1, z);
 				if(i10 >= 8) {
 					i9 = i10;
 				} else {
@@ -44,14 +44,14 @@ public class BlockFlowing extends BlockFluid {
 			}
 
 			if(this.numAdjacentSources >= 2 && this.material == Material.water) {
-				if(world1.isBlockNormalCube(i2, i3 - 1, i4)) {
+				if(worldObj.isBlockNormalCube(x, y - 1, z)) {
 					i9 = 0;
-				} else if(world1.getBlockMaterial(i2, i3 - 1, i4) == this.material && world1.getBlockMetadata(i2, i3, i4) == 0) {
+				} else if(worldObj.getBlockMaterial(x, y - 1, z) == this.material && worldObj.getBlockMetadata(x, y, z) == 0) {
 					i9 = 0;
 				}
 			}
 
-			if(this.material == Material.lava && i6 < 8 && i9 < 8 && i9 > i6 && random5.nextInt(4) != 0) {
+			if(this.material == Material.lava && i6 < 8 && i9 < 8 && i9 > i6 && rand.nextInt(4) != 0) {
 				i9 = i6;
 				z7 = false;
 			}
@@ -59,27 +59,27 @@ public class BlockFlowing extends BlockFluid {
 			if(i9 != i6) {
 				i6 = i9;
 				if(i9 < 0) {
-					world1.setBlockWithNotify(i2, i3, i4, 0);
+					worldObj.setBlockWithNotify(x, y, z, 0);
 				} else {
-					world1.setBlockMetadataWithNotify(i2, i3, i4, i9);
-					world1.scheduleBlockUpdate(i2, i3, i4, this.blockID);
-					world1.notifyBlocksOfNeighborChange(i2, i3, i4, this.blockID);
+					worldObj.setBlockMetadataWithNotify(x, y, z, i9);
+					worldObj.scheduleBlockUpdate(x, y, z, this.blockID);
+					worldObj.notifyBlocksOfNeighborChange(x, y, z, this.blockID);
 				}
 			} else if(z7) {
-				this.updateFlow(world1, i2, i3, i4);
+				this.updateFlow(worldObj, x, y, z);
 			}
 		} else {
-			this.updateFlow(world1, i2, i3, i4);
+			this.updateFlow(worldObj, x, y, z);
 		}
 
-		if(this.liquidCanDisplaceBlock(world1, i2, i3 - 1, i4)) {
+		if(this.liquidCanDisplaceBlock(worldObj, x, y - 1, z)) {
 			if(i6 >= 8) {
-				world1.setBlockAndMetadataWithNotify(i2, i3 - 1, i4, this.blockID, i6);
+				worldObj.setBlockAndMetadataWithNotify(x, y - 1, z, this.blockID, i6);
 			} else {
-				world1.setBlockAndMetadataWithNotify(i2, i3 - 1, i4, this.blockID, i6 + 8);
+				worldObj.setBlockAndMetadataWithNotify(x, y - 1, z, this.blockID, i6 + 8);
 			}
-		} else if(i6 >= 0 && (i6 == 0 || this.blockBlocksFlow(world1, i2, i3 - 1, i4))) {
-			boolean[] z12 = this.getOptimalFlowDirections(world1, i2, i3, i4);
+		} else if(i6 >= 0 && (i6 == 0 || this.blockBlocksFlow(worldObj, x, y - 1, z))) {
+			boolean[] z12 = this.getOptimalFlowDirections(worldObj, x, y, z);
 			i9 = i6 + this.fluidType;
 			if(i6 >= 8) {
 				i9 = 1;
@@ -90,19 +90,19 @@ public class BlockFlowing extends BlockFluid {
 			}
 
 			if(z12[0]) {
-				this.flowIntoBlock(world1, i2 - 1, i3, i4, i9);
+				this.flowIntoBlock(worldObj, x - 1, y, z, i9);
 			}
 
 			if(z12[1]) {
-				this.flowIntoBlock(world1, i2 + 1, i3, i4, i9);
+				this.flowIntoBlock(worldObj, x + 1, y, z, i9);
 			}
 
 			if(z12[2]) {
-				this.flowIntoBlock(world1, i2, i3, i4 - 1, i9);
+				this.flowIntoBlock(worldObj, x, y, z - 1, i9);
 			}
 
 			if(z12[3]) {
-				this.flowIntoBlock(world1, i2, i3, i4 + 1, i9);
+				this.flowIntoBlock(worldObj, x, y, z + 1, i9);
 			}
 		}
 

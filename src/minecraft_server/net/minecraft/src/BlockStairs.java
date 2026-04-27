@@ -184,8 +184,8 @@ public class BlockStairs extends Block {
 		return this.modelBlock.canCollideCheck(i1, z2);
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return this.modelBlock.canPlaceBlockAt(world, x, y, z);
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
+		return this.modelBlock.canPlaceBlockAt(world1, i2, i3, i4);
 	}
 
 	public void onBlockAdded(World world1, int i2, int i3, int i4) {

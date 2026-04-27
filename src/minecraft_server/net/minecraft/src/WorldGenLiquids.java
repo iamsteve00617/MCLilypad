@@ -5,8 +5,8 @@ import java.util.Random;
 public class WorldGenLiquids extends WorldGenerator {
 	private int liquidBlockId;
 
-	public WorldGenLiquids(int i1) {
-		this.liquidBlockId = i1;
+	public WorldGenLiquids(int liquidBlockID) {
+		this.liquidBlockId = liquidBlockID;
 	}
 
 	public boolean generate(World world1, Random random2, int i3, int i4, int i5) {

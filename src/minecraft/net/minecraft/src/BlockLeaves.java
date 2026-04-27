@@ -75,15 +75,15 @@ public class BlockLeaves extends BlockLeavesBase {
 		}
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		int i6 = world1.getBlockMetadata(i2, i3, i4);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		int i6 = worldObj.getBlockMetadata(x, y, z);
 		if(i6 == 0) {
 			this.decayCounter = 0;
-			this.updateCurrentLeaves(world1, i2, i3, i4);
+			this.updateCurrentLeaves(worldObj, x, y, z);
 		} else if(i6 == 1) {
-			this.removeLeaves(world1, i2, i3, i4);
-		} else if(random5.nextInt(10) == 0) {
-			this.updateCurrentLeaves(world1, i2, i3, i4);
+			this.removeLeaves(worldObj, x, y, z);
+		} else if(rand.nextInt(10) == 0) {
+			this.updateCurrentLeaves(worldObj, x, y, z);
 		}
 
 	}

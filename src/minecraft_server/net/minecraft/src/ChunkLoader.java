@@ -201,6 +201,6 @@ public class ChunkLoader implements IChunkLoader {
 	public void saveExtraData() {
 	}
 
-	public void saveExtraChunkData(World world, Chunk chunk) {
+	public void saveExtraChunkData(World world1, Chunk chunk2) {
 	}
 }

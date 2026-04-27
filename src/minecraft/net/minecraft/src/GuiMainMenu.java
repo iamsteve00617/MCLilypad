@@ -13,7 +13,7 @@ public class GuiMainMenu extends GuiScreen {
 	private LogoEffectRandomizer[][] logoEffects;
 	private float updateCounter = 0.0F;
 	private String splashString = "missingno";
-	private String[] splashes = new String[]{"MINECRAFT DEMO", "(Stay tuned for more)"};
+	private String[] splashes = new String[]{"...!", "(Stay tuned for more)", "Developed by Steve404_ and Devoe!", "[6], you're the best!", "1.0.16.05!"};
 	public static boolean shw = false;
 
 	public GuiMainMenu() {
@@ -47,9 +47,13 @@ public class GuiMainMenu extends GuiScreen {
 		} else if(calendar1.get(2) + 1 == 6 && calendar1.get(5) == 1) {
 			this.splashString = "Happy birthday, Notch!";
 		} else if(calendar1.get(2) + 1 == 12 && calendar1.get(5) == 24) {
-			this.splashString = "Merry X-mas!";
+			this.splashString = "Merry Christmas!";
 		} else if(calendar1.get(2) + 1 == 1 && calendar1.get(5) == 1) {
 			this.splashString = "Happy new year!";
+		} else if(calendar1.get(2) + 1 == 10 && calendar1.get(4) == 8) {
+			this.splashString = "Happy birthday, Devoe!";
+		} else if(calendar1.get(2) + 1 == 6 && calendar1.get(4) == 15) {
+			this.splashString = "Happy birthday, Steve404_!";
 		}
 
 		this.controlList.clear();

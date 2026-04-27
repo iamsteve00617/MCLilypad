@@ -14,25 +14,25 @@ public class BlockChest extends BlockContainer {
 		return i1 == 1 ? this.blockIndexInTexture - 1 : (i1 == 0 ? this.blockIndexInTexture - 1 : (i1 == 3 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture));
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
 		int i5 = 0;
-		if(world.getBlockId(x - 1, y, z) == this.blockID) {
+		if(world1.getBlockId(i2 - 1, i3, i4) == this.blockID) {
 			++i5;
 		}
 
-		if(world.getBlockId(x + 1, y, z) == this.blockID) {
+		if(world1.getBlockId(i2 + 1, i3, i4) == this.blockID) {
 			++i5;
 		}
 
-		if(world.getBlockId(x, y, z - 1) == this.blockID) {
+		if(world1.getBlockId(i2, i3, i4 - 1) == this.blockID) {
 			++i5;
 		}
 
-		if(world.getBlockId(x, y, z + 1) == this.blockID) {
+		if(world1.getBlockId(i2, i3, i4 + 1) == this.blockID) {
 			++i5;
 		}
 
-		return i5 > 1 ? false : (this.isThereANeighborChest(world, x - 1, y, z) ? false : (this.isThereANeighborChest(world, x + 1, y, z) ? false : (this.isThereANeighborChest(world, x, y, z - 1) ? false : !this.isThereANeighborChest(world, x, y, z + 1))));
+		return i5 > 1 ? false : (this.isThereANeighborChest(world1, i2 - 1, i3, i4) ? false : (this.isThereANeighborChest(world1, i2 + 1, i3, i4) ? false : (this.isThereANeighborChest(world1, i2, i3, i4 - 1) ? false : !this.isThereANeighborChest(world1, i2, i3, i4 + 1))));
 	}
 
 	private boolean isThereANeighborChest(World world, int x, int y, int z) {

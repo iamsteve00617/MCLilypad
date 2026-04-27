@@ -11,18 +11,18 @@ public class TileEntityChest extends TileEntity implements IInventory {
 		return this.chestContents[i1];
 	}
 
-	public ItemStack decrStackSize(int i1, int i2) {
-		if(this.chestContents[i1] != null) {
+	public ItemStack decrStackSize(int slot, int stackSize) {
+		if(this.chestContents[slot] != null) {
 			ItemStack itemStack3;
-			if(this.chestContents[i1].stackSize <= i2) {
-				itemStack3 = this.chestContents[i1];
-				this.chestContents[i1] = null;
+			if(this.chestContents[slot].stackSize <= stackSize) {
+				itemStack3 = this.chestContents[slot];
+				this.chestContents[slot] = null;
 				this.onInventoryChanged();
 				return itemStack3;
 			} else {
-				itemStack3 = this.chestContents[i1].splitStack(i2);
-				if(this.chestContents[i1].stackSize == 0) {
-					this.chestContents[i1] = null;
+				itemStack3 = this.chestContents[slot].splitStack(stackSize);
+				if(this.chestContents[slot].stackSize == 0) {
+					this.chestContents[slot] = null;
 				}
 
 				this.onInventoryChanged();

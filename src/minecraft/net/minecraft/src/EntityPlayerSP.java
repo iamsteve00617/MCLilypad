@@ -34,6 +34,7 @@ public class EntityPlayerSP extends EntityPlayer {
 
 	public void onLivingUpdate() {
 		this.movementInput.updatePlayerMoveState(this);
+		/*
 		if(this.mc.options.difficulty != 4 && this.mc.options.difficulty != 0) {
 			++this.hunger;
 			if(this.hunger >= 1200) {
@@ -41,6 +42,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				this.hunger = 0;
 			}
 		}
+		*/
 
 		if(this.dashTimer > 0) {
 			--this.dashTimer;

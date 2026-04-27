@@ -29,18 +29,18 @@ public class InventoryCrafting implements IInventory {
 		return "Crafting";
 	}
 
-	public ItemStack decrStackSize(int i1, int i2) {
-		if(this.stackList[i1] != null) {
+	public ItemStack decrStackSize(int slot, int stackSize) {
+		if(this.stackList[slot] != null) {
 			ItemStack itemStack3;
-			if(this.stackList[i1].stackSize <= i2) {
-				itemStack3 = this.stackList[i1];
-				this.stackList[i1] = null;
+			if(this.stackList[slot].stackSize <= stackSize) {
+				itemStack3 = this.stackList[slot];
+				this.stackList[slot] = null;
 				this.craftingInventory.onCraftMatrixChanged(this);
 				return itemStack3;
 			} else {
-				itemStack3 = this.stackList[i1].splitStack(i2);
-				if(this.stackList[i1].stackSize == 0) {
-					this.stackList[i1] = null;
+				itemStack3 = this.stackList[slot].splitStack(stackSize);
+				if(this.stackList[slot].stackSize == 0) {
+					this.stackList[slot] = null;
 				}
 
 				this.craftingInventory.onCraftMatrixChanged(this);

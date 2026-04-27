@@ -40,16 +40,16 @@ public class BlockSnow extends Block {
 		}
 	}
 
-	public void harvestBlock(World world1, int i2, int i3, int i4, int i5) {
+	public void harvestBlock(World worldObj, int x, int y, int z, int metadata) {
 		int i6 = Item.snowball.shiftedIndex;
 		float f7 = 0.7F;
-		double d8 = (double)(world1.rand.nextFloat() * f7) + (double)(1.0F - f7) * 0.5D;
-		double d10 = (double)(world1.rand.nextFloat() * f7) + (double)(1.0F - f7) * 0.5D;
-		double d12 = (double)(world1.rand.nextFloat() * f7) + (double)(1.0F - f7) * 0.5D;
-		EntityItem entityItem14 = new EntityItem(world1, (double)i2 + d8, (double)i3 + d10, (double)i4 + d12, new ItemStack(i6));
+		double d8 = (double)(worldObj.rand.nextFloat() * f7) + (double)(1.0F - f7) * 0.5D;
+		double d10 = (double)(worldObj.rand.nextFloat() * f7) + (double)(1.0F - f7) * 0.5D;
+		double d12 = (double)(worldObj.rand.nextFloat() * f7) + (double)(1.0F - f7) * 0.5D;
+		EntityItem entityItem14 = new EntityItem(worldObj, (double)x + d8, (double)y + d10, (double)z + d12, new ItemStack(i6));
 		entityItem14.delayBeforeCanPickup = 10;
-		world1.spawnEntityInWorld(entityItem14);
-		world1.setBlockWithNotify(i2, i3, i4, 0);
+		worldObj.spawnEntityInWorld(entityItem14);
+		worldObj.setBlockWithNotify(x, y, z, 0);
 	}
 
 	public int idDropped(int i1, Random random2) {
@@ -60,10 +60,10 @@ public class BlockSnow extends Block {
 		return 0;
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		if(world1.getSavedLightValue(EnumSkyBlock.Block, i2, i3, i4) > 11) {
-			this.dropBlockAsItem(world1, i2, i3, i4, world1.getBlockMetadata(i2, i3, i4));
-			world1.setBlockWithNotify(i2, i3, i4, 0);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		if(worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z) > 11) {
+			this.dropBlockAsItem(worldObj, x, y, z, worldObj.getBlockMetadata(x, y, z));
+			worldObj.setBlockWithNotify(x, y, z, 0);
 		}
 
 	}

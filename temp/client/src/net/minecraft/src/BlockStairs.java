@@ -30,28 +30,28 @@ public class BlockStairs extends Block {
 		return super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5);
 	}
 
-	public void getCollidingBoundingBoxes(World worldObj, int x, int y, int z, AxisAlignedBB aabb, ArrayList collidingBoundingBoxes) {
-		int i7 = worldObj.getBlockMetadata(x, y, z);
+	public void getCollidingBoundingBoxes(World world1, int i2, int i3, int i4, AxisAlignedBB axisAlignedBB5, ArrayList arrayList6) {
+		int i7 = world1.getBlockMetadata(i2, i3, i4);
 		if(i7 == 0) {
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 0.5F, 1.0F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		} else if(i7 == 1) {
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		} else if(i7 == 2) {
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 0.5F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		} else if(i7 == 3) {
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 0.5F, 1.0F);
-			super.getCollidingBoundingBoxes(worldObj, x, y, z, aabb, collidingBoundingBoxes);
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		}
 
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -152,8 +152,8 @@ public class BlockStairs extends Block {
 		this.modelBlock.randomDisplayTick(world1, i2, i3, i4, random5);
 	}
 
-	public void onBlockClicked(World world1, int i2, int i3, int i4, EntityPlayer entityPlayer5) {
-		this.modelBlock.onBlockClicked(world1, i2, i3, i4, entityPlayer5);
+	public void onBlockClicked(World worldObj, int x, int y, int z, EntityPlayer entityPlayer) {
+		this.modelBlock.onBlockClicked(worldObj, x, y, z, entityPlayer);
 	}
 
 	public void onBlockDestroyedByPlayer(World world1, int i2, int i3, int i4, int i5) {
@@ -225,8 +225,8 @@ public class BlockStairs extends Block {
 		this.modelBlock.onBlockRemoval(world1, i2, i3, i4);
 	}
 
-	public void dropBlockAsItemWithChance(World world1, int i2, int i3, int i4, int i5, float f6) {
-		this.modelBlock.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, f6);
+	public void dropBlockAsItemWithChance(World worldObj, int x, int y, int z, int metadata, float chance) {
+		this.modelBlock.dropBlockAsItemWithChance(worldObj, x, y, z, metadata, chance);
 	}
 
 	public void dropBlockAsItem(World world1, int i2, int i3, int i4, int i5) {
@@ -237,8 +237,8 @@ public class BlockStairs extends Block {
 		this.modelBlock.onEntityWalking(worldObj, x, y, z, entity);
 	}
 
-	public void updateTick(World world1, int i2, int i3, int i4, Random random5) {
-		this.modelBlock.updateTick(world1, i2, i3, i4, random5);
+	public void updateTick(World worldObj, int x, int y, int z, Random rand) {
+		this.modelBlock.updateTick(worldObj, x, y, z, rand);
 	}
 
 	public boolean blockActivated(World world1, int i2, int i3, int i4, EntityPlayer entityPlayer5) {

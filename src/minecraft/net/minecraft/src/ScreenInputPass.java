@@ -121,8 +121,8 @@ public class ScreenInputPass extends GuiScreen {
 		this.drawDefaultBackground();
 		if(!GuiMainMenu.shw) {
 			this.drawCenteredString(this.fontRenderer, "Input key", this.width / 2, this.height / 4 - 60 + 20, -1593835521);
-			this.drawString(this.fontRenderer, "Please enter your QA Preview key", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
-			this.drawString(this.fontRenderer, "If you don\'t have one, register on exalpha-dev.github.io .    ", this.width / 2 - 140, this.height / 4 - 60 + 60 + 18, 10526880);
+			this.drawString(this.fontRenderer, "Please enter your QA key", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
+			this.drawString(this.fontRenderer, "If you don\'t have one, register on testalpha.minecraft.net .    ", this.width / 2 - 140, this.height / 4 - 60 + 60 + 18, 10526880);
 			int i4 = this.width / 2 - 150;
 			int i5 = this.height / 4 - 10 + 50 + 18;
 			this.drawRect(i4 - 1, i5 - 1, i4 + 300 + 1, i5 + 20 + 1, -6250336);

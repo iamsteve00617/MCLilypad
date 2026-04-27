@@ -44,8 +44,8 @@ public class BlockCactus extends Block {
 		return 13;
 	}
 
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return !super.canPlaceBlockAt(world, x, y, z) ? false : this.canBlockStay(world, x, y, z);
+	public boolean canPlaceBlockAt(World world1, int i2, int i3, int i4) {
+		return !super.canPlaceBlockAt(world1, i2, i3, i4) ? false : this.canBlockStay(world1, i2, i3, i4);
 	}
 
 	public void onNeighborBlockChange(World world1, int i2, int i3, int i4, int i5) {
