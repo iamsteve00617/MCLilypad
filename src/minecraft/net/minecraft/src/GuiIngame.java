@@ -260,7 +260,7 @@ public class GuiIngame extends Gui {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		if(this.mc.options.d) {
 			fontRenderer8.drawStringWithShadow("Minecraft Lilypad v1.0.0", 2, 2, 0xFFFFFF);
-			fontRenderer8.drawStringWithShadow("[BASE] et16.05_13 Lilypad", 2, 12, 0xFFFFFF);
+			fontRenderer8.drawStringWithShadow("[BASE] ext16.05_13 Lilypad", 2, 12, 0xFFFFFF);
 			fontRenderer8.drawStringWithShadow(this.mc.debug, 2, 22, 0xFFFFFF);
 			fontRenderer8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 32, 0xFFFFFF);
 			fontRenderer8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 42, 0xFFFFFF);
