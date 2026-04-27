@@ -21,7 +21,7 @@ public class GuiIngame extends Gui {
 	private int recordPlayingUpFor = 0;
 	public float damageGuiPartialTime;
 	float prevVignetteBrightness = 1.0F;
-	public boolean renderQAName = true;
+	public boolean renderQAName = false;
 	public static String uqKey = "";
 	private boolean initedArea = false;
 	private long lastSeed;
