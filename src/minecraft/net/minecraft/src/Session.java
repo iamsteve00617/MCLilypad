@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Session {
 	public static List registeredBlocksList = new ArrayList();
-	public String username;
+	public static String username;
 	public String sessionId;
 	public String mpPassParameter;
 

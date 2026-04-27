@@ -121,8 +121,8 @@ public class ScreenInputPass extends GuiScreen {
 		this.drawDefaultBackground();
 		if(!GuiMainMenu.shw) {
 			this.drawCenteredString(this.fontRenderer, "Input key", this.width / 2, this.height / 4 - 60 + 20, -1593835521);
-			this.drawString(this.fontRenderer, "Please enter your QA key", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
-			this.drawString(this.fontRenderer, "If you don\'t have one, register on testalpha.minecraft.net .    ", this.width / 2 - 140, this.height / 4 - 60 + 60 + 18, 10526880);
+			this.drawString(this.fontRenderer, "Please enter your QA key.", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
+			this.drawString(this.fontRenderer, "If you don\'t have one, register on testalpha.minecraft.net .", this.width / 2 - 140, this.height / 4 - 60 + 60 + 18, 10526880);
 			int i4 = this.width / 2 - 150;
 			int i5 = this.height / 4 - 10 + 50 + 18;
 			this.drawRect(i4 - 1, i5 - 1, i4 + 300 + 1, i5 + 20 + 1, -6250336);
@@ -130,8 +130,8 @@ public class ScreenInputPass extends GuiScreen {
 			this.drawString(this.fontRenderer, this.i + (this.h / 6 % 2 == 0 ? "_" : ""), i4 + 4, i5 + 6, 14737632);
 			this.drawString(this.fontRenderer, this.einval, this.width / 2 - 120, this.height / 4 - 60 + 60 + 90, 16711680);
 		} else {
-			this.drawCenteredString(this.fontRenderer, "Welcome back to Lilypad", this.width / 2, this.height / 4 - 60 + 20, -1593835521);
-			this.drawString(this.fontRenderer, "Remember to report bugs to the bug tracker", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
+			this.drawCenteredString(this.fontRenderer, "Welcome back to Lilypad, " + Session.username + ".", this.width / 2, this.height / 4 - 60 + 20, -1593835521);
+			this.drawString(this.fontRenderer, "Remember to report bugs to the bug tracker.", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
 		}
 
 		super.drawScreen(i1, i2, f3);
