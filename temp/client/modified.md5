@@ -169,10 +169,10 @@ net/minecraft/src/GuiEditSign bd1be86fd18c8d25cf7842d6a817046b
 net/minecraft/src/GuiErrorScreen 0f547ee9f66949eee8ce9e6f866267eb
 net/minecraft/src/GuiFurnace eb3f6b747e6815ed7ae0ac93fc1f7182
 net/minecraft/src/GuiGameOver fb8bfd97d3cdd82a55b171761133ee27
-net/minecraft/src/GuiIngame 078a644bf68f39200e38e47d7674743f
+net/minecraft/src/GuiIngame 3fb4c67dd0fd71e03df42e1d445fbb04
 net/minecraft/src/GuiIngameMenu 505165eae4a0a24968c31c342ec67893
 net/minecraft/src/GuiInventory d1e9ab99b170169819545b414a90de9e
-net/minecraft/src/GuiMainMenu 8a713525b2e33688fd0d4d89c6747e97
+net/minecraft/src/GuiMainMenu eca997fa0065b2351a038c1232647f04
 net/minecraft/src/GuiMultiplayer 749a2fcbd120e157dce24a42c16feaad
 net/minecraft/src/GuiOptions d2eb8ca673356c903999b8154c45d6ca
 net/minecraft/src/GuiScreen 10606f3dfee099bd66ac9678d8ff44fb
