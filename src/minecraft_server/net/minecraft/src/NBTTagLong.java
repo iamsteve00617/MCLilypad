@@ -14,8 +14,8 @@ public class NBTTagLong extends NBTBase {
 		this.longValue = longValue;
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
-		dataOutput1.writeLong(this.longValue);
+	void writeTagContents(DataOutput dataOutput) throws IOException {
+		dataOutput.writeLong(this.longValue);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {

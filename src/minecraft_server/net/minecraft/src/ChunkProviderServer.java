@@ -140,26 +140,26 @@ public class ChunkProviderServer implements IChunkProvider {
 
 	}
 
-	public boolean saveChunks(boolean flag, IProgressUpdate progressUpdate) {
+	public boolean saveChunks(boolean z1, IProgressUpdate iProgressUpdate2) {
 		int i3 = 0;
 
 		for(int i4 = 0; i4 < this.loadedChunks.size(); ++i4) {
 			Chunk chunk5 = (Chunk)this.loadedChunks.get(i4);
-			if(flag && !chunk5.neverSave) {
+			if(z1 && !chunk5.neverSave) {
 				this.saveExtraChunkData(chunk5);
 			}
 
-			if(chunk5.needsSaving(flag)) {
+			if(chunk5.needsSaving(z1)) {
 				this.saveChunk(chunk5);
 				chunk5.isModified = false;
 				++i3;
-				if(i3 == 2 && !flag) {
+				if(i3 == 2 && !z1) {
 					return false;
 				}
 			}
 		}
 
-		if(flag) {
+		if(z1) {
 			if(this.serverChunkLoader == null) {
 				return true;
 			}

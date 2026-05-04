@@ -206,10 +206,10 @@ public class EntityArrow extends Entity {
 		this.inData = nBTTagCompound1.getByte("inGround") == 1;
 	}
 
-	public void onCollideWithPlayer(EntityPlayer entityPlayer) {
-		if(this.inData && this.entityLiving == entityPlayer && this.arrowShake <= 0 && entityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow.shiftedIndex, 1))) {
+	public void onCollideWithPlayer(EntityPlayer entityPlayer1) {
+		if(this.inData && this.entityLiving == entityPlayer1 && this.arrowShake <= 0 && entityPlayer1.inventory.addItemStackToInventory(new ItemStack(Item.arrow.shiftedIndex, 1))) {
 			this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-			entityPlayer.onItemPickup(this, 1);
+			entityPlayer1.onItemPickup(this, 1);
 			this.setEntityDead();
 		}
 

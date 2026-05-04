@@ -6530,3 +6530,5 @@ c	net/minecraft/src/BlockGlowingFlowerInfused	BlockGlowingFlowerInfused
 c	net/minecraft/src/BlockGlowingFlower	BlockGlowingFlower
 c	net/minecraft/src/BlockGlowing	BlockGlowing
 c	net/minecraft/src/AdaptiveHandler	AdaptiveHandler
+c	net/minecraft/src/BlockGlowingCube	BlockGlowingCube
+c	net/minecraft/src/BlockGreenscreen	BlockGreenscreen

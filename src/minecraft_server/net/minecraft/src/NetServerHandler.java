@@ -182,12 +182,12 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		this.mcServer.worldMngr.disableSpawnProtection = false;
 	}
 
-	public void handlePlace(Packet15Place packet) {
+	public void handlePlace(Packet15Place packet15Place1) {
 		boolean z2 = this.mcServer.worldMngr.disableSpawnProtection = this.mcServer.configManager.isOp(this.playerEntity.username);
-		int i3 = packet.xPosition;
-		int i4 = packet.yPosition;
-		int i5 = packet.zPosition;
-		int i6 = packet.direction;
+		int i3 = packet15Place1.xPosition;
+		int i4 = packet15Place1.yPosition;
+		int i5 = packet15Place1.zPosition;
+		int i6 = packet15Place1.direction;
 		int i7 = (int)MathHelper.abs((float)(i3 - this.mcServer.worldMngr.spawnX));
 		int i8 = (int)MathHelper.abs((float)(i5 - this.mcServer.worldMngr.spawnZ));
 		if(i7 > i8) {
@@ -195,7 +195,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		}
 
 		if(i8 > 16 || z2) {
-			ItemStack itemStack9 = packet.id >= 0 ? new ItemStack(packet.id) : null;
+			ItemStack itemStack9 = packet15Place1.id >= 0 ? new ItemStack(packet15Place1.id) : null;
 			this.playerEntity.theItemInWorldManager.activeBlockOrUseItem(this.playerEntity, this.mcServer.worldMngr, itemStack9, i3, i4, i5, i6);
 		}
 
@@ -218,8 +218,8 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		this.netManager.addToSendQueue(packet1);
 	}
 
-	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet) {
-		int i2 = packet.id;
+	public void handleBlockItemSwitch(Packet16BlockItemSwitch packet16BlockItemSwitch1) {
+		int i2 = packet16BlockItemSwitch1.id;
 		this.playerEntity.inventory.currentItem = this.playerEntity.inventory.mainInventory.length - 1;
 		if(i2 == 0) {
 			this.heldItem = null;

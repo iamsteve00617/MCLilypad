@@ -460,7 +460,7 @@ public class ChunkProviderGenerate implements IChunkProvider {
 		BlockSand.fallInstantly = false;
 	}
 
-	public boolean saveChunks(boolean flag, IProgressUpdate progressUpdate) {
+	public boolean saveChunks(boolean z1, IProgressUpdate iProgressUpdate2) {
 		return true;
 	}
 

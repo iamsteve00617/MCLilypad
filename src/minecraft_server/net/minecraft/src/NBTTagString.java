@@ -17,8 +17,8 @@ public class NBTTagString extends NBTBase {
 		}
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
-		dataOutput1.writeUTF(this.stringValue);
+	void writeTagContents(DataOutput dataOutput) throws IOException {
+		dataOutput.writeUTF(this.stringValue);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {

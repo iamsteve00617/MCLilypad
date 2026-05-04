@@ -10,15 +10,15 @@ import java.util.Map;
 public class NBTTagCompound extends NBTBase {
 	private Map tagMap = new HashMap();
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
+	void writeTagContents(DataOutput dataOutput) throws IOException {
 		Iterator iterator2 = this.tagMap.values().iterator();
 
 		while(iterator2.hasNext()) {
 			NBTBase nBTBase3 = (NBTBase)iterator2.next();
-			NBTBase.writeNamedTag(nBTBase3, dataOutput1);
+			NBTBase.writeNamedTag(nBTBase3, dataOutput);
 		}
 
-		dataOutput1.writeByte(0);
+		dataOutput.writeByte(0);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {

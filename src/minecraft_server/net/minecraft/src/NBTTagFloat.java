@@ -14,8 +14,8 @@ public class NBTTagFloat extends NBTBase {
 		this.floatValue = floatValue;
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
-		dataOutput1.writeFloat(this.floatValue);
+	void writeTagContents(DataOutput dataOutput) throws IOException {
+		dataOutput.writeFloat(this.floatValue);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {

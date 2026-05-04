@@ -14,9 +14,9 @@ public class NBTTagByteArray extends NBTBase {
 		this.byteArray = byteArray;
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
-		dataOutput1.writeInt(this.byteArray.length);
-		dataOutput1.write(this.byteArray);
+	void writeTagContents(DataOutput dataOutput) throws IOException {
+		dataOutput.writeInt(this.byteArray.length);
+		dataOutput.write(this.byteArray);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {

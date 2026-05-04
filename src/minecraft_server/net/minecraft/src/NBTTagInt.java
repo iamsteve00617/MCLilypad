@@ -14,8 +14,8 @@ public class NBTTagInt extends NBTBase {
 		this.intValue = intValue;
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
-		dataOutput1.writeInt(this.intValue);
+	void writeTagContents(DataOutput dataOutput) throws IOException {
+		dataOutput.writeInt(this.intValue);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {

@@ -14,8 +14,8 @@ public class NBTTagDouble extends NBTBase {
 		this.doubleValue = doubleValue;
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
-		dataOutput1.writeDouble(this.doubleValue);
+	void writeTagContents(DataOutput dataOutput) throws IOException {
+		dataOutput.writeDouble(this.doubleValue);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {

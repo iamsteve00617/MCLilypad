@@ -176,12 +176,12 @@ public class EntityItem extends Entity {
 		this.item = new ItemStack(nBTTagCompound2);
 	}
 
-	public void onCollideWithPlayer(EntityPlayer entityPlayer) {
+	public void onCollideWithPlayer(EntityPlayer entityPlayer1) {
 		if(!this.worldObj.multiplayerWorld) {
 			int i2 = this.item.stackSize;
-			if(this.delayBeforeCanPickup == 0 && entityPlayer.inventory.addItemStackToInventory(this.item)) {
+			if(this.delayBeforeCanPickup == 0 && entityPlayer1.inventory.addItemStackToInventory(this.item)) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				entityPlayer.onItemPickup(this, i2);
+				entityPlayer1.onItemPickup(this, i2);
 				this.setEntityDead();
 			}
 

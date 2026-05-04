@@ -137,13 +137,13 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 
 	}
 
-	public boolean saveChunks(boolean flag, IProgressUpdate progressUpdate) {
+	public boolean saveChunks(boolean z1, IProgressUpdate iProgressUpdate2) {
 		int i3 = 0;
 		int i4 = 0;
 		int i5;
-		if(progressUpdate != null) {
+		if(iProgressUpdate2 != null) {
 			for(i5 = 0; i5 < this.chunks.length; ++i5) {
-				if(this.chunks[i5] != null && this.chunks[i5].needsSaving(flag)) {
+				if(this.chunks[i5] != null && this.chunks[i5].needsSaving(z1)) {
 					++i4;
 				}
 			}
@@ -153,29 +153,29 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 
 		for(int i6 = 0; i6 < this.chunks.length; ++i6) {
 			if(this.chunks[i6] != null) {
-				if(flag && !this.chunks[i6].neverSave) {
+				if(z1 && !this.chunks[i6].neverSave) {
 					this.saveExtraChunkData(this.chunks[i6]);
 				}
 
-				if(this.chunks[i6].needsSaving(flag)) {
+				if(this.chunks[i6].needsSaving(z1)) {
 					this.saveChunk(this.chunks[i6]);
 					this.chunks[i6].isModified = false;
 					++i3;
-					if(i3 == 2 && !flag) {
+					if(i3 == 2 && !z1) {
 						return false;
 					}
 
-					if(progressUpdate != null) {
+					if(iProgressUpdate2 != null) {
 						++i5;
 						if(i5 % 10 == 0) {
-							progressUpdate.setLoadingProgress(i5 * 100 / i4);
+							iProgressUpdate2.setLoadingProgress(i5 * 100 / i4);
 						}
 					}
 				}
 			}
 		}
 
-		if(flag) {
+		if(z1) {
 			if(this.chunkLoader == null) {
 				return true;
 			}

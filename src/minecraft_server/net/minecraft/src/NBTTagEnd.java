@@ -8,7 +8,7 @@ public class NBTTagEnd extends NBTBase {
 	void readTagContents(DataInput dataInput1) throws IOException {
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
+	void writeTagContents(DataOutput dataOutput) throws IOException {
 	}
 
 	public byte getType() {

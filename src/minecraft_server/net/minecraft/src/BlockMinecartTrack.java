@@ -21,8 +21,8 @@ public class BlockMinecartTrack extends Block {
 		return super.collisionRayTrace(world1, i2, i3, i4, vec3D5, vec3D6);
 	}
 
-	public void setBlockBoundsBasedOnState(IBlockAccess iBlockAccess1, int i2, int i3, int i4) {
-		int i5 = iBlockAccess1.getBlockMetadata(i2, i3, i4);
+	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z) {
+		int i5 = blockAccess.getBlockMetadata(x, y, z);
 		if(i5 >= 2 && i5 <= 5) {
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.625F, 1.0F);
 		} else {

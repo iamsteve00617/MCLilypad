@@ -99,8 +99,8 @@ public class EntitySlime extends EntityLiving implements IMobs {
 		super.setEntityDead();
 	}
 
-	public void onCollideWithPlayer(EntityPlayer entityPlayer) {
-		if(this.size > 1 && this.canEntityBeSeen(entityPlayer) && (double)this.getDistanceToEntity(entityPlayer) < 0.6D * (double)this.size && entityPlayer.attackEntityFrom(this, this.size)) {
+	public void onCollideWithPlayer(EntityPlayer entityPlayer1) {
+		if(this.size > 1 && this.canEntityBeSeen(entityPlayer1) && (double)this.getDistanceToEntity(entityPlayer1) < 0.6D * (double)this.size && entityPlayer1.attackEntityFrom(this, this.size)) {
 			this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 		}
 

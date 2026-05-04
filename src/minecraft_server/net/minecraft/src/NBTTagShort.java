@@ -14,8 +14,8 @@ public class NBTTagShort extends NBTBase {
 		this.shortValue = shortValue;
 	}
 
-	void writeTagContents(DataOutput dataOutput1) throws IOException {
-		dataOutput1.writeShort(this.shortValue);
+	void writeTagContents(DataOutput dataOutput) throws IOException {
+		dataOutput.writeShort(this.shortValue);
 	}
 
 	void readTagContents(DataInput dataInput1) throws IOException {
